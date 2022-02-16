@@ -1,0 +1,49 @@
+name: DemonMarket
+main: com.tining.demonmarket.Main
+version: 1.0.5
+api-version: 1.13
+# YAML 中的注释，一行有效
+# 以上是插件基本信息，以下是命令注册
+depend:
+  - Vault
+commands:
+  demonmarket: # 命令的基本名，请不要使用奇怪的字符！
+    aliases: # 别名，方便玩家使用
+      - mt
+      - dm
+      - dmt
+    usage: |
+      /mt sell 出售手里的物品
+      /mt sell all 出售背包里当前所有与手中相同的物品
+      /mt price 查询物品当前价格
+      /mt help 查看帮助
+      /mtadmin set [价格] 为手里物品新增或修改价格
+      /mtadmin name 查看手中物品名称
+      /mtadmin reload 重载插件配置
+    description: Buy or sell some item in player's inventory # 描述
+    permission: demonmarket.use
+    permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
+  demonmarketadmin: # 命令的基本名，请不要使用奇怪的字符！
+    aliases: # 别名，方便玩家使用
+      - mtadmin
+      - dmadmin
+      - dmtadmin
+    usage: |
+      /mt sell 出售手里的物品
+      /mt sell all 出售背包里当前所有与手中相同的物品
+      /mt price 查询物品当前价格
+      /mt help 查看帮助
+      /mtadmin set [价格] 为手里物品新增或修改价格
+      /mtadmin name 查看手中物品名称
+      /mtadmin reload 重载插件配置
+    description: Buy or sell some item in player's inventory # 描述
+    permission: demonmarket.admin
+    permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
+
+permissions:
+  demonmarket.admin:
+    description: Admin
+    default: op
+  demonmarket.use:
+    description: market use permission
+    default: true

@@ -1,0 +1,17 @@
+# 项目排除路径
+/target/
+.idea/runConfigurations.xml
+.idea/encodings.xml
+.idea/dataSources.local.xml
+.idea/GlobalMarket.iml
+.idea/GlobalMarket.iml
+.idea/jarRepositories.xml
+.idea/jarRepositories.xml
+.idea/jarRepositories.xml
+.idea/dataSources.local.xml
+.idea/dataSources.local.xml
+.idea/dataSources.local.xml
+.idea/jarRepositories.xml
+.idea/dataSources.local.xml
+.idea/compiler.xml
+.idea/workspace.xml
