@@ -1,5 +1,8 @@
 # 项目排除路径
 /target/
+/.idea/
+DemonMarket.iml
+dependency-reduced-pom.xml
 .idea/runConfigurations.xml
 .idea/encodings.xml
 .idea/dataSources.local.xml
@@ -13,5 +16,3 @@
 .idea/dataSources.local.xml
 .idea/jarRepositories.xml
 .idea/dataSources.local.xml
-.idea/compiler.xml
-.idea/workspace.xml
