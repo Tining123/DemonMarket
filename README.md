@@ -49,7 +49,9 @@
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/math.png)
 
 ## 未来功能
++ 支持GUI界面（全力制作中） [-]
 + 支持mysql和sqlite [-]
++ 支持NBT [✓]
 + 通过命令直接调整物价 [✓]
 + 通过命令直接查看物品名称 [✓]
 ## 关于项目
@@ -58,3 +60,6 @@
 + 该插件已由纸劈刀搬运至mcbbs
 ## 感谢
 原fork项目作者 EnderTheCoder
+
+
+技术指导 LiteSignIn 插件
