@@ -3,6 +3,7 @@ package com.tining.demonmarket;
 import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.money.Vault;
+import com.tining.demonmarket.nms.JsonItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,6 +41,8 @@ public class Main extends JavaPlugin {
         if (Bukkit.getPluginCommand("demonmarketadmin") != null) {
             Bukkit.getPluginCommand("demonmarketadmin").setExecutor(new AdminCommand());
         }
+        //初始化NMS
+        JsonItemStack.reloadNMS();
 
         Vault.vaultSetup();
         // <-- Replace with the id of your plugin!

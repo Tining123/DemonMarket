@@ -28,6 +28,9 @@ public final class ConfigReader {
     public static void reloadConfig(){
         Main.instance.reloadConfig();
         config = Main.instance.getConfig();
+        Main.instance.saveConfig();
+        Main.instance.reloadConfig();
+        config = Main.instance.getConfig();
     }
 
 
@@ -63,6 +66,49 @@ public final class ConfigReader {
             value.put(obj, Double.parseDouble(data.get(obj).toString()));
         }
         return value;
+    }
+
+    /**
+     * 获取NBT物品总价值
+     * @return
+     */
+    public static Map<String, Double> getNBTWorth(){
+
+        Map<String, Double> value = new HashMap<>();
+        if(Objects.isNull(config.getConfigurationSection("nbtworth"))){
+            config.addDefault("nbtworth",value);
+            config.set("nbtworth",value);
+            reloadConfig();
+        }
+        if(!Objects.isNull(config.getConfigurationSection("nbtworth"))) {
+            Map<String, Object> data = config.getConfigurationSection("nbtworth").getValues(false);
+            for (String obj : data.keySet()) {
+                value.put(obj, Double.parseDouble(data.get(obj).toString()));
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 添加nbt价值到配置文件
+     * @return
+     */
+    public static void addToNBTWorth(String name,double value){
+
+        Map<String, Double> worth = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        if(!Objects.isNull(config.getConfigurationSection("nbtworth"))){
+            data = config.getConfigurationSection("nbtworth").getValues(false);
+        }
+        for (String obj  : data.keySet()) {
+            worth.put(obj, Double.parseDouble(data.get(obj).toString()));
+        }
+        worth.put(name,value);
+        config.addDefault("nbtworth",worth);
+        config.set("nbtworth",worth);
+        Main.instance.saveConfig();
+        Main.instance.reloadConfig();
+        config = Main.instance.getConfig();
     }
 
     /**

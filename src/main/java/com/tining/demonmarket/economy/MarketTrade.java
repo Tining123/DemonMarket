@@ -1,6 +1,5 @@
 package com.tining.demonmarket.economy;
 
-import com.tining.demonmarket.data.MarketItem;
 import com.tining.demonmarket.money.Vault;
 import com.tining.demonmarket.player.Inventory;
 import com.tining.demonmarket.storage.ConfigReader;
@@ -9,10 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import java.sql.Timestamp;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MarketTrade {
 
@@ -38,12 +35,11 @@ public class MarketTrade {
     /**
      * 模拟贸易
      * @param player
-     * @param material
      * @param value
      * @param amount
      * @param type
      */
-    public static double preTrade(Player player, Material material, double value, int amount, type type) {
+    public static double preTrade(Player player, ItemStack itemStack, double value, int amount, type type) {
         OfflinePlayer op = null;
         //服主
         try {
@@ -67,12 +63,11 @@ public class MarketTrade {
     /**
      * 进行贸易
      * @param player
-     * @param material
      * @param value
      * @param amount
      * @param type
      */
-    public static void trade(Player player, Material material, double value, int amount, type type) {
+    public static void trade(Player player, ItemStack itemStack, double value, int amount, type type) {
         OfflinePlayer op = null;
         //服主
         try {
@@ -95,24 +90,24 @@ public class MarketTrade {
                     Vault.addVaultCurrency(op, tax);
                 }catch (Exception e){}
                 //更新玩家储存
-                Inventory.subtractInventory(player, material, amount);
+                //Inventory.subtractInventory(player, itemStack, amount);
                 break;
             }
             default:break;
         }
         //记录贸易
-        message(player, type, material, amount, price, tax);
+        message(player, type, itemStack, amount, price, tax);
     }
 
 
     //交易提示信息
-    public static void message(Player player, type type, Material material, int amount, double price, double tax) {
+    public static void message(Player player, type type, ItemStack itemStack, int amount, double price, double tax) {
 
 
         player.sendMessage(ChatColor.GREEN + String.format("[DemonMarket]你成功%s了%s个%s，%s$%s，其中贸易税为$%s",
                 (type == MarketTrade.type.BUY) ? "购买" : "出售",
                 amount,
-                material.name(),
+                itemStack.getType().name(),
                 (type == MarketTrade.type.BUY) ? "花费" : "所得",
                 (type == MarketTrade.type.BUY) ? MarketEconomy.formatMoney(price + tax) : MarketEconomy.formatMoney(price - tax),
                 MarketEconomy.formatMoney(tax)

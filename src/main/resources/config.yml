@@ -388,31 +388,6 @@ worth:
   IRONBOOTS: 22.0
   STEP: 1.5
 
-
-###################################
-##########以下参数目前没用############
-###################################
-# Mysql功能区
-Mysql.Username: username
-Mysql.password: 123456
-Mysql.Address: 127.0.0.1
-Mysql.Port: 3306
-Mysql.DataBaseName: database
-
-
-#启用VIP免税功能,需要插件ECS-LOGIN
-Enable.NoTax: false
-
-#贸易超时时间，即玩家在GUI界面点击贸易时超时时间，单位是秒
-TimeOut.Trade: 10
-
-#随机事件最小间隔时间
-CD.MarketEvent: 1200
-
-#收购最低数量
-ACQUIRE_BASE: 3000
-#收购数量随机增长额度
-ACQUIRE_GAP: 4000
-#收购物品的价格上限
-CQUIRE_MAX_PRICE: 50
+# nbt价格表
+nbtworth:
 
