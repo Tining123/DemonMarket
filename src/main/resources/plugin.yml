@@ -1,6 +1,6 @@
 name: DemonMarket
 main: com.tining.demonmarket.Main
-version: 1.0.5
+version: 1.0.6
 api-version: 1.13
 # YAML 中的注释，一行有效
 # 以上是插件基本信息，以下是命令注册
@@ -35,6 +35,7 @@ commands:
       /mt help 查看帮助
       /mtadmin set [价格] 为手里物品新增或修改价格
       /mtadmin name 查看手中物品名称
+      /mtadmin nbt 查看手中物品nbt明细
       /mtadmin reload 重载插件配置
     description: Buy or sell some item in player's inventory # 描述
     permission: demonmarket.admin

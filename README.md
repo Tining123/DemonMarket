@@ -16,6 +16,7 @@
 #### 使用管理员命令/demonmarketadmin 命令简写为/mtadmin
 + /mtadmin set [价格] 为手中的物品新增或修改价格
 + /mtadmin name 查看手中物品在配置中的名称
++ /mtadmin nbt 查看手中物品在配置中的nbt明细
 + /mtadmin reload 重载插件配置
 
 可用别名：dmadmin,dmtadmin,demonmarketadmin
