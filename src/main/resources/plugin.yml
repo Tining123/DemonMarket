@@ -1,6 +1,6 @@
 name: DemonMarket
 main: com.tining.demonmarket.Main
-version: 1.0.6
+version: 1.0.7
 api-version: 1.13
 # YAML 中的注释，一行有效
 # 以上是插件基本信息，以下是命令注册

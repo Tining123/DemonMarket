@@ -4,16 +4,15 @@ import com.google.common.base.Strings;
 import com.tining.demonmarket.common.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
-import com.tining.demonmarket.nms.JsonItemStack;
-import com.tining.demonmarket.player.Inventory;
+import com.tining.demonmarket.common.InventoryUtil;
+import com.tining.demonmarket.gui.ChestGui;
 import com.tining.demonmarket.storage.ConfigReader;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -42,9 +41,9 @@ public class UserCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "sell": {
-                ItemStack itemStack = player.getInventory().getItemInMainHand();
                 //合法性校验
                 if(!isIllegalItem(itemStack,player,sender)){
                     return true;
@@ -58,42 +57,45 @@ public class UserCommand implements CommandExecutor {
                 int sellAmount = 0;
                 if (args.length == 1) {
                     sellAmount = player.getInventory().getItemInMainHand().getAmount();
-                    MarketTrade.trade(player, itemStack, value, sellAmount, MarketTrade.type.SELL);
+                    MarketTrade.trade(player, itemStack, value, sellAmount);
                     //去除物品
-                    Inventory.subtractHand(player,itemStack);
+                    InventoryUtil.subtractHand(player,itemStack);
                     return true;
                 }
                 if (!"all".equals(args[1].toLowerCase(Locale.ROOT))) {
                     return false;
                 }
 
-                int amountInInventory = Inventory.calcInventory(player, itemStack);
+                int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
                 sellAmount = amountInInventory;
-                MarketTrade.trade(player, itemStack, value, sellAmount, MarketTrade.type.SELL);
-                Inventory.subtractAll(player,itemStack);
+                MarketTrade.trade(player, itemStack, value, sellAmount);
+                InventoryUtil.subtractAll(player,itemStack);
                 return true;
 
             }
             case "price": {
-                ItemStack is = player.getInventory().getItemInMainHand();
                 //合法性校验
-                if(!isIllegalItem(is,player,sender)){
+                if(!isIllegalItem(itemStack,player,sender)){
                     return true;
                 }
-                double value = WorthUtil.getWorth(is);
+                double value = WorthUtil.getWorth(itemStack);
                 if (value == 0) {
                     sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你输入的物品当前一文不值");
                     return true;
                 }
-                int amountInInventory = Inventory.calcInventory(player, is);
+                int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
                 int sellAmount = 0;
                 sellAmount = player.getInventory().getItemInMainHand().getAmount();
-                double hand = MarketTrade.preTrade(player, is, value, sellAmount, MarketTrade.type.SELL);
-                double all = MarketTrade.preTrade(player, is, value, amountInInventory, MarketTrade.type.SELL);
+                double hand = MarketTrade.preTrade(player, itemStack, value, sellAmount);
+                double all = MarketTrade.preTrade(player, itemStack, value, amountInInventory);
                 sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]物品单价：" + MarketEconomy.formatMoney(value) + "，你手里的物品总价："
                         + MarketEconomy.formatMoney(hand) + "，如果出售背包中所有物品可得：" + MarketEconomy.formatMoney(all));
                 return true;
 
+            }
+            case "gui" :{
+                ChestGui.getChestGui(player);
+                return true;
             }
             case "help": {
                 return false;

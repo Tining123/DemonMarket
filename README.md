@@ -6,6 +6,7 @@
 
 ## 使用方法
 #### 使用用户命令/demonmarket 命令简写为/mt
++ /mt gui 打开一个收购箱
 + /mt sell 卖掉手里的东西
 + /mt sell all 卖掉背包里和手中同样的所有东西
 + /mt price 预估手中物品的出售收益

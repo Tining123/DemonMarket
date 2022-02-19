@@ -55,6 +55,14 @@ public final class ConfigReader {
     }
 
     /**
+     * 获取资产基线
+     * @return
+     */
+    public static double getBasicProperty(){
+        return ConfigReader.config.getDouble("BasicProperty");
+    }
+
+    /**
      * 获取物品总价值
      * @return
      */
