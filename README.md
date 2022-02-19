@@ -66,4 +66,5 @@
 + 该插件已由纸劈刀搬运至mcbbs
 ## 感谢
 代码指导 EnderTheCoder
+
 技术指导 LiteSignIn 插件
