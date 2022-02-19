@@ -54,8 +54,9 @@
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/math.png)
 
 ## 未来功能
-+ 支持GUI界面（全力制作中） [-]
-+ 支持mysql和sqlite [-]
++ 添加系统商店，玩家可进行购买[-]
++ 支持查看所有可出售物品[-]
++ 支持GUI界面[✓]
 + 支持NBT [✓]
 + 通过命令直接调整物价 [✓]
 + 通过命令直接查看物品名称 [✓]
