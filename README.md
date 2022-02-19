@@ -65,7 +65,5 @@
 + 如果有问题或者需求可以联系QQ 1340212468
 + 该插件已由纸劈刀搬运至mcbbs
 ## 感谢
-原fork项目作者 EnderTheCoder
-
-
+代码指导 EnderTheCoder
 技术指导 LiteSignIn 插件
