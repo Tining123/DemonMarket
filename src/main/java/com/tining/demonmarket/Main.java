@@ -3,9 +3,11 @@ package com.tining.demonmarket;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
+import com.tining.demonmarket.common.ref.Metrics;
 import com.tining.demonmarket.even.ChestGuiEvent;
-import com.tining.demonmarket.money.Vault;
-import com.tining.demonmarket.nms.JsonItemStack;
+import com.tining.demonmarket.common.ref.Vault;
+import com.tining.demonmarket.common.ref.JsonItemStack;
+import com.tining.demonmarket.storage.ConfigReader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +22,7 @@ import java.util.logging.Logger;
  * @author tinga
  */
 public class Main extends JavaPlugin {
-    public static Main instance;
+    private static Main instance;
     private static final Logger log = Logger.getLogger("Minecraft");
 
     /**
@@ -45,29 +47,16 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        //释放配置文件
         saveDefaultConfig();
+        ConfigReader.initRelease();
 
+        setExecutor();
 
-        if (Bukkit.getPluginCommand("mt") != null) {
-            Bukkit.getPluginCommand("mt").setExecutor(new UserCommand());
-        }
-
-        if (Bukkit.getPluginCommand("demonmarket") != null) {
-            Bukkit.getPluginCommand("demonmarket").setExecutor(new UserCommand());
-        }
-
-        if (Bukkit.getPluginCommand("mtadmin") != null) {
-            Bukkit.getPluginCommand("mtadmin").setExecutor(new AdminCommand());
-        }
-
-        if (Bukkit.getPluginCommand("demonmarketadmin") != null) {
-            Bukkit.getPluginCommand("demonmarketadmin").setExecutor(new AdminCommand());
-        }
         //初始化NMS
         JsonItemStack.reloadNMS();
 
         Vault.vaultSetup();
-        // <-- Replace with the id of your plugin!
         int pluginId = 14142;
         Metrics metrics = new Metrics(this, pluginId);
 
@@ -81,6 +70,21 @@ public class Main extends JavaPlugin {
     public static void registerEvent() {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ChestGuiEvent(), Main.getInstance());
+    }
+
+    public static void setExecutor(){
+        if (Bukkit.getPluginCommand("mt") != null) {
+            Bukkit.getPluginCommand("mt").setExecutor(new UserCommand());
+        }
+        if (Bukkit.getPluginCommand("demonmarket") != null) {
+            Bukkit.getPluginCommand("demonmarket").setExecutor(new UserCommand());
+        }
+        if (Bukkit.getPluginCommand("mtadmin") != null) {
+            Bukkit.getPluginCommand("mtadmin").setExecutor(new AdminCommand());
+        }
+        if (Bukkit.getPluginCommand("demonmarketadmin") != null) {
+            Bukkit.getPluginCommand("demonmarketadmin").setExecutor(new AdminCommand());
+        }
     }
 
     /**

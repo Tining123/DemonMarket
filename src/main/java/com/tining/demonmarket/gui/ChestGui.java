@@ -1,17 +1,12 @@
 package com.tining.demonmarket.gui;
 
-import com.tining.demonmarket.Main;
-import com.tining.demonmarket.common.BukkitUtil;
-import com.tining.demonmarket.common.WorthUtil;
+import com.tining.demonmarket.common.util.BukkitUtil;
+import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
-import com.tining.demonmarket.money.Vault;
+import com.tining.demonmarket.common.ref.Vault;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

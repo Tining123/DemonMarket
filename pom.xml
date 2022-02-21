@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.Tining</groupId>
     <artifactId>DemonMarket</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <build>
         <plugins>
             <plugin>
@@ -80,6 +80,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.0.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
         </dependency>
     </dependencies>
     <properties>

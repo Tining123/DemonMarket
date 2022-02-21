@@ -1,4 +1,4 @@
-package com.tining.demonmarket.money;
+package com.tining.demonmarket.common.ref;
 
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;

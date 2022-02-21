@@ -1,4 +1,4 @@
-package com.tining.demonmarket.common;
+package com.tining.demonmarket.common.util;
 
 import java.math.BigDecimal;
 

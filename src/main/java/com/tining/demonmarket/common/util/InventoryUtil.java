@@ -1,6 +1,5 @@
-package com.tining.demonmarket.common;
+package com.tining.demonmarket.common.util;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

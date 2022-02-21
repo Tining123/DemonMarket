@@ -1,7 +1,8 @@
 package com.tining.demonmarket.command;
 
-import com.tining.demonmarket.common.PluginUtil;
-import com.tining.demonmarket.nms.JsonItemStack;
+import com.tining.demonmarket.common.util.PluginUtil;
+import com.tining.demonmarket.common.util.WorthUtil;
+import com.tining.demonmarket.common.ref.JsonItemStack;
 import com.tining.demonmarket.storage.ConfigReader;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class AdminCommand implements CommandExecutor {
@@ -54,7 +54,7 @@ public class AdminCommand implements CommandExecutor {
                 }
                 //修改数值
                 //Map<String, Double> map = ConfigReader.getWorth();
-                ConfigReader.addToNBTWorth(PluginUtil.getKeyName(itemStack), price);
+                WorthUtil.addToNBTWorth(PluginUtil.getKeyName(itemStack), price);
                 //修改配置文件
                 //保存
                 ConfigReader.reloadConfig();

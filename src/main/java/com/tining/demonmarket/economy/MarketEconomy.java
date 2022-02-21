@@ -1,11 +1,9 @@
 package com.tining.demonmarket.economy;
 
 import com.google.common.base.Strings;
-import com.tining.demonmarket.common.MathUtil;
-import com.tining.demonmarket.common.WorthUtil;
+import com.tining.demonmarket.common.util.MathUtil;
+import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.storage.ConfigReader;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,12 +13,6 @@ import java.util.logging.Logger;
 
 
 public class MarketEconomy {
-
-    public static Logger logger = Logger.getLogger("money");
-
-    public static void checkOut(Player player, Double profit) {
-
-    }
 
     /**
      * 规范化数字，目前不做处理

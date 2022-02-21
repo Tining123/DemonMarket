@@ -1,6 +1,6 @@
 package com.tining.demonmarket.economy;
 
-import com.tining.demonmarket.money.Vault;
+import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.storage.ConfigReader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ public class MarketTrade {
     /**
      * 服主
      */
-    public static String op = ConfigReader.config.getString("OP");
+    public static String op = ConfigReader.getOP();
 
     /**
      * 模拟贸易
@@ -115,12 +115,4 @@ public class MarketTrade {
         ));
     }
 
-    /**
-     * 近似数字
-     * @param money
-     * @return
-     */
-    public static double formatMoney(double money) {
-        return Double.parseDouble(String.format("%.2f", money));
-    }
 }

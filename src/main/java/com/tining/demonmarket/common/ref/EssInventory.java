@@ -1,4 +1,4 @@
-package com.tining.demonmarket.player;
+package com.tining.demonmarket.common.ref;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

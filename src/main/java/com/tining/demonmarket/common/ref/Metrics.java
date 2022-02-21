@@ -1,4 +1,4 @@
-package com.tining.demonmarket;
+package com.tining.demonmarket.common.ref;
 
 /*
  * This Metrics class was auto-generated and can be copied into your project if you are

@@ -1,17 +1,10 @@
-package com.tining.demonmarket.common;
+package com.tining.demonmarket.common.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-import com.google.common.io.BaseEncoding;
-import com.tining.demonmarket.nms.JsonItemStack;
+import com.tining.demonmarket.common.ref.JsonItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public class PluginUtil {
 

@@ -1,4 +1,4 @@
-package com.tining.demonmarket.common;
+package com.tining.demonmarket.common.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
