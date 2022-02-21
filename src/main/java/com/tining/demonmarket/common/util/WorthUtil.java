@@ -2,6 +2,7 @@ package com.tining.demonmarket.common.util;
 
 import com.tining.demonmarket.Main;
 import com.tining.demonmarket.storage.ConfigReader;
+import com.tining.demonmarket.storage.ConfigFileNameEnum;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -14,10 +15,6 @@ import java.util.Objects;
  * @author tinga
  */
 public class WorthUtil {
-
-    private static final String WORTH_FILE_NAME = "worth.yml";
-
-    private static final String NBT_WORTH_FILE_NAME = "nbtworth.yml";
 
     /**
      * 获取物品价值
@@ -139,7 +136,7 @@ public class WorthUtil {
      * @return worth配置文件
      */
     public static FileConfiguration getWorthConfig() {
-        return ConfigReader.getConfigMap().get(WORTH_FILE_NAME);
+        return ConfigReader.getConfigMap().get(ConfigFileNameEnum.WORTH_FILE_NAME.getName());
     }
 
     /**
@@ -148,6 +145,6 @@ public class WorthUtil {
      * @return nbtworth配置文件
      */
     public static FileConfiguration getNBTWorthConfig() {
-        return ConfigReader.getConfigMap().get("nbtworth");
+        return ConfigReader.getConfigMap().get(ConfigFileNameEnum.NBT_WORTH_FILE_NAME.getName());
     }
 }

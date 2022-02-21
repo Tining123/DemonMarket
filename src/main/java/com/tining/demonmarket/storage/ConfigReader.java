@@ -1,16 +1,15 @@
 package com.tining.demonmarket.storage;
 
-import com.google.common.collect.Lists;
 import com.tining.demonmarket.Main;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
+/**
+ * 配置文件管理
+ */
 public final class ConfigReader {
 
 
@@ -23,14 +22,6 @@ public final class ConfigReader {
      * 插件目录
      */
     private static final File ROOT_FOLDER = main.getDataFolder();
-
-    /**
-     * 直接复制的配置文件列表
-     */
-    private static final String[] COPY_FILE_LIST = new String[]{
-            "nbtworth.yml"
-            , "worth.yml"
-    };
 
     /**
      * 主配置文件
@@ -58,11 +49,10 @@ public final class ConfigReader {
         Main.getInstance().reloadConfig();
         config = Main.getInstance().getConfig();
         //重载配置表中的文件
-        for(String configName : COPY_FILE_LIST){
-            if(!Objects.isNull(configMap.get(configName))) {
-                FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(configName));
-                configMap.put(configName, configuration);
-            }
+        for(ConfigFileNameEnum w : ConfigFileNameEnum.values()){
+            String configName = w.getName();
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER,configName));
+            configMap.put(configName, configuration);
 
         }
     }
@@ -73,7 +63,8 @@ public final class ConfigReader {
     public static void saveConfig(){
         Main.getInstance().saveConfig();
         //重载配置表中的文件
-        for(String configName : COPY_FILE_LIST){
+        for(ConfigFileNameEnum w : ConfigFileNameEnum.values()){
+            String configName = w.getName();
             if(!Objects.isNull(configMap.get(configName))) {
                 try {
                     configMap.get(configName).save(configName);
@@ -89,11 +80,12 @@ public final class ConfigReader {
      * 初次释放配置文件
      */
     public static void initRelease() {
-        for (String fileName : COPY_FILE_LIST) {
+        for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
+            String configName = w.getName();
             try {
-                File configFile = new File(ROOT_FOLDER, fileName);
+                File configFile = new File(ROOT_FOLDER, configName);
                 if (!configFile.exists()) {
-                    main.saveResource(fileName, false);
+                    main.saveResource(configName, false);
                 }
             } catch (Exception e) {
                 main.getLogger().info(e.toString());

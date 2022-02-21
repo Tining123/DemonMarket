@@ -8,10 +8,12 @@ import com.tining.demonmarket.even.ChestGuiEvent;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
 import com.tining.demonmarket.storage.ConfigReader;
+import com.tining.demonmarket.storage.LangReader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -50,7 +52,9 @@ public class Main extends JavaPlugin {
         //释放配置文件
         saveDefaultConfig();
         ConfigReader.initRelease();
-
+        ConfigReader.reloadConfig();
+        //TODO: 如果有设置强制预言，加载强制语言
+        LangReader.initRelease();
         setExecutor();
 
         //初始化NMS
@@ -61,6 +65,7 @@ public class Main extends JavaPlugin {
         Metrics metrics = new Metrics(this, pluginId);
 
         registerEvent();
+
     }
 
 
