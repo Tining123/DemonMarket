@@ -138,5 +138,13 @@ public final class ConfigReader {
         return ConfigReader.config.getDouble("BasicProperty");
     }
 
+    /**
+     * 获取语言设定
+     * @return
+     */
+    public static String getLanguage() {
+        return ConfigReader.config.getString("lang");
+    }
+
 
 }

@@ -9,11 +9,13 @@ import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -54,7 +56,11 @@ public class Main extends JavaPlugin {
         ConfigReader.initRelease();
         ConfigReader.reloadConfig();
         //TODO: 如果有设置强制预言，加载强制语言
+        if (!Objects.isNull(ConfigReader.getLanguage()) && !StringUtils.isEmpty(ConfigReader.getLanguage())) {
+            LangReader.setLanguage(ConfigReader.getLanguage());
+        }
         LangReader.initRelease();
+        LangReader.reloadLang();
         setExecutor();
 
         //初始化NMS
@@ -77,7 +83,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new ChestGuiEvent(), Main.getInstance());
     }
 
-    public static void setExecutor(){
+    public static void setExecutor() {
         if (Bukkit.getPluginCommand("mt") != null) {
             Bukkit.getPluginCommand("mt").setExecutor(new UserCommand());
         }
@@ -94,6 +100,7 @@ public class Main extends JavaPlugin {
 
     /**
      * 获取线程池资源
+     *
      * @return
      */
     public static ExecutorService getExecutor() {

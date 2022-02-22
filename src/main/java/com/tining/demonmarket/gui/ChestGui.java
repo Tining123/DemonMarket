@@ -1,11 +1,13 @@
 package com.tining.demonmarket.gui;
 
 import com.tining.demonmarket.common.util.BukkitUtil;
+import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
 import com.tining.demonmarket.common.ref.Vault;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +47,7 @@ public class ChestGui {
      */
     public static ChestGui getChestGui(Player player) {
         ChestGui chestGui = new ChestGui();
-        chestGui.inventory = Bukkit.createInventory(player, 54, "收购箱");
+        chestGui.inventory = Bukkit.createInventory(player, 54, LangUtil.get("收购箱"));
         chestGui.player = player;
 
         chestGui.registerChestGui();
@@ -103,6 +105,8 @@ public class ChestGui {
         if(count != 0)
         {
             MarketTrade.trade(player,count);
+        }else{
+            player.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
         }
 
         return "";

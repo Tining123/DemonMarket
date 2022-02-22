@@ -1,5 +1,6 @@
 package com.tining.demonmarket.command;
 
+import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.common.ref.JsonItemStack;
@@ -19,14 +20,13 @@ public class AdminCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        Player player = (Player) sender;
-
         if (args.length < 1) {
             return false;
         }
 
         switch (args[0]) {
             case "set": {
+                Player player = (Player) sender;
                 //校验参数合法
                 if (args.length < 2) {
                     //应该有一个set和一个价格 两个参数
@@ -37,7 +37,7 @@ public class AdminCommand implements CommandExecutor {
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
                 //校验物品是否合法
                 if (Objects.isNull(itemToSell) || itemToSell.name().equals("AIR")) {
-                    sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手里的物品无法交易");
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                     return true;
                 }
                 double price = 0.0;
@@ -45,42 +45,56 @@ public class AdminCommand implements CommandExecutor {
                 try {
                     price = Double.parseDouble(args[1]);
                     if (price < 0) {
-                        sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你输入的价格不合法");
+                        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
                         return true;
                     }
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你输入的价格不合法");
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
                     return true;
                 }
                 //修改数值
-                //Map<String, Double> map = ConfigReader.getWorth();
                 WorthUtil.addToNBTWorth(PluginUtil.getKeyName(itemStack), price);
                 //修改配置文件
                 //保存
                 ConfigReader.reloadConfig();
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]设置成功");
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
                 return true;
             }
             case "name": {
+                Player player = (Player) sender;
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手中拿的是：" + itemToSell.name());
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name());
                 return true;
             }
             case "nbt": {
+                Player player = (Player) sender;
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手中拿的是：" + itemToSell.name());
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]NBT为：" + JsonItemStack.getJsonAsNBTTagCompound(player.getInventory().getItemInMainHand()));
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]在商店配置中的NBT对应码为：" + PluginUtil.getKeyName(player.getInventory().getItemInMainHand()));
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name());
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]NBT为：") + JsonItemStack.getJsonAsNBTTagCompound(player.getInventory().getItemInMainHand()));
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]在商店配置中的NBT对应码为：") + PluginUtil.getKeyName(player.getInventory().getItemInMainHand()));
                 return true;
             }
             case "reload": {
                 ConfigReader.reloadConfig();
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]重载成功");
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]重载成功"));
                 return true;
             }
             default: {
-                return false;
+                sender.sendMessage(getHelp());
+                return true;
             }
         }
+    }
+
+    /**
+     * 获取帮助提示
+     * @return
+     */
+    private String getHelp() {
+        String help = LangUtil.get("/mtadmin set [价格] 为手里物品新增或修改价格\n") +
+                LangUtil.get("/mtadmin nbt 查看手中物品nbt信息\n") +
+                LangUtil.get("/mtadmin name 查看手中物品名称\n") +
+                LangUtil.get("/mtadmin reload 重载插件配置");
+        return help;
     }
 }

@@ -1,6 +1,7 @@
 package com.tining.demonmarket.command;
 
 import com.google.common.base.Strings;
+import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
@@ -44,13 +45,13 @@ public class UserCommand implements CommandExecutor {
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "sell": {
                 //合法性校验
-                if(!isIllegalItem(itemStack,player,sender)){
+                if (!isIllegalItem(itemStack, player, sender)) {
                     return true;
                 }
 
                 double value = WorthUtil.getWorth(itemStack);
                 if (value == 0) {
-                    sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你输入的物品当前一文不值");
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                     return true;
                 }
                 int sellAmount = 0;
@@ -58,7 +59,7 @@ public class UserCommand implements CommandExecutor {
                     sellAmount = player.getInventory().getItemInMainHand().getAmount();
                     MarketTrade.trade(player, itemStack, value, sellAmount);
                     //去除物品
-                    InventoryUtil.subtractHand(player,itemStack);
+                    InventoryUtil.subtractHand(player, itemStack);
                     return true;
                 }
                 if (!"all".equals(args[1].toLowerCase(Locale.ROOT))) {
@@ -68,18 +69,18 @@ public class UserCommand implements CommandExecutor {
                 int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
                 sellAmount = amountInInventory;
                 MarketTrade.trade(player, itemStack, value, sellAmount);
-                InventoryUtil.subtractAll(player,itemStack);
+                InventoryUtil.subtractAll(player, itemStack);
                 return true;
 
             }
             case "price": {
                 //合法性校验
-                if(!isIllegalItem(itemStack,player,sender)){
+                if (!isIllegalItem(itemStack, player, sender)) {
                     return true;
                 }
                 double value = WorthUtil.getWorth(itemStack);
                 if (value == 0) {
-                    sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你输入的物品当前一文不值");
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                     return true;
                 }
                 int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
@@ -87,24 +88,31 @@ public class UserCommand implements CommandExecutor {
                 sellAmount = player.getInventory().getItemInMainHand().getAmount();
                 double hand = MarketTrade.preTrade(player, itemStack, value, sellAmount);
                 double all = MarketTrade.preTrade(player, itemStack, value, amountInInventory);
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]物品单价：" + MarketEconomy.formatMoney(value) + "，你手里的物品总价："
-                        + MarketEconomy.formatMoney(hand) + "，如果出售背包中所有物品可得：" + MarketEconomy.formatMoney(all));
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]物品单价：") + MarketEconomy.formatMoney(value) + LangUtil.get("，你手里的物品总价：")
+                        + MarketEconomy.formatMoney(hand) + LangUtil.get("，如果出售背包中所有物品可得：") + MarketEconomy.formatMoney(all));
                 return true;
 
             }
-            case "gui" :{
+            case "gui": {
                 ChestGui.getChestGui(player);
                 return true;
             }
-            case "help": {
-                return false;
+            default: {
+                sender.sendMessage(getHelp());
+                return true;
             }
-            default:
-                break;
         }
-        return false;
     }
 
+    /**
+     * 判断物品是否可以交易
+     *
+     * @param itemStack
+     * @param player
+     * @param sender
+     * @return
+     */
+    @Deprecated
     public boolean isIllegalItem(ItemStack itemStack, Player player, CommandSender sender) {
         //检测是否屏蔽非原版物品
         if (ConfigReader.getFilterSetting().toLowerCase(Locale.ROOT).equals("true")) {
@@ -112,22 +120,34 @@ public class UserCommand implements CommandExecutor {
             //测试
             String name = is.getItemMeta().getDisplayName();
             if (!Strings.isNullOrEmpty(name)) {
-                sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手里的物品无法交易");
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                 return false;
             }
         }
 
         if (Objects.isNull(itemStack) || itemStack.getType().name().equals("AIR")) {
-            sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手里的物品无法交易");
+            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
             return false;
         }
         //检测此种物品是否可交易
         if (!WorthUtil.isWorthContain(itemStack)) {
-            sender.sendMessage(ChatColor.YELLOW + "[DemonMarket]你手里的物品无法交易");
+            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
             return false;
         }
 
         return true;
     }
 
+    /**
+     * 获取帮助提示
+     *
+     * @return
+     */
+    private String getHelp() {
+        String help = LangUtil.get("/mt gui 打开收购箱界面\n") +
+                LangUtil.get("/mt sell 出售手里的物品\n") +
+                LangUtil.get("/mt sell all 出售背包里当前所有与手中相同的物品\n") +
+                LangUtil.get("/mt price 查询物品当前价格");
+        return help;
+    }
 }

@@ -47,6 +47,20 @@ public enum LangEnum {
     }
 
     /**
+     * 获取语言文件前名称
+     * @param locale 当前地域
+     * @return
+     */
+    public String getLanguage(String locale){
+        for(LangEnum l : LangEnum.values()){
+            if(Objects.equals(locale.toString().toLowerCase(Locale.ROOT),l.getName())){
+                return l.getName();
+            }
+        }
+        return LangEnum.ENGLISH.getName();
+    }
+
+    /**
      * 获取枚举名称
      * @return
      */

@@ -1,23 +1,22 @@
 
-# 贸易税率，收税上交给服主
+#Set language manually(en,zh_cn,zh_tw)
+lang:
+
+#Tax rate
 TaxRate: 0.005
 
-# 服主，税率受益人
+#The tax beneficiary
 OP:
 
-# 资产基线
+#The average balance of single player in mathematical expectation
 BasicProperty: 500000
 
-#是否开启显示数字近似小数点后两位
+#Enable and make the numbers approximate(shorter and easier to read)
 Round: false
 
-################################
-######### 此功能针对粘液科技等其他插件
-######### 这些插件可能发放带有功能性的原版物品
-######### 启用该功能将禁止销售手中的这些物品
-######### 但仍有可能被出售同类物品的过程出售掉
-################################
-# 是否开启屏蔽器
+# For SlimeFun Plugin
+# Enable this option to block any items with lore being sold
+# Attention, this might cause the NBT support disable
 Filter: false
 
 
