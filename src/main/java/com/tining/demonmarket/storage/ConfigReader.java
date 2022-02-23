@@ -31,13 +31,14 @@ public final class ConfigReader {
     /**
      * 表配置文件
      */
-    private static Map<String,FileConfiguration> configMap = new HashMap<>();
+    private static Map<String, FileConfiguration> configMap = new HashMap<>();
 
     /**
      * 返回配置表，不包含config主配置
+     *
      * @return
      */
-    public static Map<String,FileConfiguration> getConfigMap(){
+    public static Map<String, FileConfiguration> getConfigMap() {
         return configMap;
     }
 
@@ -49,9 +50,9 @@ public final class ConfigReader {
         Main.getInstance().reloadConfig();
         config = Main.getInstance().getConfig();
         //重载配置表中的文件
-        for(ConfigFileNameEnum w : ConfigFileNameEnum.values()){
+        for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
             String configName = w.getName();
-            FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER,configName));
+            FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER, configName));
             configMap.put(configName, configuration);
 
         }
@@ -60,15 +61,27 @@ public final class ConfigReader {
     /**
      * 保存并重载插件
      */
-    public static void saveConfig(){
+    public static void saveConfig(String fileName, FileConfiguration fileConfiguration) {
+        //重载配置表中的文件
+        try {
+            fileConfiguration.save(new File(ROOT_FOLDER, fileName));
+        } catch (Exception e) {
+            main.getLogger().info(e.toString());
+        }
+    }
+
+    /**
+     * 保存并重载插件
+     */
+    public static void saveConfig() {
         Main.getInstance().saveConfig();
         //重载配置表中的文件
-        for(ConfigFileNameEnum w : ConfigFileNameEnum.values()){
+        for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
             String configName = w.getName();
-            if(!Objects.isNull(configMap.get(configName))) {
+            if (!Objects.isNull(configMap.get(configName))) {
                 try {
                     configMap.get(configName).save(configName);
-                }catch (Exception e){
+                } catch (Exception e) {
                     Main.getInstance().getLogger().info(e.toString());
                 }
             }
@@ -140,6 +153,7 @@ public final class ConfigReader {
 
     /**
      * 获取语言设定
+     *
      * @return
      */
     public static String getLanguage() {

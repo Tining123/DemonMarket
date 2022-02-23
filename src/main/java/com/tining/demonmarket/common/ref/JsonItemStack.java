@@ -30,7 +30,7 @@ public class JsonItemStack
         
         //craftbukkit
         try {
-            craftItemStack = Class.forName("org.bukkit.craftbukkit." + PluginUtil.nmsVersion + ".inventory.CraftItemStack");
+            craftItemStack = Class.forName("org.bukkit.craftbukkit." + PluginUtil.getNMSVersion() + ".inventory.CraftItemStack");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JsonItemStack.class.getName()).log(Level.SEVERE, null, ex);
             nmsFound = false;
@@ -38,12 +38,12 @@ public class JsonItemStack
         
         //net.minecraft.server
         try {
-            if (PluginUtil.nmsVersion.startsWith("v1_17") || PluginUtil.nmsVersion.startsWith("v1_18")) {
+            if (PluginUtil.getNMSVersion().startsWith("v1_17") || PluginUtil.getNMSVersion().startsWith("v1_18")) {
                 nbtTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
                 itemStack = Class.forName("net.minecraft.world.item.ItemStack");
             } else {
-                nbtTagCompound = Class.forName("net.minecraft.server." + PluginUtil.nmsVersion + ".NBTTagCompound");
-                itemStack = Class.forName("net.minecraft.server." + PluginUtil.nmsVersion + ".ItemStack");
+                nbtTagCompound = Class.forName("net.minecraft.server." + PluginUtil.getNMSVersion() + ".NBTTagCompound");
+                itemStack = Class.forName("net.minecraft.server." + PluginUtil.getNMSVersion() + ".ItemStack");
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JsonItemStack.class.getName()).log(Level.SEVERE, null, ex);

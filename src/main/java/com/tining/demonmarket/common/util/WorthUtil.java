@@ -114,8 +114,8 @@ public class WorthUtil {
         worth.put(name, value);
         config.addDefault("nbtworth", worth);
         config.set("nbtworth", worth);
-        Main.getInstance().saveConfig();
-        Main.getInstance().reloadConfig();
+
+        ConfigReader.saveConfig(ConfigFileNameEnum.NBT_WORTH_FILE_NAME.getName(),config);
     }
 
     /**
