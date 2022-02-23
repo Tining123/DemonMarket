@@ -1,5 +1,6 @@
 
 #Set language manually(en,zh_cn,zh_tw)
+#lang: en
 lang:
 
 #Tax rate

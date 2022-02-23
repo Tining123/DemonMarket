@@ -60,28 +60,38 @@ public class LangReader {
     /**
      * 重载语言
      */
-    public static void reloadLang(){
+    public static void reloadLang() {
         String configName = LOCALE + ".yml";
-        FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER,configName));
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER, configName));
         Map<String, Object> map = configuration.getConfigurationSection("lang").getValues(false);
 
-        map.entrySet().stream().forEach((e)->{
-            DICTIONARY.put(e.getKey(),(String)e.getValue());
+        map.entrySet().stream().forEach((e) -> {
+            DICTIONARY.put(e.getKey(), (String) e.getValue());
         });
     }
 
     /**
      * 强制设定预言
      */
-    public static void setLanguage(String language){
+    public static void setLanguage(String language) {
         LOCALE = LangEnum.ENGLISH.getLanguage(language);
     }
 
     /**
-     * 获取字典
+     * 获取当前预言设定
+     *
      * @return
      */
-    public static Map<String,String> getDictionary(){
+    public static String getLanguage() {
+        return LOCALE;
+    }
+
+    /**
+     * 获取字典
+     *
+     * @return
+     */
+    public static Map<String, String> getDictionary() {
         return DICTIONARY;
     }
 

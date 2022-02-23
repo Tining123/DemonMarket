@@ -28,4 +28,8 @@ public class LangUtil {
 
         return str;
     }
+
+    public static String getLang(){
+        return LangReader.getLanguage();
+    }
 }

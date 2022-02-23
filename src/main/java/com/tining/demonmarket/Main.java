@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.common.ref.Metrics;
+import com.tining.demonmarket.common.ref.Updater;
 import com.tining.demonmarket.even.ChestGuiEvent;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
@@ -71,6 +72,8 @@ public class Main extends JavaPlugin {
         Metrics metrics = new Metrics(this, pluginId);
 
         registerEvent();
+
+        Updater.checkUpdate();
 
     }
 
