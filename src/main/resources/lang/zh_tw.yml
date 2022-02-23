@@ -16,7 +16,7 @@ lang:
   "/mtadmin nbt 查看手中物品nbt信息\n": "/mtadmin nbt 查看手中物品nbt信息\n"
   "/mtadmin name 查看手中物品名称\n": "/mtadmin name 查看手中物品名稱\n"
   "/mtadmin reload 重载插件配置": "/mtadmin reload 重載插件配置"
-  "/mt gui 打开收购箱界面\n": "/mt gui 打開收購箱界面\n""
+  "/mt gui 打开收购箱界面\n": "/mt gui 打開收購箱界面\n"
   "/mt sell 出售手里的物品\n": "/mt sell 出售手裡的物品\n"
   "/mt sell all 出售背包里当前所有与手中相同的物品\n": "/mt sell all 出售背包里當前所有與手中相同的物品\n"
   "/mt price 查询物品当前价格": "/mt price 查詢物品當前價格"
