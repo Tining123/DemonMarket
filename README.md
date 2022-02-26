@@ -1,4 +1,4 @@
-# DemonMarket [中文Wiki](https://github.com/Tining123/DemonMarket/blob/main/README_cn.md)
+# DemonMarket - No more mounting inflation [中文Wiki](https://github.com/Tining123/DemonMarket/blob/main/README_cn.md)
 ![logo](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/logo.png)
 
 #### A market plugin. The optimized power index function and the inverse function are used to converge the selling price. It could solve the problem of server economic imbalance caused by the high production capacity of certain items in industrial type servers.
