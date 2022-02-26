@@ -40,7 +40,7 @@ Set diamond block with $440.
 - You could receive $217 if you have $600000
 
 ![5000w资产效果](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/5000w_en.png)
-- You could receive $0.69 if you have $50000000
+- You could receive $0.69 and even sold 64 diamond blocks if you have $50000000
 
 
 ## Permission
