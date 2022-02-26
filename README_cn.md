@@ -18,6 +18,7 @@
 
 #### 使用管理员命令/demonmarketadmin 命令简写为/mtadmin
 + /mtadmin set [价格] 为手中的物品新增或修改价格
++ /mtadmin set [价格] 为手中的nbt物品新增或修改价格
 + /mtadmin name 查看手中物品在配置中的名称
 + /mtadmin nbt 查看手中物品在配置中的nbt明细
 + /mtadmin reload 重载插件配置
@@ -41,8 +42,8 @@
 + BasicProperty: 资产基线，最重要的配置。指定期望平均单个玩家持有的储蓄金额。可以根据服务器自身情况增加或者降低。当前默认50万。
 + Round: 是否开启小数点后两位近似功能
 + Fitler: 此功能针对粘液科技等其他插件，这些插件可能发放带有功能性的原版物品，启用该功能将禁止销售手中的这些特殊物品。
-+ worth: 物价表，使用物品名称。如果想要加入新的物品出售，或者修改，可以使用/mtadmin set命令，查看价格则可以使用/mt price命令
-+ nbtworth: 带有nbt的物品物价表，同样使用/mtadmin set命令和/mt price命令进行修改和计算，不建议手动修改
++ disable-pay: 默认开启，禁止试用其他插件的pay.
++ disable-pay-list: 禁止使用的pay命令列表.
 ## 理论支持
 以下为未调优之前的幂函数大致收敛情况，以及计算价格的实际公式。 其中
 + price=物品设定价格
