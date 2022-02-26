@@ -24,14 +24,8 @@ commands:
       - dmadmin
       - dmtadmin
     usage: |
-      /mt sell 出售手里的物品
-      /mt sell all 出售背包里当前所有与手中相同的物品
-      /mt price 查询物品当前价格
-      /mt help 查看帮助
-      /mtadmin set [价格] 为手里物品新增或修改价格
-      /mtadmin name 查看手中物品名称
-      /mtadmin nbt 查看手中物品nbt明细
-      /mtadmin reload 重载插件配置
+      /mt help
+      /mtadmin help
     description: Buy or sell some item in player's inventory # 描述
     permission: demonmarket.admin
     permission-message: You need to have the permission to use this command. Please contact your server OP. # 无权限返回的消息，通常不用
