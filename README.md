@@ -65,7 +65,7 @@ Set diamond block with $440.
 
 ## Developing
 + Selling store [-]
-+ Acquire list [-]
++ Acquire list [✓]
 + GUI support [✓]
 + NBT Support [✓]
 + Use command to set price [✓]
