@@ -1,13 +1,18 @@
 package com.tining.demonmarket.command;
 
 import com.google.common.base.Strings;
+import com.tining.demonmarket.common.ref.Vault;
+import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
 import com.tining.demonmarket.common.util.InventoryUtil;
+import com.tining.demonmarket.gui.AcquireListGui;
 import com.tining.demonmarket.gui.ChestGui;
 import com.tining.demonmarket.storage.ConfigReader;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,6 +49,7 @@ public class UserCommand implements CommandExecutor {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "sell": {
+                ItemStack copy = itemStack.clone();
                 //合法性校验
                 if (!isIllegalItem(itemStack, player, sender)) {
                     return true;
@@ -65,11 +71,16 @@ public class UserCommand implements CommandExecutor {
                 if (!"all".equals(args[1].toLowerCase(Locale.ROOT))) {
                     return false;
                 }
-
-                int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
-                sellAmount = amountInInventory;
-                MarketTrade.trade(player, itemStack, value, sellAmount);
-                InventoryUtil.subtractAll(player, itemStack);
+                itemStack = copy;
+                if(WorthUtil.isWorthNBTContain(itemStack)) {
+                    sellAmount = InventoryUtil.calcInventoryNBT(player, itemStack);
+                    MarketTrade.trade(player, itemStack, value, sellAmount);
+                    InventoryUtil.subtractAllNBT(player, itemStack);
+                }else{
+                    sellAmount = InventoryUtil.calcInventoryNBT(player, itemStack);
+                    MarketTrade.trade(player, itemStack, value, sellAmount);
+                    InventoryUtil.subtractAll(player, itemStack);
+                }
                 return true;
 
             }
@@ -93,9 +104,41 @@ public class UserCommand implements CommandExecutor {
                 return true;
 
             }
+            case "pay": {
+                //合法性校验
+                if (args.length < 3) {
+                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    return true;
+                }
+                String valueString = args[2];
+                double value = 0;
+                try {
+                    value = Integer.parseInt(valueString);
+                } catch (Exception e) {
+                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    return true;
+                }
+                if (Vault.checkCurrency(player.getUniqueId()) < value) {
+                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额"));
+                    return true;
+                }
+                Player reciever = BukkitUtil.getPlayer(args[1]);
+
+                double price = MarketEconomy.getSellingPrice(value, 1, Vault.checkCurrency(player.getUniqueId()));
+
+                Vault.subtractCurrency(player.getUniqueId(), value);
+                Vault.addVaultCurrency(reciever, price);
+
+                player.sendMessage(ChatColor.YELLOW + LangUtil.get(String.format("转账成功，花费%S，转账%s", value, price)));
+                return true;
+
+            }
             case "gui": {
                 ChestGui.getChestGui(player);
                 return true;
+            }
+            case "list": {
+                AcquireListGui.getAcquireListGui(player);
             }
             default: {
                 sender.sendMessage(getHelp());
@@ -145,6 +188,8 @@ public class UserCommand implements CommandExecutor {
      */
     private String getHelp() {
         String help = LangUtil.get("/mt gui 打开收购箱界面\n") +
+                LangUtil.get("/mt list 查看所有可出售物品") + "\n" +
+                LangUtil.get("/mt pay [玩家] [金额]") + "\n" +
                 LangUtil.get("/mt sell 出售手里的物品\n") +
                 LangUtil.get("/mt sell all 出售背包里当前所有与手中相同的物品\n") +
                 LangUtil.get("/mt price 查询物品当前价格");

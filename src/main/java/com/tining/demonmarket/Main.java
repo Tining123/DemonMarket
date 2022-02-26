@@ -5,9 +5,12 @@ import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.common.ref.Metrics;
 import com.tining.demonmarket.common.ref.Updater;
+import com.tining.demonmarket.even.AcquireListGuiEvent;
+import com.tining.demonmarket.even.CancelPayEvent;
 import com.tining.demonmarket.even.ChestGuiEvent;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
+import com.tining.demonmarket.even.UpdaterEvent;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
 import org.apache.commons.lang.StringUtils;
@@ -74,6 +77,7 @@ public class Main extends JavaPlugin {
         registerEvent();
 
         Updater.checkUpdate();
+        ConfigReader.getDisablePayList();
 
     }
 
@@ -84,6 +88,9 @@ public class Main extends JavaPlugin {
     public static void registerEvent() {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new ChestGuiEvent(), Main.getInstance());
+        pm.registerEvents(new AcquireListGuiEvent(), Main.getInstance());
+        pm.registerEvents(new UpdaterEvent(), Main.getInstance());
+        pm.registerEvents(new CancelPayEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {

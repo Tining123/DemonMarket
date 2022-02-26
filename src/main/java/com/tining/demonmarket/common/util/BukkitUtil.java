@@ -1,11 +1,17 @@
 package com.tining.demonmarket.common.util;
 
+import com.google.gson.Gson;
+import com.tining.demonmarket.Main;
+import com.tining.demonmarket.common.ref.Updater;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,4 +44,34 @@ public class BukkitUtil {
             return false;
         }
     }
+
+    /**
+     * 获取插件当前版本
+     * @return
+     */
+    public static String getVersion(){
+        return Main.getInstance().getDescription().getVersion();
+    }
+
+    /**
+     * 检查一名玩家是否为op
+     * @param player
+     * @return
+     */
+    public static boolean isOp(Player player){
+        List<String> opUUIDs = new ArrayList<>();
+        Set<OfflinePlayer> ops = Bukkit.getOperators();
+        ops.forEach(e->opUUIDs.add(e.getUniqueId().toString()));
+        return opUUIDs.contains(player.getUniqueId().toString());
+    }
+
+    /**
+     * 获取一名玩家
+     * @param name
+     * @return
+     */
+    public static Player getPlayer(String name){
+        return (Player) Bukkit.getPlayer(name);
+    }
+
 }

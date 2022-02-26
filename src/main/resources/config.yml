@@ -20,5 +20,14 @@ Round: false
 # Attention, this might cause the NBT support disable
 Filter: false
 
+# Disable this to cancel the version check notification
+version-check: true
 
-
+# Enable this option to prevent user from paying others by using ess or others plugin
+disable-pay: true
+# Set the paying command you want to block
+disable-pay-list:
+  - "/pay"
+  - "/ess pay"
+  - "/cmi pay"
+  - "/eco pay"

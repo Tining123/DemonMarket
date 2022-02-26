@@ -15,7 +15,23 @@ public class InventoryUtil {
         int amountInInventory = 0;
         ItemStack[] itemStacks = player.getInventory().getContents();
         for (ItemStack is : itemStacks) {
-            if(!Objects.isNull(is)) {
+            if (!Objects.isNull(is)) {
+                if (Objects.equals(is.getType().name(), itemStack.getType().name())) {
+                    amountInInventory += is.getAmount();
+                }
+            }
+        }
+        return amountInInventory;
+    }
+
+    /**
+     * 计算玩家背包中某种物品的数量
+     */
+    public static int calcInventoryNBT(Player player, ItemStack itemStack) {
+        int amountInInventory = 0;
+        ItemStack[] itemStacks = player.getInventory().getContents();
+        for (ItemStack is : itemStacks) {
+            if (!Objects.isNull(is)) {
                 if (Objects.equals(PluginUtil.getKeyName(is), PluginUtil.getKeyName(itemStack))) {
                     amountInInventory += is.getAmount();
                 }
@@ -26,25 +42,44 @@ public class InventoryUtil {
 
     /**
      * 删除手上对应物品
+     *
      * @param player
      * @param itemStack
      */
-    public static void subtractHand(Player player,ItemStack itemStack){
-        if(!Objects.isNull(itemStack)) {
+    public static void subtractHand(Player player, ItemStack itemStack) {
+        if (!Objects.isNull(itemStack)) {
             player.getInventory().getItemInMainHand().setAmount(0);
         }
     }
 
     /**
-     * 删除全身对应物品
+     * 删除全身对应物品，采用NBT对应
+     *
      * @param player
      * @param itemStack
      */
-    public static void subtractAll(Player player,ItemStack itemStack){
+    public static void subtractAllNBT(Player player, ItemStack itemStack) {
         ItemStack[] itemStacks = player.getInventory().getContents();
-        for(ItemStack is : itemStacks){
-            if(!Objects.isNull(itemStack)) {
+        for (ItemStack is : itemStacks) {
+            if (!Objects.isNull(itemStack) && !Objects.isNull(is)) {
                 if (Objects.equals(PluginUtil.getKeyName(is), PluginUtil.getKeyName(itemStack))) {
+                    is.setAmount(0);
+                }
+            }
+        }
+    }
+
+    /**
+     * 删除全身对应物品
+     *
+     * @param player
+     * @param itemStack
+     */
+    public static void subtractAll(Player player, ItemStack itemStack) {
+        ItemStack[] itemStacks = player.getInventory().getContents();
+        for (ItemStack is : itemStacks) {
+            if (!Objects.isNull(itemStack) && !Objects.isNull(is)) {
+                if (Objects.equals(is.getType().name(), itemStack.getType().name())) {
                     is.setAmount(0);
                 }
             }

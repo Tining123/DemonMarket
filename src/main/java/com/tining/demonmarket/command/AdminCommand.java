@@ -25,7 +25,7 @@ public class AdminCommand implements CommandExecutor {
         }
 
         switch (args[0]) {
-            case "set": {
+            case "nbtset": {
                 Player player = (Player) sender;
                 //校验参数合法
                 if (args.length < 2) {
@@ -54,6 +54,41 @@ public class AdminCommand implements CommandExecutor {
                 }
                 //修改数值
                 WorthUtil.addToNBTWorth(PluginUtil.getKeyName(itemStack), price);
+                //修改配置文件
+                //保存
+                ConfigReader.reloadConfig();
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
+                return true;
+            }
+            case "set": {
+                Player player = (Player) sender;
+                //校验参数合法
+                if (args.length < 2) {
+                    //应该有一个set和一个价格 两个参数
+                    return false;
+                }
+                //获取物品名称
+                ItemStack itemStack = player.getInventory().getItemInMainHand();
+                Material itemToSell = player.getInventory().getItemInMainHand().getType();
+                //校验物品是否合法
+                if (Objects.isNull(itemToSell) || itemToSell.name().equals("AIR")) {
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                    return true;
+                }
+                double price = 0.0;
+                //校验价值是否合法
+                try {
+                    price = Double.parseDouble(args[1]);
+                    if (price < 0) {
+                        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                        return true;
+                    }
+                } catch (Exception e) {
+                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                    return true;
+                }
+                //修改数值
+                WorthUtil.addToWorth(itemStack.getType().name(), price);
                 //修改配置文件
                 //保存
                 ConfigReader.reloadConfig();
@@ -92,6 +127,7 @@ public class AdminCommand implements CommandExecutor {
      */
     private String getHelp() {
         String help = LangUtil.get("/mtadmin set [价格] 为手里物品新增或修改价格\n") +
+                LangUtil.get("/mtadmin nbtset [价格] 为手里的nbt物品新增或修改价格") + "\n" +
                 LangUtil.get("/mtadmin nbt 查看手中物品nbt信息\n") +
                 LangUtil.get("/mtadmin name 查看手中物品名称\n") +
                 LangUtil.get("/mtadmin reload 重载插件配置");

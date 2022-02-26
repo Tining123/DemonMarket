@@ -2,10 +2,14 @@ package com.tining.demonmarket.common.ref;
 
 import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.util.LangUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import javax.xml.transform.dom.DOMSource;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -14,50 +18,90 @@ import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class Updater
-{
+/**
+ * 更新检测
+ */
+public class Updater {
     private static boolean foundANewVersion = false;
     private static String newVersion;
     private static String link;
     private static String description;
     private static Date date = new Date();
+    private static boolean checkDone = false;
+
+    /**
+     * 更新信息表
+     */
+    private static final HashMap<String,String> updateInfo = new HashMap<>();
+
 
     private static String info;
 
     /**
-     * Initialize programs.
+     * 开始进行版本检查
      */
     public static void initialize() {
-            try {
-                URL url = new URL("https://raw.githubusercontent.com/Tining123/DemonMarket/main/src/main/resources/updater.yml");
-                try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
-                    YamlConfiguration yaml = new YamlConfiguration();
-                    yaml.load(reader);
-                    String version = yaml.getString("latest-version");
-                    String downloadLink = yaml.getString("link");
-                    String description_ = "description.Default";
-                    if (yaml.get("description." + LangUtil.getLang()) != null) {
-                        description_ = yaml.getString("description." + LangUtil.getLang());
-                    }
-                    String nowVersion = Bukkit.getPluginManager().getPlugin("LiteSignIn").getDescription().getVersion();
-                    if (!nowVersion.equalsIgnoreCase(version)) {
-                        newVersion = version;
-                        foundANewVersion = true;
-                        link = downloadLink;
-                        description = description_;
-                        Main.getInstance().getLogger().info(description);
-                        //MessageUtil.sendMessage(Bukkit.getConsoleSender(), "Updater.Checked");
-                    }
-                } catch (InvalidConfigurationException | IOException ex) {
-                    Bukkit.getConsoleSender().sendMessage("Updater.Error");
+        try {
+            URL url = new URL("https://tining123.github.io/demonmarket.io/");
+            String context = "";
+            try (Reader reader = new InputStreamReader(url.openStream(), "UTF-8")) {
+                BufferedReader htmlReader = new BufferedReader(reader);
+                //跳过
+                String text = htmlReader.readLine();
+                while (!Objects.isNull(text) && !text.contains("Welcome to GitHub Pages")) {
+                    text = htmlReader.readLine();
                 }
-            } catch (MalformedURLException ex) {
-                Bukkit.getConsoleSender().sendMessage("Updater.Error");
+                while (!Objects.isNull(text)) {
+                    text = htmlReader.readLine();
+                    if (!Objects.isNull(text) && text.contains("Welcome to GitHub Pages")) {
+                        break;
+                    }
+                    if (!StringUtils.isEmpty(text)) {
+                        context += text + "\n";
+                    }
+                }
+                context = extractInfo(context);
+                //System.out.println(context);
+            } catch (IOException ex) {
+                //Bukkit.getConsoleSender().sendMessage("Updater.Error");
             }
-            date = new Date();
+        } catch (MalformedURLException ex) {
+            //Bukkit.getConsoleSender().sendMessage("Updater.Error");
+        }
+        date = new Date();
     }
-    
+
+    /**
+     * 提取更新信息
+     *
+     * @param text
+     * @return
+     */
+    public static String extractInfo(String text) {
+        text = text.replace("<p>", "").replace("</p>", "");
+        text = text.replace("”", "").replace("“", "").replace("\"", "");
+        text = text.replace("&amp;","&");
+        String[] lines = text.split("\n");
+        for(String s : lines){
+            //设置版本
+            if(s.startsWith("latest-version")){
+                newVersion = s.split(":")[1].trim();
+            }else if(s.startsWith("link")){
+                link = s.replace("lin:","").trim();
+            }else{
+                updateInfo.put(s.split(":")[0].trim(),s.split(":")[1].trim());
+            }
+        }
+        if(!StringUtils.isEmpty(newVersion) && !StringUtils.isEmpty(link) && updateInfo.size() != 0){
+            checkDone = true;
+        }
+        Main.getInstance().getLogger().info("Update check done");
+        return text;
+    }
+
+
     /**
      * Start check updater.
      */
@@ -65,42 +109,56 @@ public class Updater
         Main.getExecutor().execute(Updater::initialize);
         //checkUpdateThread.start();
     }
-    
+
     /**
      * Return whether found a new version.
-     * @return 
+     *
+     * @return
      */
     public static boolean isFoundANewVersion() {
         return foundANewVersion;
     }
-    
+
     /**
      * Get new version.
-     * @return 
+     *
+     * @return
      */
     public static String getNewVersion() {
         return newVersion;
     }
-    
+
     /**
      * Get download link.
-     * @return 
+     *
+     * @return
      */
     public static String getLink() {
         return link;
     }
-    
+
     /**
      * Get new version's update description.
-     * @return 
+     *
+     * @return
      */
-    public static String getDescription() {
-        return description;
+    public static String getDescription(String local) {
+        return updateInfo.get(local);
     }
-    
+
+    /**
+     * 更新检查是否完成
+     *
+     * @return
+     */
+    public static boolean isUpdateCheckDone() {
+        return checkDone;
+    }
+
     /**
      * Get the time of last check update.
-     * @return 
+     *
+     * @return
      */
     public static Date getTimeOfLastCheckUpdate() {
         return date;

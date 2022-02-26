@@ -2,16 +2,22 @@ package com.tining.demonmarket.common.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.ref.JsonItemStack;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import net.md_5.bungee.api.chat.BaseComponent;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Base64;
+import java.util.*;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -27,10 +33,11 @@ public class PluginUtil {
 
     /**
      * 获取nms版本
+     *
      * @return
      */
-    public static String getNMSVersion(){
-        if(StringUtils.isEmpty(nmsVersion)){
+    public static String getNMSVersion() {
+        if (StringUtils.isEmpty(nmsVersion)) {
             nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         }
         return nmsVersion;
@@ -38,26 +45,30 @@ public class PluginUtil {
 
     /**
      * 获取字典存储的nbt名称key
+     *
      * @param is
      * @return
      */
     public static String getKeyName(ItemStack is) {
-        String pre = JsonItemStack.getJsonAsNBTTagCompound(is);
-        if(!StringUtils.isEmpty(pre)) {
-            pre = "{" + pre.substring(pre.indexOf(',') + 1);
+        String nbtinfo = "";
+        try {
+            ItemStack newIs = is.clone();
+            newIs.setAmount(1);
+            nbtinfo = JsonItemStack.getJsonAsNBTTagCompound(newIs);
+            nbtinfo = compress(nbtinfo);
+        }catch (Exception e){
+            Main.getInstance().getLogger().info(e.toString());
         }
-        String name = is.getType().name() + ":" + pre;
-        //name = Hashing.md5().newHasher().putString(name, Charsets.UTF_8).hash().toString();
-        name = compress(name);
-        return is.getType().name() + "|" + name;
+        return is.getType().name() + "|" + nbtinfo;
     }
 
     /**
      * 对NBT编码反解
+     *
      * @param code
      * @return
      */
-    public static String getNBTBack(String code){
+    public static String getNBTBack(String code) {
         return decompress(code);
     }
 
@@ -84,7 +95,7 @@ public class PluginUtil {
                 }
             }
         }
-        return  Base64.getUrlEncoder().encodeToString(out.toByteArray());
+        return Base64.getUrlEncoder().encodeToString(out.toByteArray());
     }
 
     /**
@@ -131,6 +142,59 @@ public class PluginUtil {
             }
         }
         return decompressed;
+    }
+
+    /**
+     * 根据名字获取一个物品堆
+     *
+     * @param name
+     * @return
+     */
+    public static ItemStack getItem(String name) {
+        if (Objects.isNull(name)) {
+            return null;
+        }
+        Material material = Material.getMaterial(name);
+        if(Objects.isNull(material)){
+            return null;
+        }
+        return new ItemStack(material);
+    }
+
+    /**
+     * 获取一个物品的NBT字符串信息
+     *
+     * @param nbtItem
+     * @return
+     */
+    public static String getNBTString(NBTItem nbtItem) {
+        String nbtString = "";
+
+        Set<String> set = nbtItem.getKeys();
+        List<String> tagList = new ArrayList<>();
+        set.forEach(e -> tagList.add(e + ":" + nbtItem.getString(e)));
+        if (CollectionUtils.isEmpty(tagList)) {
+            return nbtString;
+        }
+        return StringUtils.join(tagList, ",");
+    }
+
+    /**
+     * 从存储的物品信息恢复一个NBT物品
+     *
+     * @param info
+     * @return
+     */
+    public static ItemStack getItemStackFromNBTString(String info) {
+        String name = info.split("|")[0];
+        String tagStr = info.split("|")[1];
+
+        ItemStack itemStack = getItem(name);
+        NBTItem nbtItem = new NBTItem(itemStack);
+        String[] tags = tagStr.split(",");
+        Arrays.stream(tags).forEach(e -> nbtItem.setString(e.split(":")[0], e.split(":")[1]));
+
+        return nbtItem.getItem();
     }
 
 }

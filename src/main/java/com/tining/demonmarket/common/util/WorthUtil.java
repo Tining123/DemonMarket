@@ -27,7 +27,7 @@ public class WorthUtil {
         //先检测nbtworth
         Map<String, Double> nbtWorth = getNBTWorth();
         String name = PluginUtil.getKeyName(is);
-        ;
+
         if (nbtWorth.containsKey(name)) {
             return nbtWorth.get(name);
         }
@@ -62,10 +62,43 @@ public class WorthUtil {
     }
 
     /**
+     * 判断是否存在worth当中
+     *
+     * @param is 物品类型
+     * @return
+     */
+    public static boolean isWorthNameContain(ItemStack is) {
+        //先检测nbtworth
+        Material material = is.getType();
+        //检测普通worth
+        Map<String, Double> worth = getWorth();
+        if (worth.containsKey(material.name())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否存在worthNBT当中
+     *
+     * @param is 物品类型
+     * @return
+     */
+    public static boolean isWorthNBTContain(ItemStack is) {
+
+        Map<String, Double> nbtWorth = getNBTWorth();
+        String name = PluginUtil.getKeyName(is);
+        if (nbtWorth.containsKey(name)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 获取物品总价值表
      * @return 物品总价值表
      */
-    private static Map<String, Double> getWorth() {
+    public static Map<String, Double> getWorth() {
         FileConfiguration config = getWorthConfig();
         Map<String, Double> value = new HashMap<>();
         Map<String, Object> data = config.getConfigurationSection("worth").getValues(false);
@@ -79,7 +112,7 @@ public class WorthUtil {
      * 获取NBT物品总价值表
      * @return NBT物品总价值表
      */
-    private static Map<String, Double> getNBTWorth() {
+    public static Map<String, Double> getNBTWorth() {
         FileConfiguration config = getNBTWorthConfig();
         Map<String, Double> value = new HashMap<>();
         if (Objects.isNull(config.getConfigurationSection("nbtworth"))) {
@@ -116,6 +149,28 @@ public class WorthUtil {
         config.set("nbtworth", worth);
 
         ConfigReader.saveConfig(ConfigFileNameEnum.NBT_WORTH_FILE_NAME.getName(),config);
+    }
+
+    /**
+     * 添加nbt价值到配置文件
+     */
+    public static void addToWorth(String name, double value) {
+
+        FileConfiguration config = getNBTWorthConfig();
+
+        Map<String, Double> worth = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        if (!Objects.isNull(config.getConfigurationSection("worth"))) {
+            data = config.getConfigurationSection("worth").getValues(false);
+        }
+        for (String obj : data.keySet()) {
+            worth.put(obj, Double.parseDouble(data.get(obj).toString()));
+        }
+        worth.put(name, value);
+        config.addDefault("worth", worth);
+        config.set("worth", worth);
+
+        ConfigReader.saveConfig(ConfigFileNameEnum.WORTH_FILE_NAME.getName(),config);
     }
 
     /**

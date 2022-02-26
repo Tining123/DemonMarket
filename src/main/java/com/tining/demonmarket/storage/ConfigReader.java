@@ -160,5 +160,33 @@ public final class ConfigReader {
         return ConfigReader.config.getString("lang");
     }
 
+    /**
+     * 获取是否进行版本检查
+     *
+     * @return
+     */
+    public static Boolean getVersionCheck() {
+        return ConfigReader.config.getBoolean("version-check");
+    }
 
+    /**
+     * 获取是否要组织pay命令
+     * @return
+     */
+    public static boolean getDisablePay() {
+        return ConfigReader.config.getBoolean("disable-pay");
+    }
+
+    /**
+     * 获取是否要组织pay命令
+     * @return
+     */
+    public static List<String> getDisablePayList() {
+        List<String> commands = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        if (!Objects.isNull(config.getStringList("disable-pay-list"))) {
+            return config.getStringList("disable-pay-list");
+        }
+        return commands;
+    }
 }
