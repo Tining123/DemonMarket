@@ -32,6 +32,7 @@ Also ：dmadmin, dmtadmin, demonmarketadmin
 
 ## Example
 Set diamond block with $440.
+
 ![800资产效果](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/800_en.png)
 - You could receive $432 if you have only $800
 
