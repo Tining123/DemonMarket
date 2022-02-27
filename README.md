@@ -64,7 +64,7 @@ Set diamond block with $440.
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/theory.png)
 
 ## Developing
-+ Selling store [-]
++ System store [-]
 + Acquire list [✓]
 + GUI support [✓]
 + NBT Support [✓]
