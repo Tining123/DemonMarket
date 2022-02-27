@@ -1,4 +1,4 @@
-# DemonMarket - No more mounting inflation [中文Wiki](https://github.com/Tining123/DemonMarket/blob/main/README_cn.md)
+# DemonMarket - No More Mounting Inflation [中文Wiki](https://github.com/Tining123/DemonMarket/blob/main/README_cn.md)
 ![logo](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/logo.png)
 
 #### A market plugin to prevent mounting inflation in minecraft servers. The optimized power index function and the inverse function are used to converge the selling price. It could solve the problem of server economic imbalance caused by the high production capacity of certain items in industrial type servers. In Summary, The richer the player is, the less profit the player receive.
