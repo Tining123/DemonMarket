@@ -59,6 +59,8 @@
 + 当基线设置为50万时，随着玩家储蓄增长，利润变动如下
 ![50w基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/50wbasic.png)
 
+### 这里建议试用使用我的另一个工具 [DemonCalculator](https://github.com/Tining123/DemonCalculator) 自行进行相关预估，以设计适合自己服务器的资产基线设定
+
 ## 未来功能
 + 添加系统商店，玩家可进行购买[-]
 + 试用GUI查看所有可出售物品[-]

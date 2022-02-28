@@ -56,6 +56,8 @@ Set diamond block with $440.
 + Fitler: For SlimeFun Plugin. Enable this option to block any items with lore being sold. Attention, this might cause the NBT support disable
 + disable-pay: Enable this option to prevent user from paying others by using ess or others plugin.
 + disable-pay-list: Set the paying command you want to block.
++ disable-sell: Enable this option to prevent user from selling others by using ess or others plugin.
++ disable-sell-list: Set the selling command you want to block.
 
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
@@ -70,6 +72,8 @@ Set diamond block with $440.
 + When the BasicProperty was set to 500000, the profit goes with players deposit like follow
 
 ![50w基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/50wbasic.png)
+
+### You can also draw some charts like these by using my another tool, the [DemonCalculator](https://github.com/Tining123/DemonCalculator), so that you could decide the basic property setting.
 
 ## Developing
 + System store [-]
