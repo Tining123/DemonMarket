@@ -54,6 +54,12 @@
 ![未调优曲线图](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/chart.png)
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/math.png)
 
+### 令钻石块价值440
++ 当基线设置为5000时，随着玩家储蓄增长，利润变动如下
+![5000基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/5000basic.png)
++ 当基线设置为50万时，随着玩家储蓄增长，利润变动如下
+![50w基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/50wbasic.png)
+
 ## 未来功能
 + 添加系统商店，玩家可进行购买[-]
 + 试用GUI查看所有可出售物品[-]
