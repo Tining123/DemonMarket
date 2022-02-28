@@ -32,3 +32,4 @@ lang:
   "/mt pay [玩家] [金额]": "/mt pay [player] [amount]"
   "你没有足够的余额": "You don't have enough money"
   "转账成功，花费%S，转账%s": "Pay successfully，costing %s，and pay %s"
+  "该命令已经停用，请使用/mt sell": "The command is disable, please use /mt sell"

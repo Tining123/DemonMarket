@@ -31,3 +31,12 @@ disable-pay-list:
   - "/ess pay"
   - "/cmi pay"
   - "/eco pay"
+
+# Enable this option to prevent user from selling others by using ess or others plugin
+disable-sell: true
+# Set the selling command you want to block
+disable-sell-list:
+  - "/sell"
+  - "/ess sell"
+  - "/cmi sell"
+  - "/eco sell"

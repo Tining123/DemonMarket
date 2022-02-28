@@ -139,6 +139,7 @@ public class UserCommand implements CommandExecutor {
             }
             case "list": {
                 AcquireListGui.getAcquireListGui(player);
+                return true;
             }
             default: {
                 sender.sendMessage(getHelp());

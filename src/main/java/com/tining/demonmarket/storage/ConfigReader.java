@@ -170,7 +170,7 @@ public final class ConfigReader {
     }
 
     /**
-     * 获取是否要组织pay命令
+     * 获取是否要阻止pay命令
      * @return
      */
     public static boolean getDisablePay() {
@@ -178,7 +178,7 @@ public final class ConfigReader {
     }
 
     /**
-     * 获取是否要组织pay命令
+     * 获取是否要阻止的pay命令
      * @return
      */
     public static List<String> getDisablePayList() {
@@ -186,6 +186,27 @@ public final class ConfigReader {
         Map<String, Object> data = new HashMap<>();
         if (!Objects.isNull(config.getStringList("disable-pay-list"))) {
             return config.getStringList("disable-pay-list");
+        }
+        return commands;
+    }
+
+    /**
+     * 获取是否要阻止pay命令
+     * @return
+     */
+    public static boolean getDisableSell() {
+        return ConfigReader.config.getBoolean("disable-sell");
+    }
+
+    /**
+     * 获取是否要阻止的pay命令
+     * @return
+     */
+    public static List<String> getDisableSellList() {
+        List<String> commands = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        if (!Objects.isNull(config.getStringList("disable-sell-list"))) {
+            return config.getStringList("disable-sell-list");
         }
         return commands;
     }

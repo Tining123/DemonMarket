@@ -1,8 +1,6 @@
-package com.tining.demonmarket.even;
+package com.tining.demonmarket.event;
 
-import com.tining.demonmarket.Main;
 import com.tining.demonmarket.gui.ChestGui;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

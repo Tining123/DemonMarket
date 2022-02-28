@@ -1,10 +1,9 @@
-package com.tining.demonmarket.even;
+package com.tining.demonmarket.event;
 
 import com.tining.demonmarket.common.ref.Updater;
 import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.storage.ConfigReader;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

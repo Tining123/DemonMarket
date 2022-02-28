@@ -5,12 +5,12 @@ import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.common.ref.Metrics;
 import com.tining.demonmarket.common.ref.Updater;
-import com.tining.demonmarket.even.AcquireListGuiEvent;
-import com.tining.demonmarket.even.CancelPayEvent;
-import com.tining.demonmarket.even.ChestGuiEvent;
+import com.tining.demonmarket.event.AcquireListGuiEvent;
+import com.tining.demonmarket.event.CancelCommandEvent;
+import com.tining.demonmarket.event.ChestGuiEvent;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
-import com.tining.demonmarket.even.UpdaterEvent;
+import com.tining.demonmarket.event.UpdaterEvent;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +18,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -90,7 +89,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new ChestGuiEvent(), Main.getInstance());
         pm.registerEvents(new AcquireListGuiEvent(), Main.getInstance());
         pm.registerEvents(new UpdaterEvent(), Main.getInstance());
-        pm.registerEvents(new CancelPayEvent(), Main.getInstance());
+        pm.registerEvents(new CancelCommandEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {
