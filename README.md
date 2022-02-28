@@ -63,6 +63,11 @@ Set diamond block with $440.
 ![未调优曲线图](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/chart.png)
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/theory.png)
 
++ When the BasicProperty was set to 5000, the profit goes with players deposit like follow
+![5000基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/5000basic.png)
++ When the BasicProperty was set to 500000, the profit goes with players deposit like follow
+![50w基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/50wbasic.png)
+
 ## Developing
 + System store [-]
 + Acquire list [✓]
