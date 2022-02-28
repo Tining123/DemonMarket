@@ -45,18 +45,17 @@
 + disable-pay: 默认开启，禁止试用其他插件的pay.
 + disable-pay-list: 禁止使用的pay命令列表.
 ## 理论支持
-以下为未调优之前的幂函数大致收敛情况，以及计算价格的实际公式。 其中
+以下为计算价格的实际公式。 其中
 + price=物品设定价格
 + money=玩家资产
 + BASE=资产基线
 + TAX=（1 - 税收）
 
-![未调优曲线图](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/chart.png)
 ![实际最终公式](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/math.png)
 
 ### 令钻石块价值440
 + 当基线设置为5000时，随着玩家储蓄增长，利润变动如下
-![5000基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/5000basic.png)
+![5000基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/5kbasic.png)
 + 当基线设置为50万时，随着玩家储蓄增长，利润变动如下
 ![50w基线](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/50wbasic.png)
 
