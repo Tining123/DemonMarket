@@ -76,6 +76,16 @@ public class ChestGui {
     }
 
     /**
+     * 验证当前用户打开的箱子是否是在注册的收购箱
+     *
+     * @param player
+     * @param inventory
+     */
+    public static boolean verifyChest(Player player, Inventory inventory) {
+        return Objects.equals(MENU_OPENING.get(player.getUniqueId()), inventory);
+    }
+
+    /**
      * 结算当前
      *
      * @return
@@ -91,7 +101,7 @@ public class ChestGui {
             if (!MarketEconomy.isIllegalItem(is)) {
                 //如果存在物品，返还
                 if (!Objects.isNull(is) && is.getAmount() != 0) {
-                    BukkitUtil.returnItem(player,is);
+                    BukkitUtil.returnItem(player, is);
                 }
                 continue;
             }
@@ -102,10 +112,9 @@ public class ChestGui {
             money = money + price;
         }
 
-        if(count != 0)
-        {
-            MarketTrade.trade(player,count);
-        }else{
+        if (count != 0) {
+            MarketTrade.trade(player, count);
+        } else {
             player.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
         }
 
