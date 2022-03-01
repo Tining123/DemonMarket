@@ -44,6 +44,8 @@
 + Fitler: 此功能针对粘液科技等其他插件，这些插件可能发放带有功能性的原版物品，启用该功能将禁止销售手中的这些特殊物品。
 + disable-pay: 默认开启，禁止试用其他插件的pay.
 + disable-pay-list: 禁止使用的pay命令列表.
++ disable-sell: 默认开启，禁止试用其他插件的sell.
++ disable-sell-list: 禁止使用的sell命令列表.
 ## 理论支持
 以下为计算价格的实际公式。 其中
 + price=物品设定价格
