@@ -76,7 +76,6 @@ Set diamond block with $440.
 ### You can also draw some charts like these by using my another tool, the [DemonCalculator](https://github.com/Tining123/DemonCalculator), so that you could decide the basic property setting.
 
 ## Developing
-+ System store [-]
 + Acquire list [✓]
 + GUI support [✓]
 + NBT Support [✓]
