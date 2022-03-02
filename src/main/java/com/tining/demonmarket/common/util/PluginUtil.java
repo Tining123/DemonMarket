@@ -10,6 +10,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
@@ -61,6 +63,7 @@ public class PluginUtil {
         }
         return is.getType().name() + "|" + nbtinfo;
     }
+
 
     /**
      * 对NBT编码反解

@@ -156,7 +156,7 @@ public class WorthUtil {
      */
     public static void addToWorth(String name, double value) {
 
-        FileConfiguration config = getNBTWorthConfig();
+        FileConfiguration config = getWorthConfig();
 
         Map<String, Double> worth = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
@@ -171,18 +171,6 @@ public class WorthUtil {
         config.set("worth", worth);
 
         ConfigReader.saveConfig(ConfigFileNameEnum.WORTH_FILE_NAME.getName(),config);
-    }
-
-    /**
-     * 保存物品总价值
-     */
-    public static void saveWorth(Map<String, Double> map) {
-        FileConfiguration config = getWorthConfig();
-        config.addDefault("worth", map);
-        config.set("worth", map);
-        Main.getInstance().saveConfig();
-        Main.getInstance().reloadConfig();
-        config = Main.getInstance().getConfig();
     }
 
     /**
