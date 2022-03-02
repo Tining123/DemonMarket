@@ -18,10 +18,13 @@ public class CompressGetKeyLoadTest {
         System.out.println(get);
         get = "H4sIAAAAAAAA_wvw9_EM9nB1iXfx9A_yDHG1qtbJTLFSys3MS00uSkwrsSrIz8kszkhNiU_JzC_KLElVqgUAZOPEvjMAAAA=";
         System.out.println(PluginUtil.decompress(get));
+        System.out.println(PluginUtil.decompress("H4sIAAAAAAAA_8ssSc214lJQsLW1UsgvStdLKs3OzizRy8wrS80ryS-q1PMEKgguSUzOBioqs1IwsjAzBbJKKgtSrRTcgxyDg-OdfPydvbkACn9askkAAAA="));
 
         Updater.initialize();
 
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File("config.yml"));
         List<String> list = configuration.getStringList("disable-pay-list");
+
+        System.out.println(PluginUtil.decompress("H4sIAAAAAAAA_8ssSc214lJQsLW1UsgvStdLKs3OzizRy8wrS80ryS-q1PMEKgguSUzOBioqs1IwsjAzBbJKKgtSrRTcgxyDg-OdfPydvbkACn9askkAAAA="));
     }
 }

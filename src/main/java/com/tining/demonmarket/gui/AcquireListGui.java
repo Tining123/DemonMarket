@@ -103,13 +103,15 @@ public class AcquireListGui {
         boolean set = false;
 
         List<ItemStack> list = new ArrayList<>();
+        nbtWorth.forEach((s, aDouble) -> {
+            if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItemStackFromSaveNBTString(s))) {
+                list.add(PluginUtil.getItemStackFromSaveNBTString(s));
+            }
+        });
         worth.forEach((s, aDouble) -> {
             if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItem(s))) {
                 list.add(PluginUtil.getItem(s));
             }
-        });
-        nbtWorth.forEach((s, aDouble) -> {
-            //list.add(PluginUtil.getItemStackFromNBTString(s));
         });
         for (int i = pageNum * VIEW_SIZE; i < list.size() && i < (pageNum + 1) * VIEW_SIZE; i++) {
             if (!Objects.isNull(list.get(i))) {

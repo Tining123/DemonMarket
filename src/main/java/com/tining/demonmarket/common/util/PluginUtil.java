@@ -56,14 +56,42 @@ public class PluginUtil {
         try {
             ItemStack newIs = is.clone();
             newIs.setAmount(1);
-            nbtinfo = JsonItemStack.getJsonAsNBTTagCompound(newIs);
+//            nbtinfo = JsonItemStack.getJsonAsNBTTagCompound(newIs);
+            nbtinfo = itemStackSerialize(newIs);
             nbtinfo = compress(nbtinfo);
         }catch (Exception e){
             Main.getInstance().getLogger().info(e.toString());
         }
-        return is.getType().name() + "|" + nbtinfo;
+        return nbtinfo;
     }
 
+    /**
+     * 使用yml序列化
+     * @param itemStack
+     * @return
+     */
+    public static String itemStackSerialize(ItemStack itemStack) {
+        YamlConfiguration yml = new YamlConfiguration();
+        yml.set("item", itemStack);
+        return yml.saveToString();
+    }
+
+    /**
+     * 使用yml反序列化
+     * @param str
+     * @return
+     */
+    public static ItemStack itemStackDeserialize(String str) {
+        YamlConfiguration yml = new YamlConfiguration();
+        ItemStack item;
+        try {
+            yml.loadFromString(str);
+            item = yml.getItemStack("item");
+        } catch (InvalidConfigurationException ex) {
+            item = new ItemStack(Material.AIR, 1);
+        }
+        return item;
+    }
 
     /**
      * 对NBT编码反解
@@ -183,21 +211,13 @@ public class PluginUtil {
     }
 
     /**
-     * 从存储的物品信息恢复一个NBT物品
+     * 从存储的NBT物品信息恢复一个NBT物品，带“|”格式
      *
      * @param info
      * @return
      */
-    public static ItemStack getItemStackFromNBTString(String info) {
-        String name = info.split("|")[0];
-        String tagStr = info.split("|")[1];
-
-        ItemStack itemStack = getItem(name);
-        NBTItem nbtItem = new NBTItem(itemStack);
-        String[] tags = tagStr.split(",");
-        Arrays.stream(tags).forEach(e -> nbtItem.setString(e.split(":")[0], e.split(":")[1]));
-
-        return nbtItem.getItem();
+    public static ItemStack getItemStackFromSaveNBTString(String info) {
+        return itemStackDeserialize(decompress(info));
     }
 
 }
