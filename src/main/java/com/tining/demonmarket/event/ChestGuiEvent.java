@@ -67,9 +67,9 @@ public class ChestGuiEvent implements Listener {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
             if (ChestGui.isChestGui(player)) {
-                if(ChestGui.isPriceIndex(e.getSlot())) {
+                if(ChestGui.isPriceIndex(e.getSlot()))
+                    e.setCancelled(true);{
                     ChestGui.drawPage(player);
-                    e.setCancelled(true);
                 }
             }
         }
