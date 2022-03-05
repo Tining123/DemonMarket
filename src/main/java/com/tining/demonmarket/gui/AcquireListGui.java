@@ -1,11 +1,16 @@
 package com.tining.demonmarket.gui;
 
+import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
+import com.tining.demonmarket.economy.MarketEconomy;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -81,8 +86,7 @@ public class AcquireListGui {
         acquireListGui.inventory = Bukkit.createInventory(player, PAGE_SIZE, LangUtil.get(GUI_NAME));
         acquireListGui.player = player;
 
-        //TODO:
-        drawPage(acquireListGui.inventory, 0);
+        drawPage(acquireListGui.inventory, 0, player);
 
 
         acquireListGui.registerAcquireListGui();
@@ -96,7 +100,7 @@ public class AcquireListGui {
      *
      * @param pageNum
      */
-    private static void drawPage(Inventory inventory, int pageNum) {
+    private static void drawPage(Inventory inventory, int pageNum, Player player) {
         Map<String, Double> worth = WorthUtil.getWorth();
         Map<String, Double> nbtWorth = WorthUtil.getNBTWorth();
         int move = 0;
@@ -105,12 +109,16 @@ public class AcquireListGui {
         List<ItemStack> list = new ArrayList<>();
         nbtWorth.forEach((s, aDouble) -> {
             if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItemStackFromSaveNBTString(s))) {
-                list.add(PluginUtil.getItemStackFromSaveNBTString(s));
+                ItemStack is = PluginUtil.getItemStackFromSaveNBTString(s);
+                is.setItemMeta(getNBTPriceLore(is,player));
+                list.add(is);
             }
         });
         worth.forEach((s, aDouble) -> {
             if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItem(s))) {
-                list.add(PluginUtil.getItem(s));
+                ItemStack is = PluginUtil.getItem(s);
+                is.setItemMeta(getPriceLore(is,player));
+                list.add(is);
             }
         });
         for (int i = pageNum * VIEW_SIZE; i < list.size() && i < (pageNum + 1) * VIEW_SIZE; i++) {
@@ -151,7 +159,7 @@ public class AcquireListGui {
     /**
      * 绘制第N页的列表
      */
-    public static void turnPage(Inventory inventory, int slot) {
+    public static void turnPage(Inventory inventory, int slot, Player player) {
         try {
             ItemStack itemStack = inventory.getItem(PAGE_SIGN_INDEX);
             String name = itemStack.getItemMeta().getDisplayName();
@@ -161,12 +169,12 @@ public class AcquireListGui {
                 if (page < 2) {
                     return;
                 }
-                drawPage(inventory, page - 2);
+                drawPage(inventory, page - 2, player);
                 return;
             }
 
             if (Objects.equals(slot, RIGHT_ARROW_INDEX)) {
-                drawPage(inventory, page);
+                drawPage(inventory, page, player);
                 return;
             }
         } catch (Exception e) {
@@ -198,6 +206,53 @@ public class AcquireListGui {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 为一个NBT物品添加价格lore
+     * @param is
+     * @param player
+     * @return
+     */
+    private static ItemMeta getNBTPriceLore(ItemStack is, Player player) {
+        double money = Vault.checkCurrency(player.getUniqueId());
+        double price = WorthUtil.getItemWorthWithNBT(is);
+        double value = MarketEconomy.getSellingPrice(price,1,money);
+
+        List<String> lore = is.getItemMeta().getLore();
+        if(CollectionUtils.isEmpty(lore)){
+            lore = new ArrayList<>();
+        }
+        lore.add(ChatColor.YELLOW + LangUtil.get("原价：") + price);
+        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + String.format("%.2f", value));
+
+        ItemMeta itemMeta = is.getItemMeta();
+        itemMeta.setLore(lore);
+        return itemMeta;
+    }
+
+
+    /**
+     * 为一个物品添加价格lore
+     * @param is
+     * @param player
+     * @return
+     */
+    private static ItemMeta getPriceLore(ItemStack is, Player player) {
+        double money = Vault.checkCurrency(player.getUniqueId());
+        double price = WorthUtil.getItemWorthWithoutNBT(is);
+        double value = MarketEconomy.getSellingPrice(price,1,money);
+
+        List<String> lore = is.getItemMeta().getLore();
+        if(CollectionUtils.isEmpty(lore)){
+            lore = new ArrayList<>();
+        }
+        lore.add(ChatColor.YELLOW + LangUtil.get("原价：") + price);
+        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + String.format("%.2f", value));
+
+        ItemMeta itemMeta = is.getItemMeta();
+        itemMeta.setLore(lore);
+        return itemMeta;
     }
 
     /**

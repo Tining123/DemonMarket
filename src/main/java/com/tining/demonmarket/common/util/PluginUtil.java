@@ -14,6 +14,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +33,27 @@ public class PluginUtil {
     private static String nmsVersion;
 
     public static String cipherKey = "DemonMarket";
+
+    /**
+     * 为物品快速加上lore，不复制
+     * @param itemStack
+     * @param addOnLore
+     * @return
+     */
+    public static ItemStack addLore(ItemStack itemStack, List<String> addOnLore){
+        if(Objects.isNull(itemStack)){
+            return itemStack;
+        }
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> lore = itemMeta.getLore();
+        if(CollectionUtils.isEmpty(lore)){
+            lore = new ArrayList<>();
+        }
+        lore.addAll(addOnLore);
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
 
     /**
      * 获取nms版本

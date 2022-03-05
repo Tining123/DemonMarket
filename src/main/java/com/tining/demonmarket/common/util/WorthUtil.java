@@ -22,7 +22,7 @@ public class WorthUtil {
      * @param is 物品
      * @return
      */
-    public static double getWorth(ItemStack is) {
+    public static double getItemWorth(ItemStack is) {
         Material material = is.getType();
         //先检测nbtworth
         Map<String, Double> nbtWorth = getNBTWorth();
@@ -35,6 +35,42 @@ public class WorthUtil {
         Map<String, Double> worth = getWorth();
         if (worth.containsKey(material.name())) {
             return worth.get(material.name());
+        }
+        return 0;
+    }
+
+
+    /**
+     * 获取NBT物品价值
+     *
+     * @param is 物品
+     * @return
+     */
+    public static double getItemWorthWithoutNBT(ItemStack is) {
+        Material material = is.getType();
+        //先检测nbtworth
+        //检测普通worth
+        Map<String, Double> worth = getWorth();
+        if (worth.containsKey(material.name())) {
+            return worth.get(material.name());
+        }
+        return 0;
+    }
+
+    /**
+     * 获取NBT物品价值
+     *
+     * @param is 物品
+     * @return
+     */
+    public static double getItemWorthWithNBT(ItemStack is) {
+        Material material = is.getType();
+        //先检测nbtworth
+        Map<String, Double> nbtWorth = getNBTWorth();
+        String name = PluginUtil.getKeyName(is);
+
+        if (nbtWorth.containsKey(name)) {
+            return nbtWorth.get(name);
         }
         return 0;
     }

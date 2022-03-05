@@ -43,12 +43,12 @@ public class AcquireListGuiEvent implements Listener {
      * 防止物品被挪动
      * @param e
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void disableMove(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
             if (AcquireListGui.isAcquireListGui(player)) {
-                AcquireListGui.turnPage(e.getInventory(), e.getSlot());
+                AcquireListGui.turnPage(e.getInventory(), e.getSlot() ,player);
                 e.setCancelled(true);
             }
         }

@@ -71,7 +71,7 @@ public class MarketEconomy {
         if (!WorthUtil.isWorthContain(itemStack)) {
             return false;
         }
-        if (WorthUtil.getWorth(itemStack) <= 0) {
+        if (WorthUtil.getItemWorth(itemStack) <= 0) {
             return false;
         }
         return true;

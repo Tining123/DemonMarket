@@ -27,6 +27,10 @@ public class UpdaterEvent implements Listener {
             return;
         }
         Player player = e.getPlayer();
+        //只对op生效
+        if(!player.isOp()){
+            return;
+        }
         player.sendMessage(LangUtil.get("[DemonMarket]有新版本可用：")+ Updater.getNewVersion());
         player.sendMessage(LangUtil.get("[DemonMarket]更新内容：") + Updater.getDescription(LangUtil.getLang()));
         player.sendMessage(LangUtil.get("[DemonMarket]链接：") + Updater.getLink());

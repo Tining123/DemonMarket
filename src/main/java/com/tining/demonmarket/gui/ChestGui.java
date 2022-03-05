@@ -2,20 +2,20 @@ package com.tining.demonmarket.gui;
 
 import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
+import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
 import com.tining.demonmarket.economy.MarketTrade;
 import com.tining.demonmarket.common.ref.Vault;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class ChestGui {
     /**
@@ -34,6 +34,21 @@ public class ChestGui {
     Player player;
 
     /**
+     * 单页大小
+     */
+    private static final Integer PAGE_SIZE = 54;
+
+    /**
+     * 最右下角角落价格图标
+     */
+    private static final Material PRICE_SIGN = Material.PAPER;
+
+    /**
+     * 价格占位坐标
+     */
+    private static final Integer PRICE_INDEX = 53;
+
+    /**
      * 使用构造器构造
      */
     private ChestGui() {
@@ -47,12 +62,13 @@ public class ChestGui {
      */
     public static ChestGui getChestGui(Player player) {
         ChestGui chestGui = new ChestGui();
-        chestGui.inventory = Bukkit.createInventory(player, 54, LangUtil.get("收购箱"));
+        chestGui.inventory = Bukkit.createInventory(player, PAGE_SIZE, LangUtil.get("收购箱"));
         chestGui.player = player;
 
         chestGui.registerChestGui();
         chestGui.openChestGui();
 
+        drawPage(player);
         return chestGui;
     }
 
@@ -86,17 +102,46 @@ public class ChestGui {
     }
 
     /**
-     * 结算当前
+     * 是否是价格坐标处
+     * @param slot
+     * @return
+     */
+    public static boolean isPriceIndex(int slot){
+        return slot == PRICE_INDEX;
+    }
+
+    /**
+     * 判断是否在册
+     *
+     * @param player
+     * @return
+     */
+    public static boolean isChestGui(Player player) {
+        if (MENU_OPENING.containsKey(player.getUniqueId())) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 模拟结算当前收益
      *
      * @return
      */
-    private String checkOut() {
+    public static double preCheckOut(Inventory inventory, Player player) {
         ItemStack[] slot = inventory.getContents();
 
         double money = Vault.checkCurrency(player.getUniqueId());
         double count = 0;
 
-        for (ItemStack is : slot) {
+        for (int i = 0; i < slot.length; i++) {
+            //如果是占位符就跳过
+            if (i == PRICE_INDEX) {
+                continue;
+            }
+
+            ItemStack is = slot[i];
             //如果不可出售，继续
             if (!MarketEconomy.isIllegalItem(is)) {
                 //如果存在物品，返还
@@ -105,12 +150,25 @@ public class ChestGui {
                 }
                 continue;
             }
-            //进行循环出售
-            double value = WorthUtil.getWorth(is);
+            //进行循环计算
+            double value = WorthUtil.getItemWorth(is);
             double price = MarketEconomy.getSellingPrice(value, is.getAmount(), money);
             count = count + price;
             money = money + price;
         }
+        return count;
+    }
+
+
+    /**
+     * 结算当前
+     *
+     * @return
+     */
+    private String checkOut() {
+        ItemStack[] slot = inventory.getContents();
+        double count = 0;
+        count = ChestGui.preCheckOut(inventory, player);
 
         if (count != 0) {
             MarketTrade.trade(player, count);
@@ -133,6 +191,33 @@ public class ChestGui {
      */
     private void registerChestGui() {
         MENU_OPENING.put(player.getUniqueId(), this);
+    }
+
+    /**
+     * 绘制当前列表
+     */
+    public static void drawPage(Player player) {
+        if (ChestGui.isChestGui(player)) {
+            Inventory inventory = MENU_OPENING.get(player.getUniqueId()).inventory;
+            drawPage(inventory,player);
+        }
+    }
+
+    /**
+     * 绘制当前列表
+     */
+    private static void drawPage(Inventory inventory, Player player) {
+        //设置最后一个paper
+        ItemStack priceToken = new ItemStack(PRICE_SIGN, 1);
+        //计算价格
+        double count = ChestGui.preCheckOut(inventory, player);
+        //更新paper
+        ItemMeta itemMeta = priceToken.getItemMeta();
+        itemMeta.setDisplayName(LangUtil.get("点击以计算价格:"));
+        priceToken.setItemMeta(itemMeta);
+        PluginUtil.addLore(priceToken, Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + count));
+
+        inventory.setItem(PRICE_INDEX, priceToken);
     }
 
 }

@@ -55,7 +55,7 @@ public class UserCommand implements CommandExecutor {
                     return true;
                 }
 
-                double value = WorthUtil.getWorth(itemStack);
+                double value = WorthUtil.getItemWorth(itemStack);
                 if (value == 0) {
                     sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                     return true;
@@ -89,7 +89,7 @@ public class UserCommand implements CommandExecutor {
                 if (!isIllegalItem(itemStack, player, sender)) {
                     return true;
                 }
-                double value = WorthUtil.getWorth(itemStack);
+                double value = WorthUtil.getItemWorth(itemStack);
                 if (value == 0) {
                     sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
                     return true;

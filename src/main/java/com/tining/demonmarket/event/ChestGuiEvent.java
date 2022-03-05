@@ -1,12 +1,21 @@
 package com.tining.demonmarket.event;
 
+import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.util.LangUtil;
+import com.tining.demonmarket.gui.AcquireListGui;
 import com.tining.demonmarket.gui.ChestGui;
+import org.apache.commons.collections.CollectionUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Objects;
 
@@ -47,5 +56,69 @@ public class ChestGuiEvent implements Listener {
             ChestGui.unRegisterChestGui(player);
         }
 
+    }
+
+    /**
+     * 防止物品被挪动
+     * @param e
+     */
+    @EventHandler(priority = EventPriority.LOW)
+    public void disableMove(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
+            Player player = (Player) e.getWhoClicked();
+            if (ChestGui.isChestGui(player)) {
+                if(ChestGui.isPriceIndex(e.getSlot())) {
+                    ChestGui.drawPage(player);
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * 刷新价格
+     * @param e
+     */
+    public void flushInventory(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
+            Player player = (Player) e.getWhoClicked();
+            if (ChestGui.isChestGui(player)) {
+                ChestGui.drawPage(player);
+            }
+        }
+    }
+
+    /**
+     * 刷新价格
+     * @param e
+     */
+    public void flushInventory(InventoryMoveItemEvent e) {
+        Inventory source = e.getSource();
+        if( !CollectionUtils.isEmpty(e.getSource().getViewers()) && e.getSource().getViewers().get(0) instanceof Player) {
+            Player sourcePlayer = (Player) source.getViewers().get(0);
+            if (ChestGui.isChestGui(sourcePlayer)) {
+                ChestGui.drawPage(sourcePlayer);
+            }
+        }
+        Inventory destination = e.getDestination();
+        if( !CollectionUtils.isEmpty(e.getDestination().getViewers()) && e.getDestination().getViewers().get(0) instanceof Player) {
+            Player destinationPlayer = (Player) destination.getViewers().get(0);
+            if (ChestGui.isChestGui(destinationPlayer)) {
+                ChestGui.drawPage(destinationPlayer);
+            }
+        }
+    }
+
+    /**
+     * 刷新价格
+     * @param e
+     */
+    public void flushInventory(InventoryDragEvent e) {
+        if (e.getWhoClicked() instanceof Player && e.getInventory() != null) {
+            Player player = (Player) e.getWhoClicked();
+            if (ChestGui.isChestGui(player)) {
+                ChestGui.drawPage(player);
+            }
+        }
     }
 }

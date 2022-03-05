@@ -51,7 +51,8 @@ public class LangReader {
             ROOT_FOLDER.mkdir();
         }
         try {
-            MAIN.saveResource(SUB_FOLDER_NAME + "/" + configName, true);
+            //不覆盖
+            MAIN.saveResource(SUB_FOLDER_NAME + "/" + configName, false);
         } catch (Exception e) {
             MAIN.getLogger().info(e.toString());
         }
