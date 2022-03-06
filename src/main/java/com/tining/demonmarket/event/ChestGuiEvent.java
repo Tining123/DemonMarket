@@ -62,63 +62,16 @@ public class ChestGuiEvent implements Listener {
      * 防止物品被挪动
      * @param e
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void disableMove(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
             if (ChestGui.isChestGui(player)) {
-                if(ChestGui.isPriceIndex(e.getSlot()))
-                    e.setCancelled(true);{
-                    ChestGui.drawPage(player);
+                if(ChestGui.isPriceIndex(e.getSlot())) {
+                    e.setCancelled(true);
                 }
             }
         }
     }
 
-    /**
-     * 刷新价格
-     * @param e
-     */
-    public void flushInventory(InventoryClickEvent e) {
-        if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
-            Player player = (Player) e.getWhoClicked();
-            if (ChestGui.isChestGui(player)) {
-                ChestGui.drawPage(player);
-            }
-        }
-    }
-
-    /**
-     * 刷新价格
-     * @param e
-     */
-    public void flushInventory(InventoryMoveItemEvent e) {
-        Inventory source = e.getSource();
-        if( !CollectionUtils.isEmpty(e.getSource().getViewers()) && e.getSource().getViewers().get(0) instanceof Player) {
-            Player sourcePlayer = (Player) source.getViewers().get(0);
-            if (ChestGui.isChestGui(sourcePlayer)) {
-                ChestGui.drawPage(sourcePlayer);
-            }
-        }
-        Inventory destination = e.getDestination();
-        if( !CollectionUtils.isEmpty(e.getDestination().getViewers()) && e.getDestination().getViewers().get(0) instanceof Player) {
-            Player destinationPlayer = (Player) destination.getViewers().get(0);
-            if (ChestGui.isChestGui(destinationPlayer)) {
-                ChestGui.drawPage(destinationPlayer);
-            }
-        }
-    }
-
-    /**
-     * 刷新价格
-     * @param e
-     */
-    public void flushInventory(InventoryDragEvent e) {
-        if (e.getWhoClicked() instanceof Player && e.getInventory() != null) {
-            Player player = (Player) e.getWhoClicked();
-            if (ChestGui.isChestGui(player)) {
-                ChestGui.drawPage(player);
-            }
-        }
-    }
 }

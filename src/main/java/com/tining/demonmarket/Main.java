@@ -13,6 +13,7 @@ import com.tining.demonmarket.common.ref.JsonItemStack;
 import com.tining.demonmarket.event.UpdaterEvent;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
+import com.tining.demonmarket.task.ChestDrawTask;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -77,6 +78,9 @@ public class Main extends JavaPlugin {
 
         Updater.checkUpdate();
         ConfigReader.getDisablePayList();
+
+        //注册
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, 1L);
 
     }
 
