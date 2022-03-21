@@ -108,14 +108,14 @@ public class AcquireListGui {
 
         List<ItemStack> list = new ArrayList<>();
         nbtWorth.forEach((s, aDouble) -> {
-            if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItemStackFromSaveNBTString(s))) {
+            if ( aDouble != 0 && !Objects.isNull(s) && !Objects.isNull(PluginUtil.getItemStackFromSaveNBTString(s))) {
                 ItemStack is = PluginUtil.getItemStackFromSaveNBTString(s);
                 is.setItemMeta(getNBTPriceLore(is,player));
                 list.add(is);
             }
         });
         worth.forEach((s, aDouble) -> {
-            if (!Objects.isNull(s) && !Objects.isNull(PluginUtil.getItem(s))) {
+            if ( aDouble != 0 &&  !Objects.isNull(s) && !Objects.isNull(PluginUtil.getItem(s))) {
                 ItemStack is = PluginUtil.getItem(s);
                 is.setItemMeta(getPriceLore(is,player));
                 list.add(is);
@@ -127,7 +127,7 @@ public class AcquireListGui {
                     inventory.clear();
                     set = true;
                 }
-                inventory.setItem(i % VIEW_SIZE, list.get(i));
+                inventory.setItem(move % VIEW_SIZE, list.get(i));
                 move++;
             }
         }
