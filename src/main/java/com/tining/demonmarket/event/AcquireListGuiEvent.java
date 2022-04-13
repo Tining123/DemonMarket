@@ -1,5 +1,6 @@
 package com.tining.demonmarket.event;
 
+import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.gui.AcquireListGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.Objects;
 
 /**
  * @author tinga
@@ -48,6 +51,10 @@ public class AcquireListGuiEvent implements Listener {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
             if (AcquireListGui.isAcquireListGui(player)) {
+                AcquireListGui.turnPage(e.getInventory(), e.getSlot() ,player);
+                e.setCancelled(true);
+            }
+            if(Objects.equals(LangUtil.get("收购列表"),e.getView().getTitle())){
                 AcquireListGui.turnPage(e.getInventory(), e.getSlot() ,player);
                 e.setCancelled(true);
             }
