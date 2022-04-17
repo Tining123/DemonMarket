@@ -38,3 +38,5 @@ lang:
   "点击以计算价格:": "Click to calculate the price:"
   "总价：$": "Price：$"
   "合计：": "Sum："
+  "转账功能已关闭": "This command has been disable"
+  "转账金额超过上限，当前上限%s": "Transfer amount exceeds the limitation. The maximum amount is %s"

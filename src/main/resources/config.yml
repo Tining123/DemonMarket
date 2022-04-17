@@ -31,6 +31,9 @@ disable-pay-list:
   - "/ess pay"
   - "/cmi pay"
   - "/eco pay"
+# Max amount of money can be transfer in a transaction
+# Set -1 to disable limitation, set 0 to disable pay command
+max-pay: -1
 
 # Enable this option to prevent user from selling others by using ess or others plugin
 disable-sell: true

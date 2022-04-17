@@ -54,7 +54,7 @@ public class AcquireListGuiEvent implements Listener {
                 AcquireListGui.turnPage(e.getInventory(), e.getSlot() ,player);
                 e.setCancelled(true);
             }
-            if(Objects.equals(LangUtil.get("收购列表"),e.getView().getTitle())){
+            else if(Objects.equals(LangUtil.get("收购列表"),e.getView().getTitle())){
                 AcquireListGui.turnPage(e.getInventory(), e.getSlot() ,player);
                 e.setCancelled(true);
             }

@@ -14,6 +14,7 @@ import com.tining.demonmarket.storage.ConfigReader;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -72,11 +73,11 @@ public class UserCommand implements CommandExecutor {
                     return false;
                 }
                 itemStack = copy;
-                if(WorthUtil.isWorthNBTContain(itemStack)) {
+                if (WorthUtil.isWorthNBTContain(itemStack)) {
                     sellAmount = InventoryUtil.calcInventoryNBT(player, itemStack);
                     MarketTrade.trade(player, itemStack, value, sellAmount);
                     InventoryUtil.subtractAllNBT(player, itemStack);
-                }else{
+                } else {
                     sellAmount = InventoryUtil.calcInventoryNBT(player, itemStack);
                     MarketTrade.trade(player, itemStack, value, sellAmount);
                     InventoryUtil.subtractAll(player, itemStack);
@@ -122,14 +123,27 @@ public class UserCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额"));
                     return true;
                 }
-                Player reciever = BukkitUtil.getPlayer(args[1]);
+                //转账上线校验
+                double maxPay = ConfigReader.getMaxPay();
+                if (maxPay != -1) {
+                    if (maxPay == 0) {
+                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("转账功能已关闭"));
+                        return true;
+                    } else if (maxPay < value) {
+                        player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账金额超过上限，当前上限%s"), maxPay));
+                        return true;
+                    }
+                }
+
+
+                OfflinePlayer reciever = Bukkit.getOfflinePlayer(args[1]);
 
                 double price = MarketEconomy.getSellingPrice(value, 1, Vault.checkCurrency(player.getUniqueId()));
 
                 Vault.subtractCurrency(player.getUniqueId(), value);
                 Vault.addVaultCurrency(reciever, price);
 
-                player.sendMessage(ChatColor.YELLOW + LangUtil.get(String.format("转账成功，花费%S，转账%s", value, price)));
+                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), value, price));
                 return true;
 
             }

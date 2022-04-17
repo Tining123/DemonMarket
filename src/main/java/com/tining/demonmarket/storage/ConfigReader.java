@@ -106,6 +106,7 @@ public final class ConfigReader {
         }
     }
 
+
     /**
      * 获取op名称
      *
@@ -209,5 +210,13 @@ public final class ConfigReader {
             return config.getStringList("disable-sell-list");
         }
         return commands;
+    }
+
+    /**
+     * 获取支付限额
+     * @return
+     */
+    public static double getMaxPay(){
+        return ConfigReader.config.getDouble("max-pay");
     }
 }
