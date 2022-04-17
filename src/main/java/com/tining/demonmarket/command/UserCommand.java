@@ -114,8 +114,12 @@ public class UserCommand implements CommandExecutor {
                 String valueString = args[2];
                 double value = 0;
                 try {
-                    value = Integer.parseInt(valueString);
+                    value = Double.parseDouble(valueString);
                 } catch (Exception e) {
+                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    return true;
+                }
+                if(value < 0){
                     player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
                     return true;
                 }
