@@ -46,6 +46,7 @@
 + disable-pay-list: 禁止使用的pay命令列表.
 + disable-sell: 默认开启，禁止试用其他插件的sell.
 + disable-sell-list: 禁止使用的sell命令列表.
++ may-pay: 单次转账最大金额限制，默认设置为-1不限制，设置为0则等于关闭交易功能。
 ## 理论支持
 以下为计算价格的实际公式。 其中
 + price=物品设定价格
