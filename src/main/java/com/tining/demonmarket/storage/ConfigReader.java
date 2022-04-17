@@ -219,4 +219,13 @@ public final class ConfigReader {
     public static double getMaxPay(){
         return ConfigReader.config.getDouble("max-pay");
     }
+
+
+    /**
+     * 支付单元金额
+     * @return
+     */
+    public static double getPayUnit(){
+        return ConfigReader.config.getDouble("pay-unit");
+    }
 }

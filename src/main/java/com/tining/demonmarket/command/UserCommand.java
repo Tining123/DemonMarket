@@ -142,12 +142,22 @@ public class UserCommand implements CommandExecutor {
 
                 OfflinePlayer reciever = Bukkit.getOfflinePlayer(args[1]);
 
-                double price = MarketEconomy.getSellingPrice(value, 1, Vault.checkCurrency(player.getUniqueId()));
+                double totalPrice = 0;
+                double totalValue = value;
+                int time = (int)(totalValue / ConfigReader.getPayUnit());
+                double res = totalValue % ConfigReader.getPayUnit();
 
-                Vault.subtractCurrency(player.getUniqueId(), value);
+                double price = MarketEconomy.getSellingPrice(ConfigReader.getPayUnit(), time, Vault.checkCurrency(player.getUniqueId()));
+                totalPrice += price;
+                Vault.subtractCurrency(player.getUniqueId(), ConfigReader.getPayUnit());
                 Vault.addVaultCurrency(reciever, price);
 
-                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), value, price));
+                price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(player.getUniqueId()));
+                totalPrice += price;
+                Vault.subtractCurrency(player.getUniqueId(), res);
+                Vault.addVaultCurrency(reciever, price);
+
+                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), totalValue, totalPrice));
                 return true;
 
             }
