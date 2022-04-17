@@ -147,15 +147,13 @@ public class UserCommand implements CommandExecutor {
                 int time = (int)(totalValue / ConfigReader.getPayUnit());
                 double res = totalValue % ConfigReader.getPayUnit();
 
-                double price = MarketEconomy.getSellingPrice(ConfigReader.getPayUnit(), time, Vault.checkCurrency(player.getUniqueId()));
+                double price = MarketEconomy.getSellingPrice(ConfigReader.getPayUnit(), time, Vault.checkCurrency(reciever.getUniqueId()));
                 totalPrice += price;
-                Vault.subtractCurrency(player.getUniqueId(), ConfigReader.getPayUnit());
-                Vault.addVaultCurrency(reciever, price);
 
-                price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(player.getUniqueId()));
+                price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(reciever.getUniqueId()));
                 totalPrice += price;
-                Vault.subtractCurrency(player.getUniqueId(), res);
-                Vault.addVaultCurrency(reciever, price);
+                Vault.subtractCurrency(player.getUniqueId(), totalValue);
+                Vault.addVaultCurrency(reciever, totalPrice);
 
                 player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), totalValue, totalPrice));
                 return true;
