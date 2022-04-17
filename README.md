@@ -58,6 +58,7 @@ Set diamond block with $440.
 + disable-pay-list: Set the paying command you want to block.
 + disable-sell: Enable this option to prevent user from selling others by using ess or others plugin.
 + disable-sell-list: Set the selling command you want to block.
++ may-pay: Max amount of money can be transfer in a transaction.Set -1 to disable limitation, set 0 to disable pay command.
 
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
