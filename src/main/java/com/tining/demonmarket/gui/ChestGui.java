@@ -265,6 +265,7 @@ public class ChestGui {
         //更新paper
         double count = ChestGui.preCheckOut(inventory,player);
         ItemMeta itemMeta = priceToken.getItemMeta();
+        itemMeta.setDisplayName(LangUtil.get("合计："));
         itemMeta.setLore(Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + count));
         priceToken.setItemMeta(itemMeta);
 
