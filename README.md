@@ -60,6 +60,7 @@ Set diamond block with $440.
 + disable-sell-list: Set the selling command you want to block.
 + may-pay: Max amount of money can be transfer in a transaction.Set -1 to disable limitation, set 0 to disable pay command.
 + pay-unit: Transfer unit. All transfer amount will be split as pay-unit to transfer. The tax will be calculated times.
++ payer-tax: whether the payer pays the transfer tax (the tax payed by the receiver in default)
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
 
