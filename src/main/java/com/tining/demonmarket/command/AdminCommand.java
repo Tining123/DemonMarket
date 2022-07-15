@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
+import static com.tining.demonmarket.common.util.PluginUtil.itemStackSerialize;
+
 public class AdminCommand implements CommandExecutor {
 
     @Override
@@ -105,7 +107,7 @@ public class AdminCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
                 sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name());
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]NBT为：") + JsonItemStack.getJsonAsNBTTagCompound(player.getInventory().getItemInMainHand()));
+                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]NBT为：") + itemStackSerialize(player.getInventory().getItemInMainHand()));
                 sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]在商店配置中的NBT对应码为：") + PluginUtil.getKeyName(player.getInventory().getItemInMainHand()));
                 return true;
             }

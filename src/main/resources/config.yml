@@ -13,7 +13,7 @@ OP:
 BasicProperty: 500000
 
 #Enable and make the numbers approximate(shorter and easier to read)
-Round: false
+Round: true
 
 # For SlimeFun Plugin
 # Enable this option to block any items with lore being sold
@@ -45,3 +45,6 @@ disable-sell-list:
   - "/ess sell"
   - "/cmi sell"
   - "/eco sell"
+
+# Payer pay for the tax
+payer-tax: false

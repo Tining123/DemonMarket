@@ -3,6 +3,7 @@ package com.tining.demonmarket.common.ref;
 import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.util.LangUtil;
 import org.apache.commons.collections.CollectionUtils;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

@@ -40,3 +40,4 @@ lang:
   "合计：": "Sum："
   "转账功能已关闭": "This command has been disable"
   "转账金额超过上限，当前上限%s": "Transfer amount exceeds the limitation. The maximum amount is %s"
+  "收款成功，从%s收到%s": "%s just pay you $%s"

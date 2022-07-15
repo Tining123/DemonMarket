@@ -68,7 +68,7 @@ public class Main extends JavaPlugin {
         setExecutor();
 
         //初始化NMS
-        JsonItemStack.reloadNMS();
+        // JsonItemStack.reloadNMS();
 
         Vault.vaultSetup();
         int pluginId = 14142;

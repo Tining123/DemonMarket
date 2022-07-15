@@ -11,7 +11,6 @@ import com.tining.demonmarket.common.util.InventoryUtil;
 import com.tining.demonmarket.gui.AcquireListGui;
 import com.tining.demonmarket.gui.ChestGui;
 import com.tining.demonmarket.storage.ConfigReader;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -142,6 +141,9 @@ public class UserCommand implements CommandExecutor {
 
                 OfflinePlayer reciever = Bukkit.getOfflinePlayer(args[1]);
 
+
+                // totalValue为转账金额
+                // totalPrice 为最终成功转账数量
                 double totalPrice = 0;
                 double totalValue = value;
                 int time = (int)(totalValue / ConfigReader.getPayUnit());
@@ -152,8 +154,28 @@ public class UserCommand implements CommandExecutor {
 
                 price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(reciever.getUniqueId()));
                 totalPrice += price;
+
+
+                // 如果不是接受者接受税金，那么发送者将支付税金
+                if(ConfigReader.getPayerTax()){
+                    double tempValue = totalValue;
+                    totalValue = totalValue + (totalValue - totalPrice);
+                    totalPrice = tempValue;
+
+                    // 重新判断是否余额充足
+                    if (Vault.checkCurrency(player.getUniqueId()) < totalValue) {
+                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + totalValue);
+                        return true;
+                    }
+                }
+
                 Vault.subtractCurrency(player.getUniqueId(), totalValue);
                 Vault.addVaultCurrency(reciever, totalPrice);
+                // 给收款人发消息
+                try{
+                    Player onlineReceiver = Bukkit.getPlayer(args[1]);
+                    onlineReceiver.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("收款成功，从%s收到%s"), player.getName(), totalPrice));
+                }catch (Exception ignore){}
 
                 player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), totalValue, totalPrice));
                 return true;

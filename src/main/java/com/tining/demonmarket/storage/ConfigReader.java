@@ -49,6 +49,8 @@ public final class ConfigReader {
         //重载主配置文件
         Main.getInstance().reloadConfig();
         config = Main.getInstance().getConfig();
+        //加载语言文件
+        LangReader.reloadLang();
         //重载配置表中的文件
         for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
             String configName = w.getName();
@@ -228,4 +230,10 @@ public final class ConfigReader {
     public static double getPayUnit(){
         return ConfigReader.config.getDouble("pay-unit");
     }
+
+    /**
+     * 获取是否付款人支付税金
+     * @return
+     */
+    public static boolean getPayerTax(){return ConfigReader.config.getBoolean("payer-tax");}
 }
