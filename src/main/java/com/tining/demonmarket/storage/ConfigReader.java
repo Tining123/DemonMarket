@@ -50,7 +50,9 @@ public final class ConfigReader {
         Main.getInstance().reloadConfig();
         config = Main.getInstance().getConfig();
         //加载语言文件
-        LangReader.reloadLang();
+        try {
+            LangReader.reloadLang();
+        }catch (Exception ignore){}
         //重载配置表中的文件
         for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
             String configName = w.getName();
