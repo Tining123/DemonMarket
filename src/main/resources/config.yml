@@ -48,3 +48,7 @@ disable-sell-list:
 
 # Payer pay for the tax
 payer-tax: false
+
+# enable to auto refresh the price in gui(second per time)
+auto-refresh: true
+auto-refresh-gap: 1

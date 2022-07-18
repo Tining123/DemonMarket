@@ -55,11 +55,11 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        //释放配置文件
+        // 释放配置文件
         saveDefaultConfig();
         ConfigReader.initRelease();
         ConfigReader.reloadConfig();
-        //TODO: 如果有设置强制预言，加载强制语言
+        // 如果有设置强制预言，加载强制语言
         if (!Objects.isNull(ConfigReader.getLanguage()) && !StringUtils.isEmpty(ConfigReader.getLanguage())) {
             LangReader.setLanguage(ConfigReader.getLanguage());
         }
@@ -80,7 +80,14 @@ public class Main extends JavaPlugin {
         ConfigReader.getDisablePayList();
 
         //注册
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, 1L);
+        if(ConfigReader.getEnableAutoRefresh()){
+            long interval = (long) ConfigReader.getAutoRefreshInterval();
+            if(interval < 20){
+                interval = 20L;
+            }
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, interval);
+        }
+        // Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, 1L);
 
     }
 

@@ -1,6 +1,7 @@
 package com.tining.demonmarket.storage;
 
 import com.tining.demonmarket.Main;
+import com.tining.demonmarket.common.util.WorthUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -58,8 +59,10 @@ public final class ConfigReader {
             String configName = w.getName();
             FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER, configName));
             configMap.put(configName, configuration);
-
         }
+        // 重载价格
+        WorthUtil.reloadWorth();
+        WorthUtil.reloadNBTWorth();
     }
 
     /**
@@ -238,4 +241,12 @@ public final class ConfigReader {
      * @return
      */
     public static boolean getPayerTax(){return ConfigReader.config.getBoolean("payer-tax");}
+
+    /**
+     * 获取是否自动刷新
+     * @return
+     */
+    public static boolean getEnableAutoRefresh(){return ConfigReader.config.getBoolean("auto-refresh");}
+
+    public static int getAutoRefreshInterval(){return ConfigReader.config.getInt("auto-refresh-gap") * 20;}
 }

@@ -16,8 +16,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author tinga
@@ -70,6 +72,21 @@ public class ChestGuiEvent implements Listener {
                 if(ChestGui.isPriceIndex(e.getSlot())) {
                     e.setCancelled(true);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void refresh(InventoryClickEvent e){
+        if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
+            Player player = (Player) e.getWhoClicked();
+            if (ChestGui.isChestGui(player)) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        ChestGui.drawPage(player);
+                    }
+                }.runTask(Main.getInstance());
             }
         }
     }

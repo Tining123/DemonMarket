@@ -61,6 +61,8 @@ Set diamond block with $440.
 + may-pay: Max amount of money can be transfer in a transaction.Set -1 to disable limitation, set 0 to disable pay command.
 + pay-unit: Transfer unit. All transfer amount will be split as pay-unit to transfer. The tax will be calculated times.
 + payer-tax: whether the payer pays the transfer tax (the tax payed by the receiver in default)
++ auto-refresh: Enable to auto refresh the price in gui
++ auto-refresh-gap: Refresh interval (second per time)
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
 

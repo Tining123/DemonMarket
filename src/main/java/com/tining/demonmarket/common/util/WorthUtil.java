@@ -3,10 +3,12 @@ package com.tining.demonmarket.common.util;
 import com.tining.demonmarket.Main;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.ConfigFileNameEnum;
+import org.apache.commons.collections.CollectionUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +17,10 @@ import java.util.Objects;
  * @author tinga
  */
 public class WorthUtil {
+
+    private static Map<String, Double> nbtWorth;
+
+    private static Map<String, Double> worth;
 
     /**
      * 获取物品价值
@@ -131,10 +137,29 @@ public class WorthUtil {
     }
 
     /**
+     * 获取价值表
+     * @return
+     */
+    public static Map<String, Double> getWorth() {
+        if(Objects.isNull(worth)){
+            worth = loadWorth();
+        }
+        return worth;
+    }
+
+    /**
+     * 重载价值表
+     */
+    public static void reloadWorth(){
+        worth = loadWorth();
+    }
+
+
+    /**
      * 获取物品总价值表
      * @return 物品总价值表
      */
-    public static Map<String, Double> getWorth() {
+    public static Map<String, Double> loadWorth() {
         FileConfiguration config = getWorthConfig();
         Map<String, Double> value = new HashMap<>();
         Map<String, Object> data = config.getConfigurationSection("worth").getValues(false);
@@ -145,16 +170,34 @@ public class WorthUtil {
     }
 
     /**
+     * 获取NBT价值表
+     * @return
+     */
+    public static Map<String, Double> getNBTWorth() {
+        if(Objects.isNull(nbtWorth)){
+            nbtWorth = loadNBTWorth();
+        }
+        return nbtWorth;
+    }
+
+    /**
+     * 重载NBT价值表
+     */
+    public static void reloadNBTWorth(){
+        nbtWorth = loadNBTWorth();
+    }
+
+    /**
      * 获取NBT物品总价值表
      * @return NBT物品总价值表
      */
-    public static Map<String, Double> getNBTWorth() {
+    public static Map<String, Double> loadNBTWorth() {
         FileConfiguration config = getNBTWorthConfig();
         Map<String, Double> value = new HashMap<>();
         if (Objects.isNull(config.getConfigurationSection("nbtworth"))) {
             config.addDefault("nbtworth", value);
             config.set("nbtworth", value);
-            ConfigReader.reloadConfig();
+            ConfigReader.saveConfig(ConfigFileNameEnum.NBT_WORTH_FILE_NAME.getName(),config);
         }
         if (!Objects.isNull(config.getConfigurationSection("nbtworth"))) {
             Map<String, Object> data = config.getConfigurationSection("nbtworth").getValues(false);
