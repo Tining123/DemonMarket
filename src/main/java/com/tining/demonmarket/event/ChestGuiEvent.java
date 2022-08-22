@@ -73,6 +73,11 @@ public class ChestGuiEvent implements Listener {
                     e.setCancelled(true);
                 }
             }
+            else if(Objects.equals(LangUtil.get("收购箱"),e.getView().getTitle())){
+                if(ChestGui.isPriceIndex(e.getSlot())) {
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 
