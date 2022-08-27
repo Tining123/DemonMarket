@@ -20,11 +20,11 @@ public class MarketEconomy {
      * @param money
      * @return
      */
-    public static double formatMoney(double money) {
+    public static String formatMoney(double money) {
         if (ConfigReader.getRoundSetting().toLowerCase(Locale.ROOT).equals("true")) {
-            return Double.parseDouble(String.format("%.2f", money));
+            return String.format("%.2f", money);
         }
-        return money;
+        return money + "";
     }
 
     /**
@@ -44,7 +44,7 @@ public class MarketEconomy {
             price += onePrice;
             money += onePrice;
         }
-        return formatMoney(price);
+        return price;
     }
 
     /**
@@ -78,7 +78,7 @@ public class MarketEconomy {
     }
 
     public static double getTax(double price) {
-        return formatMoney(price * ConfigReader.getTaxRate());
+        return price * ConfigReader.getTaxRate();
     }
 
 

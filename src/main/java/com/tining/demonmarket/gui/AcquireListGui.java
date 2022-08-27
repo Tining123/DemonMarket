@@ -225,7 +225,7 @@ public class AcquireListGui {
             lore = new ArrayList<>();
         }
         lore.add(ChatColor.YELLOW + LangUtil.get("原价：") + price);
-        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + String.format("%.2f", value));
+        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + MarketEconomy.formatMoney(value));
 
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setLore(lore);

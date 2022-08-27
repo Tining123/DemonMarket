@@ -174,10 +174,12 @@ public class UserCommand implements CommandExecutor {
                 // 给收款人发消息
                 try{
                     Player onlineReceiver = Bukkit.getPlayer(args[1]);
-                    onlineReceiver.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("收款成功，从%s收到%s"), player.getName(), totalPrice));
+                    onlineReceiver.sendMessage(ChatColor.YELLOW +
+                            String.format(LangUtil.get("收款成功，从%s收到%s"), player.getName(), MarketEconomy.formatMoney(totalPrice)));
                 }catch (Exception ignore){}
 
-                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"), totalValue, totalPrice));
+                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"),
+                        totalValue, MarketEconomy.formatMoney(totalPrice)));
                 return true;
 
             }
