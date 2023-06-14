@@ -32,7 +32,7 @@ public final class ConfigReader {
     /**
      * 表配置文件
      */
-    private static Map<String, FileConfiguration> configMap = new HashMap<>();
+    private static final Map<String, FileConfiguration> configMap = new HashMap<>();
 
     /**
      * 返回配置表，不包含config主配置

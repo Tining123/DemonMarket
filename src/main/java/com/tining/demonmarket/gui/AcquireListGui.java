@@ -20,6 +20,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
+/**
+ * 收购箱
+ */
 public class AcquireListGui {
     /**
      * 当前开启的菜单
