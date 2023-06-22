@@ -257,7 +257,7 @@ public class WorthUtil {
      *
      * @return worth配置文件
      */
-    public static FileConfiguration getWorthConfig() {
+    private static FileConfiguration getWorthConfig() {
         return ConfigReader.getConfigMap().get(ConfigFileNameEnum.WORTH_FILE_NAME.getName());
     }
 
@@ -266,7 +266,7 @@ public class WorthUtil {
      *
      * @return nbtworth配置文件
      */
-    public static FileConfiguration getNBTWorthConfig() {
+    private static FileConfiguration getNBTWorthConfig() {
         return ConfigReader.getConfigMap().get(ConfigFileNameEnum.NBT_WORTH_FILE_NAME.getName());
     }
 }

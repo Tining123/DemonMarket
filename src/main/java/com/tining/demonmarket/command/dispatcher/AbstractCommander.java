@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
  */
 public abstract class AbstractCommander {
 
-    private boolean deal(CommandPack commandPack){
+    public boolean deal(CommandPack commandPack){
         CommandSender sender = commandPack.getSender();
         Command command = commandPack.getCommand();
         String label = commandPack.getLabel();
@@ -19,7 +19,5 @@ public abstract class AbstractCommander {
         return solve(sender,command,label,args);
     }
 
-    protected boolean solve(CommandSender sender, Command command, String label, String[] args){
-        return true;
-    }
+    protected abstract boolean solve(CommandSender sender, Command command, String label, String[] args);
 }

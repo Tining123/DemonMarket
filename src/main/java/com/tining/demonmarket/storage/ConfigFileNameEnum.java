@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * 标识价值文件数据库的枚举类
+ * 用于释放文件使用
  * @author tinga
  */
 
@@ -12,19 +13,27 @@ public enum ConfigFileNameEnum {
     /**
      * 价值配置文件
      */
-    WORTH_FILE_NAME("worth.yml"),
+    WORTH_FILE_NAME("worth.yml", "worth"),
     /**
      * NBT价值配置文件
      */
-    NBT_WORTH_FILE_NAME("nbtworth.yml");
+    NBT_WORTH_FILE_NAME("nbtworth.yml","nbtworth"),
+    /**
+     * 商店价值配置文件
+     */
+    SHOP_PRICE_NAME("shop.yml","shop");
 
     /**
      * 路径名称
      */
     private String name;
 
-    ConfigFileNameEnum(String s) {
+    private String rootSection;
+
+
+    ConfigFileNameEnum(String s, String rootSection) {
         this.name = s;
+        this.rootSection = rootSection;
     }
 
     /**
@@ -48,4 +57,13 @@ public enum ConfigFileNameEnum {
     public String getName(){
         return name;
     }
+
+    /**
+     * 通过枚举获得根节点
+     * @return
+     */
+    public String getRootSection(){
+        return rootSection;
+    }
+
 }

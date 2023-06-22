@@ -1,12 +1,14 @@
 package com.tining.demonmarket.storage.bean;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * @author tinga
  */
 @Data
+@EqualsAndHashCode(of = {"type", "info", "name"})
 public class ShopItem {
 
     /**
@@ -17,7 +19,7 @@ public class ShopItem {
     /**
      * 物品本体
      */
-    private transient ItemStack is;
+    private transient ItemStack itemStack;
 
     /**
      * 出售物品类型的名称

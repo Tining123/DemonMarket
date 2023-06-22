@@ -1,5 +1,7 @@
 package com.tining.demonmarket.command;
 
+import com.tining.demonmarket.command.dispatcher.AdminShopNbtSetCommand;
+import com.tining.demonmarket.command.dispatcher.AdminShopSetCommand;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
@@ -25,6 +27,12 @@ public class AdminCommand implements CommandExecutor {
         if (args.length < 1) {
             return false;
         }
+        // 构造参数包
+        CommandPack commandPack = new CommandPack();
+        commandPack.sender = sender;
+        commandPack.command = command;
+        commandPack.label = label;
+        commandPack.args = args;
 
         switch (args[0]) {
             case "nbtset": {
@@ -115,6 +123,12 @@ public class AdminCommand implements CommandExecutor {
                 ConfigReader.reloadConfig();
                 sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]重载成功"));
                 return true;
+            }
+            case "shopset": {
+                return new AdminShopSetCommand().deal(commandPack);
+            }
+            case "shopnbtset": {
+                return new AdminShopNbtSetCommand().deal(commandPack);
             }
             default: {
                 sender.sendMessage(getHelp());

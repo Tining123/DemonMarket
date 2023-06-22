@@ -1,7 +1,9 @@
 package com.tining.demonmarket.storage;
 
 import com.tining.demonmarket.Main;
+import com.tining.demonmarket.common.util.ShopUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
+import com.tining.demonmarket.storage.bean.ShopItem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -54,7 +56,7 @@ public final class ConfigReader {
         try {
             LangReader.reloadLang();
         }catch (Exception ignore){}
-        //重载配置表中的文件
+        //重载配置表中的文件到内存缓存中
         for (ConfigFileNameEnum w : ConfigFileNameEnum.values()) {
             String configName = w.getName();
             FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(ROOT_FOLDER, configName));
@@ -63,6 +65,8 @@ public final class ConfigReader {
         // 重载价格
         WorthUtil.reloadWorth();
         WorthUtil.reloadNBTWorth();
+        // 重载商店
+        ShopUtil.reloadShop();
     }
 
     /**

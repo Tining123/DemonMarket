@@ -35,9 +35,9 @@ public enum ShopItemType {
      * @param s
      * @return
      */
-    public ShopItemType getType(String s) {
+    public static ShopItemType getType(String s) {
         for(ShopItemType w: ShopItemType.values()){
-            if(Objects.equals(s,w)){
+            if(Objects.equals(s,w.getName())){
                 return w;
             }
         }
