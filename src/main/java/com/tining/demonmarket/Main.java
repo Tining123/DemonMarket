@@ -5,12 +5,9 @@ import com.tining.demonmarket.command.AdminCommand;
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.common.ref.Metrics;
 import com.tining.demonmarket.common.ref.Updater;
-import com.tining.demonmarket.event.AcquireListGuiEvent;
-import com.tining.demonmarket.event.CancelCommandEvent;
-import com.tining.demonmarket.event.ChestGuiEvent;
+import com.tining.demonmarket.event.*;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
-import com.tining.demonmarket.event.UpdaterEvent;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
 import com.tining.demonmarket.task.ChestDrawTask;
@@ -101,6 +98,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new AcquireListGuiEvent(), Main.getInstance());
         pm.registerEvents(new UpdaterEvent(), Main.getInstance());
         pm.registerEvents(new CancelCommandEvent(), Main.getInstance());
+        pm.registerEvents(new AdminShopGuiEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {

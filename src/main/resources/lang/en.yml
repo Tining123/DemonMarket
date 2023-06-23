@@ -41,3 +41,8 @@ lang:
   "转账功能已关闭": "This command has been disable"
   "转账金额超过上限，当前上限%s": "Transfer amount exceeds the limitation. The maximum amount is %s"
   "收款成功，从%s收到%s": "%s just pay you $%s"
+  "售价：": "Price:"
+  "点击以编辑顺序": "Click to edit order"
+  "向左移": "Move Left"
+  "向右移": "Move Right"
+  "编辑中": "Editing"

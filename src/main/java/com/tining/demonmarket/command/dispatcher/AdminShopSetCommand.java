@@ -16,11 +16,15 @@ public class AdminShopSetCommand extends AbstractCommander{
             //应该有一个set和一个价格 两个参数
             return false;
         }
+        Player player = (Player) sender;
+        //获取物品名称
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        Material itemToSell = player.getInventory().getItemInMainHand().getType();
         double price = 0.0;
         //校验价值是否合法
         try {
             price = Double.parseDouble(args[1]);
-            if (price < 0) {
+            if (price <= 0) {
                 sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
                 return true;
             }
@@ -28,12 +32,9 @@ public class AdminShopSetCommand extends AbstractCommander{
             sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
             return true;
         }
-        Player player = (Player) sender;
-        //获取物品名称
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-        Material itemToSell = player.getInventory().getItemInMainHand().getType();
 
         ShopUtil.addToCommonPrice(itemStack,price);
+        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
 
         return true;
     }

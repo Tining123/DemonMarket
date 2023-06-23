@@ -72,7 +72,7 @@ public class AcquireListGui {
     /**
      * 收购列表名称
      */
-    private static final String GUI_NAME = "收购列表";
+    public static final String GUI_NAME = "收购列表";
 
     /**
      * 持有者

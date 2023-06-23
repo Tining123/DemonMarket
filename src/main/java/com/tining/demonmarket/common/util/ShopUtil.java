@@ -30,7 +30,7 @@ public class ShopUtil {
      */
     private final static Table<String, String, ShopItem> PRICE_TABLE = HashBasedTable.create();
 
-    private final static List<ShopItem> PRICE_LIST = new ArrayList<>();
+    public final static List<ShopItem> PRICE_LIST = new ArrayList<>();
 
     /**
      * 获取物品价值，如果不存在，返回-1
@@ -126,7 +126,7 @@ public class ShopUtil {
      * @param is
      * @param itemType
      */
-    private static boolean moveUpItem(ItemStack is, ShopItemType itemType){
+    public static boolean moveUpItem(ItemStack is, ShopItemType itemType){
         // 设置物品细节
         ShopItem item = setShopItemProperties(is, itemType);
 
@@ -144,6 +144,7 @@ public class ShopUtil {
                                 return false;
                             }
                             Collections.swap(PRICE_LIST, i, i - 1);
+                            saveAndReloadShop();
                             return true;
                         }
                     }
@@ -160,7 +161,7 @@ public class ShopUtil {
      * @param is
      * @param itemType
      */
-    private static boolean moveDownItem(ItemStack is, ShopItemType itemType){
+    public static boolean moveDownItem(ItemStack is, ShopItemType itemType){
         // 设置物品细节
         ShopItem item = setShopItemProperties(is, itemType);
 
@@ -178,6 +179,7 @@ public class ShopUtil {
                                 return false;
                             }
                             Collections.swap(PRICE_LIST, i, i + 1);
+                            saveAndReloadShop();
                             return true;
                         }
                     }
@@ -265,7 +267,7 @@ public class ShopUtil {
      * @return 商店物品总价值表
      */
     public static void reloadShop() {
-        log.info("【DemonMarket】Loading shop price list");
+        // log.info("【DemonMarket】Loading shop price list");
         FileConfiguration config = getShopConfig();
         List<ShopItem> shopItemList = new ArrayList<>();
         List<Map<?,?>> sourceList = config.getMapList(ConfigFileNameEnum.SHOP_PRICE_NAME.getRootSection());
@@ -283,14 +285,33 @@ public class ShopUtil {
             PRICE_LIST.clear();
             PRICE_LIST.addAll(shopItemList);
             // 补充信息
-            for(ShopItem shopItem : shopItemList){
+            for(int i = 0 ; i < PRICE_LIST.size(); i ++){
+                ShopItem shopItem  = PRICE_LIST.get(i);
                 shopItem.setItemType(ShopItemType.getType(shopItem.getType()));
                 shopItem.setItemStack(getItem(shopItem.getName(), shopItem.getInfo(), shopItem.getItemType()));
+                // 过滤异常物品
+                if(Objects.isNull(shopItem.getItemStack())){
+                    PRICE_LIST.remove(i);
+                    i--;
+                    continue;
+                }
                 // 同时构建table
                 PRICE_TABLE.put(shopItem.getName(),shopItem.getInfo(), shopItem);
             }
         }
         log.info("【DemonMarket】Shop price list loaded");
+    }
+
+    /**
+     * 根据下标获取物品
+     * @param index
+     * @return
+     */
+    public static ShopItem getShopItem(int index){
+        if(index < 0 || index >= PRICE_LIST.size()){
+            return null;
+        }
+        return PRICE_LIST.get(index);
     }
 
     /**
@@ -363,4 +384,5 @@ public class ShopUtil {
     private static FileConfiguration getShopConfig() {
         return ConfigReader.getConfigMap().get(ConfigFileNameEnum.SHOP_PRICE_NAME.getName());
     }
+
 }

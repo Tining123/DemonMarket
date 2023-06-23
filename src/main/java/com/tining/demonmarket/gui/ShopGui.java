@@ -69,7 +69,7 @@ public class ShopGui {
     /**
      * 收购列表名称
      */
-    private static final String GUI_NAME = "出售列表";
+    private static final String GUI_NAME = "商店列表";
 
     /**
      * 持有者

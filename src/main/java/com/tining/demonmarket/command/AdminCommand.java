@@ -1,5 +1,6 @@
 package com.tining.demonmarket.command;
 
+import com.tining.demonmarket.command.dispatcher.AdminShopCommand;
 import com.tining.demonmarket.command.dispatcher.AdminShopNbtSetCommand;
 import com.tining.demonmarket.command.dispatcher.AdminShopSetCommand;
 import com.tining.demonmarket.common.util.LangUtil;
@@ -129,6 +130,9 @@ public class AdminCommand implements CommandExecutor {
             }
             case "shopnbtset": {
                 return new AdminShopNbtSetCommand().deal(commandPack);
+            }
+            case "shop":{
+                return new AdminShopCommand().deal(commandPack);
             }
             default: {
                 sender.sendMessage(getHelp());

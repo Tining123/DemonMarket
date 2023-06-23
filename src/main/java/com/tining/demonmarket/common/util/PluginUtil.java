@@ -4,16 +4,21 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.ref.JsonItemStack;
+import com.tining.demonmarket.common.ref.Vault;
+import com.tining.demonmarket.common.util.bean.Lore;
+import com.tining.demonmarket.economy.MarketEconomy;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.collections.CollectionUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -54,6 +59,30 @@ public class PluginUtil {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+
+    /**
+     * 为一个物品添加lore
+     * @param is
+     * @param loreList
+     * @return
+     */
+    public static ItemStack addColorLore(ItemStack is, List<Lore> loreList) {
+
+        List<String> lore = is.getItemMeta().getLore();
+        if(CollectionUtils.isEmpty(lore)){
+            lore = new ArrayList<>();
+        }
+
+        for(Lore tempLore: loreList){
+            lore.add(tempLore.getChatColor() + tempLore.getLore());
+        }
+
+        ItemMeta itemMeta = is.getItemMeta();
+        itemMeta.setLore(lore);
+        is.setItemMeta(itemMeta);
+        return is;
     }
 
     /**
