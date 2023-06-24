@@ -56,12 +56,13 @@ public class AdminShopGuiEvent implements Listener {
             Player player = (Player) e.getWhoClicked();
 
             if (AdminShopGui.isAdminShopGui(player) || Objects.equals(LangUtil.get(AdminShopGui.GUI_NAME), e.getView().getTitle())) {
-                if(Objects.equals(e.getSlot(),AdminShopGui.PAGE_SIGN_INDEX)){
+                if(Objects.equals(e.getSlot(),AdminShopGui.PAGE_SIGN_INDEX) && !Objects.equals(player.getInventory(),e.getClickedInventory())){
                     AdminShopGui.removeEditingItem(e.getInventory(), e.getSlot(), player);
                 }
-                else if(e.getSlot() < AdminShopGui.VIEW_SIZE){
+                else if(e.getSlot() < AdminShopGui.VIEW_SIZE && !Objects.equals(player.getInventory(),e.getClickedInventory())){
                     AdminShopGui.setEditingItem(e.getInventory(), e.getSlot(), player);
-                }else if(e.getSlot() == AdminShopGui.LEFT_MOVE_ARROW_INDEX || e.getSlot() == AdminShopGui.RIGHT_MOVE_ARROW_INDEX){
+                }else if(e.getSlot() == AdminShopGui.LEFT_MOVE_ARROW_INDEX || e.getSlot() == AdminShopGui.RIGHT_MOVE_ARROW_INDEX
+                        && !Objects.equals(player.getInventory(),e.getClickedInventory())){
                     AdminShopGui.moveEditingItem(e.getInventory(), e.getSlot(), player);
                 }else{
                     AdminShopGui.turnPage(e.getInventory(), e.getSlot(), player);
