@@ -15,6 +15,9 @@ BasicProperty: 500000
 #Enable and make the numbers approximate(shorter and easier to read)
 Round: true
 
+#Enable progressive tax rate
+enable-demon-tax: true
+
 # For SlimeFun Plugin
 # Enable this option to block any items with lore being sold
 # Attention, this might cause the NBT support disable

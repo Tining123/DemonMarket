@@ -57,6 +57,7 @@ Set diamond block with $440.
 + OP: The tax beneficiary. If you don't want to use it, just leave it blank.
 + BasicProperty: The average balance of single player in mathematical expectation.
 + Round: Enable and make the numbers approximate(shorter and easier to read)
++ enable-demon-tax: Enable progressive tax rate, the most basic function of this plugin
 + Fitler: For SlimeFun Plugin. Enable this option to block any items with lore being sold. Attention, this might cause the NBT support disable
 + disable-pay: Enable this option to prevent user from paying others by using ess or others plugin.
 + disable-pay-list: Set the paying command you want to block.
@@ -67,6 +68,7 @@ Set diamond block with $440.
 + payer-tax: whether the payer pays the transfer tax (the tax payed by the receiver in default)
 + auto-refresh: Enable to auto refresh the price in gui
 + auto-refresh-gap: Refresh interval (second per time)
++ disable-shop: Disable mt shop command.
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
 

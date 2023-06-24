@@ -40,7 +40,11 @@ public class MarketEconomy {
 
         while (count > 0) {
             count--;
-            onePrice = MathUtil.priceDownByProperty(value, money, ConfigReader.getBasicProperty());
+            if(ConfigReader.getEnableDemonTax()){
+                onePrice = MathUtil.priceDownByProperty(value, money, ConfigReader.getBasicProperty());
+            }else{
+                onePrice = value;
+            }
             price += onePrice;
             money += onePrice;
         }

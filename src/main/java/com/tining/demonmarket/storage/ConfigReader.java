@@ -258,10 +258,16 @@ public final class ConfigReader {
      */
     public static int getAutoRefreshInterval(){return ConfigReader.config.getInt("auto-refresh-gap") * 20;}
 
-
     /**
      * 获取是否禁用商品
      * @return
      */
     public static boolean getDisableShop(){return ConfigReader.config.getBoolean("disable-shop");}
+
+
+    /**
+     * 获取是否启用恶魔税率
+     * @return
+     */
+    public static boolean getEnableDemonTax(){return ConfigReader.config.getBoolean("enable-demon-tax");}
 }

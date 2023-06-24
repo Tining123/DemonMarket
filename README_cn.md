@@ -13,6 +13,7 @@
 + /mt sell all 卖掉背包里和手中同样的所有东西
 + /mt price 预估手中物品的出售收益
 + /mt help 查看帮助
++ /mt shop 打开商店进行购买
 
 可用别名：dm,dmt,demonmarket
 
@@ -22,7 +23,9 @@
 + /mtadmin name 查看手中物品在配置中的名称
 + /mtadmin nbt 查看手中物品在配置中的nbt明细
 + /mtadmin reload 重载插件配置
-
++ /mtadmin shopset [price] - 将手中的物品添加到商店
++ /mtadmin shopnbtset [price] - 将手中的nbt物品添加到商店
++ /mtadmin shop - 打开商店管理面板
 可用别名：dmadmin,dmtadmin,demonmarketadmin
 
 ## 使用效果
@@ -40,6 +43,7 @@
 + TaxRate: 税率，是经过收敛公式之后，在进行一次税率收取。默认千分之5，
 + OP: 服主，或者指定税率受益人。所有税收会打入这个玩家的账户。不想使用可以留空。
 + BasicProperty: 资产基线，最重要的配置。指定期望平均单个玩家持有的储蓄金额。可以根据服务器自身情况增加或者降低。当前默认50万。
++ enable-demon-tax: 禁用恶魔税率
 + Round: 是否开启小数点后两位近似功能
 + Fitler: 此功能针对粘液科技等其他插件，这些插件可能发放带有功能性的原版物品，启用该功能将禁止销售手中的这些特殊物品。
 + disable-pay: 默认开启，禁止试用其他插件的pay.
@@ -51,6 +55,7 @@
 + payer-tax: 是否由付款人支付转账税款（默认由接收人所受金额扣除）
 + auto-refresh: 是否开启自动刷新结算价格
 + auto-refresh-gap: 自动刷间隔（秒）
++ disable-shop: 禁用商店
 ## 理论支持
 以下为计算价格的实际公式。 其中
 + price=物品设定价格
