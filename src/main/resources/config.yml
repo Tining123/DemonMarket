@@ -52,3 +52,6 @@ payer-tax: false
 # enable to auto refresh the price in gui(second per time)
 auto-refresh: true
 auto-refresh-gap: 1
+
+# disable mt shop command.
+disable-shop: false

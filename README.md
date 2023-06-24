@@ -18,6 +18,7 @@ By using a convergence function based on the player's assets, items sold by the 
 + /mt pay - Pay someone money
 + /mt price - Check the price
 + /mt help - Check helps
++ /mt shop - Buy stuff from shop
 
 Also ：dm, dmt, demonmarket
 
@@ -27,6 +28,9 @@ Also ：dm, dmt, demonmarket
 + /mtadmin name - Check name info
 + /mtadmin nbt - Check nbt info
 + /mtadmin reload - Reload plugin
++ /mtadmin shopset [price] - Set price for the item in the shop
++ /mtadmin shopnbtset [price] - Set price for the nbt item in the shop
++ /mtadmin shop - Shop management panel
 
 Also ：dmadmin, dmtadmin, demonmarketadmin
 

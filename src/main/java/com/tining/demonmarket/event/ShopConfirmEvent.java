@@ -1,25 +1,25 @@
 package com.tining.demonmarket.event;
 
 import com.tining.demonmarket.common.util.LangUtil;
-import com.tining.demonmarket.gui.AdminShopGui;
+import com.tining.demonmarket.gui.ShopConfirmGui;
 import com.tining.demonmarket.gui.ShopGui;
+import com.tining.demonmarket.storage.bean.ShopItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 
 import java.util.Objects;
 
 /**
- * 商店管理员事件
+ * 购买确认事件
  * @author tinga
  */
-public class AdminShopGuiEvent implements Listener {
+public class ShopConfirmEvent implements Listener {
+
     /**
      * 关闭时取消注册并结算
      *
@@ -29,7 +29,7 @@ public class AdminShopGuiEvent implements Listener {
     public void close(InventoryCloseEvent e) {
         if (e.getPlayer() instanceof Player) {
             Player player = (Player) e.getPlayer();
-            AdminShopGui.unRegisterAdminShopGui(player);
+            ShopConfirmGui.unRegisterShopConfirmGui(player);
         }
 
     }
@@ -43,7 +43,7 @@ public class AdminShopGuiEvent implements Listener {
     @EventHandler
     public void close(PlayerQuitEvent e) {
         Player player = (Player) e.getPlayer();
-        AdminShopGui.unRegisterAdminShopGui(player);
+        ShopConfirmGui.unRegisterShopConfirmGui(player);
     }
 
     /**
@@ -54,22 +54,18 @@ public class AdminShopGuiEvent implements Listener {
     public void disableMove(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
+            if (ShopConfirmGui.isShopConfirmGui(player) || Objects.equals(LangUtil.get(ShopConfirmGui.GUI_NAME), e.getView().getTitle())) {
+                ShopItem shopItem = ShopConfirmGui.getMyShopConfirmGui(player).getShopItem();
+                int amount = ShopConfirmGui.getMyShopConfirmGui(player).getStackNum();
 
-            if (AdminShopGui.isAdminShopGui(player) || Objects.equals(LangUtil.get(AdminShopGui.GUI_NAME), e.getView().getTitle())) {
-                if(Objects.equals(e.getSlot(),AdminShopGui.PAGE_SIGN_INDEX)){
-                    AdminShopGui.removeEditingItem(e.getInventory(), e.getSlot(), player);
-                }
-                else if(e.getSlot() < AdminShopGui.VIEW_SIZE){
-                    AdminShopGui.setEditingItem(e.getInventory(), e.getSlot(), player);
-                }else if(e.getSlot() == AdminShopGui.LEFT_MOVE_ARROW_INDEX || e.getSlot() == AdminShopGui.RIGHT_MOVE_ARROW_INDEX){
-                    AdminShopGui.moveEditingItem(e.getInventory(), e.getSlot(), player);
-                }else{
-                    AdminShopGui.turnPage(e.getInventory(), e.getSlot(), player);
+                if(Objects.nonNull(e.getCurrentItem()) && Objects.nonNull(e.getCurrentItem().getItemMeta())) {
+                    ShopConfirmGui.makeDecesion(player, shopItem, amount,
+                            e.getSlot(), e.getCurrentItem().getItemMeta().getDisplayName());
+
                 }
                 e.setCancelled(true);
             }
         }
     }
-
 
 }

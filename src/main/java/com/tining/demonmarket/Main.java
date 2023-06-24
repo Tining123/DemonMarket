@@ -8,6 +8,7 @@ import com.tining.demonmarket.common.ref.Updater;
 import com.tining.demonmarket.event.*;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.ref.JsonItemStack;
+import com.tining.demonmarket.gui.ShopGui;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
 import com.tining.demonmarket.task.ChestDrawTask;
@@ -99,6 +100,8 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new UpdaterEvent(), Main.getInstance());
         pm.registerEvents(new CancelCommandEvent(), Main.getInstance());
         pm.registerEvents(new AdminShopGuiEvent(), Main.getInstance());
+        pm.registerEvents(new ShopGuiEvent(), Main.getInstance());
+        pm.registerEvents(new ShopConfirmEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {

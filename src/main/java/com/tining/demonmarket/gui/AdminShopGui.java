@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +29,7 @@ public class AdminShopGui {
     /**
      * 当前开启的菜单
      */
-    private static final Map<UUID, AdminShopGui> MENU_OPENING = new HashMap();
+    private static final Map<UUID, AdminShopGui> MENU_OPENING = new ConcurrentHashMap();
 
     /**
      * 管理员当前编辑对象
@@ -56,19 +57,19 @@ public class AdminShopGui {
     private static final Integer RIGHT_ARROW_INDEX = 53;
 
     /**
-     * 向右翻页占位坐标
+     * 向右移动坐标
      */
-    private static final Integer LEFT_MOVE_ARROW_INDEX = 48;
+    public static final Integer LEFT_MOVE_ARROW_INDEX = 48;
 
     /**
-     * 向左翻页占位坐标
+     * 向左移动坐标
      */
-    private static final Integer RIGHT_MOVE_ARROW_INDEX = 50;
+    public static final Integer RIGHT_MOVE_ARROW_INDEX = 50;
 
     /**
      * 页码占位坐标
      */
-    private static final Integer PAGE_SIGN_INDEX = 49;
+    public static final Integer PAGE_SIGN_INDEX = 49;
 
     /**
      * 占位符图标
@@ -195,8 +196,8 @@ public class AdminShopGui {
                 editingItem.setItemMeta(midItemMeta);
 
                 Lore lore = Lore.builder()
-                        .lore(LangUtil.get("编辑中"))
-                        .chatColor(ChatColor.YELLOW)
+                        .lore(LangUtil.get("单击以删除该物品"))
+                        .chatColor(ChatColor.RED)
                         .build();
                 PluginUtil.addColorLore(editingItem, Collections.singletonList(lore));
 
@@ -235,6 +236,15 @@ public class AdminShopGui {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取玩家打开的界面
+     * @param player
+     * @return
+     */
+    public static AdminShopGui getMyShopGui(Player player){
+        return MENU_OPENING.getOrDefault(player.getUniqueId(), null);
     }
 
     /**
@@ -311,6 +321,30 @@ public class AdminShopGui {
                 EDITING_ITEM.put(player.getUniqueId(), index + 1);
             }else{
                 return;
+            }
+
+            drawPage(inventory, page - 1, player);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 删除正在编辑的物品
+     * @param inventory
+     * @param slot
+     * @param player
+     */
+    public static void removeEditingItem(Inventory inventory, int slot, Player player){
+        try {
+            ItemStack itemStack = inventory.getItem(PAGE_SIGN_INDEX);
+            String name = itemStack.getItemMeta().getDisplayName();
+            int page = Integer.parseInt(name.replace("<", "").replace(">", "").trim());
+
+            int index = EDITING_ITEM.get(player.getUniqueId());
+            ShopItem shopItem = ShopUtil.getShopItem(index);
+            if(slot == PAGE_SIGN_INDEX && Objects.nonNull(shopItem)){
+                ShopUtil.removeFromShop(shopItem.getItemStack(), shopItem.getItemType());
+                EDITING_ITEM.remove(player.getUniqueId());
             }
 
             drawPage(inventory, page - 1, player);

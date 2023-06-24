@@ -5,6 +5,7 @@ import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
+import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,15 +20,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 收购箱
  */
+@Data
 public class AcquireListGui {
     /**
      * 当前开启的菜单
      */
-    private static final Map<UUID, AcquireListGui> MENU_OPENING = new HashMap();
+    private static final Map<UUID, AcquireListGui> MENU_OPENING = new ConcurrentHashMap();
 
     /**
      * 单页大小
@@ -197,6 +200,15 @@ public class AcquireListGui {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取玩家打开的界面
+     * @param player
+     * @return
+     */
+    public static AcquireListGui getMyAcquireListGui(Player player){
+        return MENU_OPENING.getOrDefault(player.getUniqueId(), null);
     }
 
     /**

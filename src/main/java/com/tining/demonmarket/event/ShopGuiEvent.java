@@ -1,8 +1,9 @@
 package com.tining.demonmarket.event;
 
 import com.tining.demonmarket.common.util.LangUtil;
-import com.tining.demonmarket.gui.AdminShopGui;
+import com.tining.demonmarket.gui.ShopConfirmGui;
 import com.tining.demonmarket.gui.ShopGui;
+import com.tining.demonmarket.storage.bean.ShopItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,10 +17,10 @@ import org.bukkit.inventory.Inventory;
 import java.util.Objects;
 
 /**
- * 商店管理员事件
+ * 商店页面
  * @author tinga
  */
-public class AdminShopGuiEvent implements Listener {
+public class ShopGuiEvent implements Listener {
     /**
      * 关闭时取消注册并结算
      *
@@ -29,7 +30,7 @@ public class AdminShopGuiEvent implements Listener {
     public void close(InventoryCloseEvent e) {
         if (e.getPlayer() instanceof Player) {
             Player player = (Player) e.getPlayer();
-            AdminShopGui.unRegisterAdminShopGui(player);
+            ShopGui.unRegisterShopGui(player);
         }
 
     }
@@ -43,7 +44,7 @@ public class AdminShopGuiEvent implements Listener {
     @EventHandler
     public void close(PlayerQuitEvent e) {
         Player player = (Player) e.getPlayer();
-        AdminShopGui.unRegisterAdminShopGui(player);
+        ShopGui.unRegisterShopGui(player);
     }
 
     /**
@@ -55,21 +56,19 @@ public class AdminShopGuiEvent implements Listener {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
 
-            if (AdminShopGui.isAdminShopGui(player) || Objects.equals(LangUtil.get(AdminShopGui.GUI_NAME), e.getView().getTitle())) {
-                if(Objects.equals(e.getSlot(),AdminShopGui.PAGE_SIGN_INDEX)){
-                    AdminShopGui.removeEditingItem(e.getInventory(), e.getSlot(), player);
+            if (ShopGui.isShopGui(player) || Objects.equals(LangUtil.get(ShopGui.GUI_NAME), e.getView().getTitle())) {
+                if(e.getSlot() < ShopGui.VIEW_SIZE && !Objects.equals(player.getInventory(),e.getClickedInventory())) {
+                    ShopItem shopItem = ShopGui.getConfirmItem(e.getInventory(), e.getSlot(), player);
+                    player.closeInventory();
+                    ShopGui.unRegisterShopGui(player);
+                    ShopConfirmGui.getShopConfirmGui(player, shopItem,1);
                 }
-                else if(e.getSlot() < AdminShopGui.VIEW_SIZE){
-                    AdminShopGui.setEditingItem(e.getInventory(), e.getSlot(), player);
-                }else if(e.getSlot() == AdminShopGui.LEFT_MOVE_ARROW_INDEX || e.getSlot() == AdminShopGui.RIGHT_MOVE_ARROW_INDEX){
-                    AdminShopGui.moveEditingItem(e.getInventory(), e.getSlot(), player);
-                }else{
-                    AdminShopGui.turnPage(e.getInventory(), e.getSlot(), player);
+                else{
+                    ShopGui.turnPage(e.getInventory(), e.getSlot(), player);
                 }
                 e.setCancelled(true);
             }
         }
     }
-
 
 }

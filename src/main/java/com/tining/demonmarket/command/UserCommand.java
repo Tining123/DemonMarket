@@ -1,6 +1,7 @@
 package com.tining.demonmarket.command;
 
 import com.google.common.base.Strings;
+import com.tining.demonmarket.command.dispatcher.ShopCommand;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
@@ -44,6 +45,13 @@ public class UserCommand implements CommandExecutor {
             // 参数数量太少，拒绝处理
             return false;
         }
+
+        // 构造参数包
+        CommandPack commandPack = new CommandPack();
+        commandPack.sender = sender;
+        commandPack.command = command;
+        commandPack.label = label;
+        commandPack.args = args;
 
         Player player = (Player) sender;
         ItemStack itemStack = player.getInventory().getItemInMainHand();
@@ -191,6 +199,10 @@ public class UserCommand implements CommandExecutor {
                 AcquireListGui.getAcquireListGui(player);
                 return true;
             }
+            case "shop": {
+                new ShopCommand().deal(commandPack);
+                return true;
+            }
             default: {
                 sender.sendMessage(getHelp());
                 return true;
@@ -237,13 +249,14 @@ public class UserCommand implements CommandExecutor {
      *
      * @return
      */
-    private String getHelp() {
+    public static String getHelp() {
         String help = LangUtil.get("/mt gui 打开收购箱界面\n") +
                 LangUtil.get("/mt list 查看所有可出售物品") + "\n" +
                 LangUtil.get("/mt pay [玩家] [金额]") + "\n" +
                 LangUtil.get("/mt sell 出售手里的物品\n") +
                 LangUtil.get("/mt sell all 出售背包里当前所有与手中相同的物品\n") +
-                LangUtil.get("/mt price 查询物品当前价格");
+                LangUtil.get("/mt price 查询物品当前价格") +
+                LangUtil.get("/mt shop 打开物品商店");
         return help;
     }
 }

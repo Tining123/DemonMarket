@@ -252,5 +252,16 @@ public final class ConfigReader {
      */
     public static boolean getEnableAutoRefresh(){return ConfigReader.config.getBoolean("auto-refresh");}
 
+    /**
+     * 自动刷新间隔
+     * @return
+     */
     public static int getAutoRefreshInterval(){return ConfigReader.config.getInt("auto-refresh-gap") * 20;}
+
+
+    /**
+     * 获取是否禁用商品
+     * @return
+     */
+    public static boolean getDisableShop(){return ConfigReader.config.getBoolean("disable-shop");}
 }

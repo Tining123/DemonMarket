@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -30,7 +31,7 @@ public class ShopUtil {
      */
     private final static Table<String, String, ShopItem> PRICE_TABLE = HashBasedTable.create();
 
-    public final static List<ShopItem> PRICE_LIST = new ArrayList<>();
+    public final static List<ShopItem> PRICE_LIST = new CopyOnWriteArrayList<>();
 
     /**
      * 获取物品价值，如果不存在，返回-1
@@ -196,7 +197,7 @@ public class ShopUtil {
      * @param is
      * @param itemType
      */
-    private static boolean removeFromPrice(ItemStack is, ShopItemType itemType){
+    public static boolean removeFromShop(ItemStack is, ShopItemType itemType){
         // 设置物品细节
         ShopItem item = setShopItemProperties(is, itemType);
 
