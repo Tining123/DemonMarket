@@ -300,7 +300,7 @@ public class ShopUtil {
                 PRICE_TABLE.put(shopItem.getName(),shopItem.getInfo(), shopItem);
             }
         }
-        log.info("【DemonMarket】Shop price list loaded");
+        // log.info("【DemonMarket】Shop price list loaded");
     }
 
     /**

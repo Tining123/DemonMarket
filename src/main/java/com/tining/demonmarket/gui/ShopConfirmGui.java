@@ -193,13 +193,21 @@ public class ShopConfirmGui {
                 double totalPrice = amount * shopItem.getPrice();
                 // 检测余额
                 if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + totalPrice);
+
+                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice));
                     return;
                 }
-                // 扣费
-                Vault.subtractCurrency(player.getUniqueId(), totalPrice);
-                // 发送物品
-                BukkitUtil.returnItem(player, shopItem.getItemStack().clone());
+                // 发货
+                for(int i = 0 ; i < amount;i++){
+                    if (Vault.checkCurrency(player.getUniqueId()) < shopItem.getPrice()) {
+                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + String.format("%.2f", shopItem.getPrice()));
+                        return;
+                    }
+                    // 扣费
+                    Vault.subtractCurrency(player.getUniqueId(), shopItem.getPrice());
+                    // 发送物品
+                    BukkitUtil.returnItem(player, shopItem.getItemStack().clone());
+                }
                 player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + totalPrice);
             }
             return;

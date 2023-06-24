@@ -255,7 +255,7 @@ public class UserCommand implements CommandExecutor {
                 LangUtil.get("/mt pay [玩家] [金额]") + "\n" +
                 LangUtil.get("/mt sell 出售手里的物品\n") +
                 LangUtil.get("/mt sell all 出售背包里当前所有与手中相同的物品\n") +
-                LangUtil.get("/mt price 查询物品当前价格") +
+                LangUtil.get("/mt price 查询物品当前价格\n") +
                 LangUtil.get("/mt shop 打开物品商店");
         return help;
     }
