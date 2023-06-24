@@ -8,6 +8,8 @@ By using a convergence function based on the player's assets, items sold by the 
 #### You could turn this off in config.yml.
 
 ![GUI操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/gui_thumb2.gif)
+![Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/adminshop-min.gif)
+![管理员Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/shop-min.gif)
 
 ## Usage
 #### Players could use /demonmarket or /mt

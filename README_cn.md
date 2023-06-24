@@ -5,6 +5,8 @@
 通过基于玩家资产的收敛函数，玩家出售物品会逐渐缓步的贬值。在达到指定基线后物品迅速贬值，并且逐步趋减趋近于0但不会到达0。使用这种手段，在玩家初期进入就能开始适应物价收敛，并且可以有效遏制服务器寡头玩家的资产进一步膨胀。
 
 ![GUI操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/gui_thumb2.gif)
+![Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/adminshop-min.gif)
+![管理员Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/shop-min.gif)
 
 ## 使用方法
 #### 使用用户命令/demonmarket 命令简写为/mt
