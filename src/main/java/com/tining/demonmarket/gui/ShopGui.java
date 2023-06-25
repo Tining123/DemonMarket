@@ -141,12 +141,7 @@ public class ShopGui {
                     .lore(LangUtil.get("售价：") + shopItem.getPrice())
                     .chatColor(ChatColor.YELLOW)
                     .build();
-            Lore constLore = Lore.builder()
-                    .lore(LangUtil.get("点击以编辑顺序") + shopItem.getPrice())
-                    .chatColor(ChatColor.WHITE)
-                    .build();
             PluginUtil.addColorLore(itemStack, Collections.singletonList(lore));
-            PluginUtil.addColorLore(itemStack, Collections.singletonList(constLore));
             list.add(itemStack);
         }
 

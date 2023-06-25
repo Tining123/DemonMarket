@@ -144,7 +144,7 @@ public class AdminShopGui {
                     .chatColor(ChatColor.YELLOW)
                     .build();
             Lore constLore = Lore.builder()
-                    .lore(LangUtil.get("点击以编辑顺序") + shopItem.getPrice())
+                    .lore(LangUtil.get("点击以编辑顺序"))
                     .chatColor(ChatColor.WHITE)
                     .build();
             PluginUtil.addColorLore(itemStack, Collections.singletonList(lore));
