@@ -63,26 +63,4 @@ public class AcquireListGuiEvent implements Listener {
             }
         }
     }
-
-    /**
-     * 防止物品被放入商店列表
-     * @param e
-     */
-    @EventHandler(priority = EventPriority.LOW)
-    public void disableMove(InventoryMoveItemEvent e) {
-        Inventory source = e.getSource();
-        Inventory destination = e.getDestination();
-
-        // 获取触发移动事件的玩家
-        Player player = (Player) e.getInitiator();
-        AcquireListGui acquireListGui = AcquireListGui.getMyAcquireListGui(player);
-
-        if(Objects.nonNull(acquireListGui) && Objects.nonNull(acquireListGui.getInventory())){
-            Inventory shopInventory = acquireListGui.getInventory();
-            // 如果目标活源头是商店背包，返回
-            if(destination.equals(shopInventory) || source.equals(shopInventory)){
-                e.setCancelled(true);
-            }
-        }
-    }
 }
