@@ -2,25 +2,30 @@ package com.tining.demonmarket.command.dispatcher;
 
 import com.tining.demonmarket.command.UserCommand;
 import com.tining.demonmarket.common.util.LangUtil;
-import com.tining.demonmarket.gui.AdminShopGui;
-import com.tining.demonmarket.gui.ShopGui;
+import com.tining.demonmarket.common.util.MarketUtil;
+import com.tining.demonmarket.gui.MarketGui;
 import com.tining.demonmarket.storage.ConfigReader;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.util.Objects;
 
 /**
- * 商店相关指令
  * @author tinga
  */
-public class ShopCommand extends AbstractCommander{
+public class AdminMarketCommand extends AbstractCommander{
     @Override
     protected boolean solve(CommandSender sender, Command command, String label, String[] args) {
-        if(ConfigReader.getDisableShop()){
-            sender.sendMessage(LangUtil.get("商店已经被禁用"));
+        Player player = (Player) sender;
+        if(args.length == 1){
+            MarketGui.getMarketGui((Player)sender);
             return true;
         }
-        ShopGui.getShopGui((Player)sender);
+        sender.sendMessage(UserCommand.getHelp());
         return true;
     }
 }

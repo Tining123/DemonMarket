@@ -4,11 +4,8 @@ import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
-import com.tining.demonmarket.common.util.ShopUtil;
-import com.tining.demonmarket.common.util.bean.Lore;
 import com.tining.demonmarket.storage.bean.ShopItem;
 import lombok.Data;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -171,7 +168,7 @@ public class ShopConfirmGui {
      * @param shopItem
      * @param slot
      */
-    public static void makeDecesion(Player player, ShopItem shopItem, int amount, int slot, String displayName){
+    public static void makeDecision(Player player, ShopItem shopItem, int amount, int slot, String displayName){
         if(!isDisplayNameValid(displayName)){
             return;
         }
@@ -189,7 +186,6 @@ public class ShopConfirmGui {
                 ShopConfirmGui.unRegisterShopConfirmGui(player);
                 ShopGui.getShopGui(player);
             }else if(slot == CONFIRM_SIGN_INDEX){
-                // TODO: 进行购买
                 double totalPrice = amount * shopItem.getPrice();
                 // 检测余额
                 if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {

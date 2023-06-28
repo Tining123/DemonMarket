@@ -58,3 +58,12 @@ auto-refresh-gap: 1
 
 # disable mt shop command.
 disable-shop: false
+
+# disable mt market command.
+market.disable-market: false
+# Maximum number of user listings
+market.max-user-sell: 30
+# Handling fee for players selling items, percentage
+market.sell-tax-rate: 0.0
+# disable demon tax in market profit
+market.diasble-demon-tax: false

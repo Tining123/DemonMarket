@@ -7,8 +7,7 @@ import com.tining.demonmarket.common.ref.Metrics;
 import com.tining.demonmarket.common.ref.Updater;
 import com.tining.demonmarket.event.*;
 import com.tining.demonmarket.common.ref.Vault;
-import com.tining.demonmarket.common.ref.JsonItemStack;
-import com.tining.demonmarket.gui.ShopGui;
+import com.tining.demonmarket.gui.MarketConfirmGui;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LangReader;
 import com.tining.demonmarket.task.ChestDrawTask;
@@ -72,6 +71,7 @@ public class Main extends JavaPlugin {
         int pluginId = 14142;
         Metrics metrics = new Metrics(this, pluginId);
 
+        // 批量注册时间
         registerEvent();
 
         Updater.checkUpdate();
@@ -101,7 +101,12 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new CancelCommandEvent(), Main.getInstance());
         pm.registerEvents(new AdminShopGuiEvent(), Main.getInstance());
         pm.registerEvents(new ShopGuiEvent(), Main.getInstance());
-        pm.registerEvents(new ShopConfirmEvent(), Main.getInstance());
+        pm.registerEvents(new ShopConfirmGuiEvent(), Main.getInstance());
+        pm.registerEvents(new MarketGuiEvent(), Main.getInstance());
+        pm.registerEvents(new MarketConfirmGuiEvent(), Main.getInstance());
+
+        pm.registerEvents(new AdminMarketGuiEvent(), Main.getInstance());
+        pm.registerEvents(new AdminMarketConfirmGuiEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {

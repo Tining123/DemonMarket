@@ -2,7 +2,6 @@ package com.tining.demonmarket.event;
 
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.gui.ShopConfirmGui;
-import com.tining.demonmarket.gui.ShopGui;
 import com.tining.demonmarket.storage.bean.ShopItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,7 @@ import java.util.Objects;
  * 购买确认事件
  * @author tinga
  */
-public class ShopConfirmEvent implements Listener {
+public class ShopConfirmGuiEvent implements Listener {
 
     /**
      * 关闭时取消注册并结算
@@ -59,7 +58,7 @@ public class ShopConfirmEvent implements Listener {
                 int amount = ShopConfirmGui.getMyShopConfirmGui(player).getStackNum();
 
                 if(Objects.nonNull(e.getCurrentItem()) && Objects.nonNull(e.getCurrentItem().getItemMeta())) {
-                    ShopConfirmGui.makeDecesion(player, shopItem, amount,
+                    ShopConfirmGui.makeDecision(player, shopItem, amount,
                             e.getSlot(), e.getCurrentItem().getItemMeta().getDisplayName());
 
                 }

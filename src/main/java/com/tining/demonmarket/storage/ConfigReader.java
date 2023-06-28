@@ -1,6 +1,7 @@
 package com.tining.demonmarket.storage;
 
 import com.tining.demonmarket.Main;
+import com.tining.demonmarket.common.util.MarketUtil;
 import com.tining.demonmarket.common.util.ShopUtil;
 import com.tining.demonmarket.common.util.WorthUtil;
 import com.tining.demonmarket.storage.bean.ShopItem;
@@ -67,6 +68,8 @@ public final class ConfigReader {
         WorthUtil.reloadNBTWorth();
         // 重载商店
         ShopUtil.reloadShop();
+        // 重载市场
+        MarketUtil.reloadMarket();
     }
 
     /**
@@ -270,4 +273,36 @@ public final class ConfigReader {
      * @return
      */
     public static boolean getEnableDemonTax(){return ConfigReader.config.getBoolean("enable-demon-tax");}
+
+    /**
+     * 获取用户最大上架数量
+     * @return
+     */
+    public static int getMaxUserSell(){
+
+        if(ConfigReader.config.contains("market.enable-demon-tax")) {
+            return ConfigReader.config.getInt("market.enable-demon-tax");
+        }else{
+            return 30;
+        }
+    }
+
+    /**
+     * 获取是否启用市场
+     * @return
+     */
+    public static boolean getDisableMarket(){return ConfigReader.config.getBoolean("market.disable-market");}
+
+    /**
+     * 获取卖家税
+     * @return
+     */
+    public static double getSellTaxRate(){return ConfigReader.config.getDouble("market.sell-tax-rate");}
+
+    /**
+     * 获取是否禁用上架物品的恶魔税
+     * @return
+     */
+    public static boolean getDisableMarketDemonMarket(){return ConfigReader.config.getBoolean("market.diasble-demon-tax");}
+
 }

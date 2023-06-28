@@ -211,6 +211,8 @@ public class ShopUtil {
                         ShopItem shopItem = PRICE_LIST.get(i);
                         if(shopItem.equals(newItem)){
                             PRICE_LIST.remove(i);
+                            // 清理TABLE
+                            PRICE_TABLE.remove(newItem.getName(),newItem.getInfo());
                             saveAndReloadShop();
                             return true;
                         }
@@ -278,29 +280,35 @@ public class ShopUtil {
             shopItem.setInfo((String) map.get("info"));
             shopItem.setName((String) map.get("name"));
             shopItem.setPrice(Double.parseDouble((String)map.get("price")));
+            shopItem.setItemType(ShopItemType.getType(shopItem.getType()));
+            shopItem.setItemStack(getItem(shopItem.getName(), shopItem.getInfo(), shopItem.getItemType()));
+            // 过滤异常物品
+            if (Objects.isNull(shopItem.getItemStack())) {
+                continue;
+            }
             shopItemList.add(shopItem);
         }
-
         if(!CollectionUtils.isEmpty(shopItemList)){
-            // 构建list
-            PRICE_LIST.clear();
-            PRICE_LIST.addAll(shopItemList);
-            // 补充信息
-            for(int i = 0 ; i < PRICE_LIST.size(); i ++){
-                ShopItem shopItem  = PRICE_LIST.get(i);
-                shopItem.setItemType(ShopItemType.getType(shopItem.getType()));
-                shopItem.setItemStack(getItem(shopItem.getName(), shopItem.getInfo(), shopItem.getItemType()));
-                // 过滤异常物品
-                if(Objects.isNull(shopItem.getItemStack())){
-                    PRICE_LIST.remove(i);
-                    i--;
-                    continue;
+            synchronized (PRICE_TABLE) {
+                synchronized (PRICE_LIST) {
+                    // 构建list
+                    PRICE_LIST.clear();
+                    PRICE_LIST.addAll(shopItemList);
+                    PRICE_TABLE.clear();
+                    // 补充信息
+                    for (int i = 0; i < PRICE_LIST.size(); i++) {
+                        ShopItem shopItem = PRICE_LIST.get(i);
+                        // 过滤异常物品
+                        if (Objects.isNull(shopItem.getItemStack())) {
+                            PRICE_LIST.remove(i);
+                            i--;
+                            continue;
+                        }
+                        // 同时构建table
+                        PRICE_TABLE.put(shopItem.getName(), shopItem.getInfo(), shopItem);
+                    }
                 }
-                // 同时构建table
-                PRICE_TABLE.put(shopItem.getName(),shopItem.getInfo(), shopItem);
-            }
-        }
-        // log.info("【DemonMarket】Shop price list loaded");
+            }}
     }
 
     /**

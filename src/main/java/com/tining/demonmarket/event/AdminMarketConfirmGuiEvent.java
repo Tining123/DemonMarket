@@ -1,8 +1,9 @@
 package com.tining.demonmarket.event;
 
 import com.tining.demonmarket.common.util.LangUtil;
-import com.tining.demonmarket.gui.ShopConfirmGui;
-import com.tining.demonmarket.gui.ShopGui;
+import com.tining.demonmarket.gui.MarketConfirmGui;
+import com.tining.demonmarket.gui.AdminMarketConfirmGui;
+import com.tining.demonmarket.storage.bean.MarketItem;
 import com.tining.demonmarket.storage.bean.ShopItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,15 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 
 import java.util.Objects;
 
-/**
- * 商店页面
- * @author tinga
- */
-public class ShopGuiEvent implements Listener {
+public class AdminMarketConfirmGuiEvent implements Listener {
     /**
      * 关闭时取消注册并结算
      *
@@ -29,7 +25,7 @@ public class ShopGuiEvent implements Listener {
     public void close(InventoryCloseEvent e) {
         if (e.getPlayer() instanceof Player) {
             Player player = (Player) e.getPlayer();
-            ShopGui.unRegisterShopGui(player);
+            AdminMarketConfirmGui.unRegisterAdminMarketConfirmGui(player);
         }
 
     }
@@ -43,7 +39,7 @@ public class ShopGuiEvent implements Listener {
     @EventHandler
     public void close(PlayerQuitEvent e) {
         Player player = (Player) e.getPlayer();
-        ShopGui.unRegisterShopGui(player);
+        AdminMarketConfirmGui.unRegisterAdminMarketConfirmGui(player);
     }
 
     /**
@@ -54,18 +50,18 @@ public class ShopGuiEvent implements Listener {
     public void disableMove(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
+            if (AdminMarketConfirmGui.isAdminMarketConfirmGui(player) || Objects.equals(LangUtil.get(AdminMarketConfirmGui.GUI_NAME), e.getView().getTitle())) {
 
-            if (ShopGui.isShopGui(player) || Objects.equals(LangUtil.get(ShopGui.GUI_NAME), e.getView().getTitle())) {
-                if(e.getSlot() < ShopGui.VIEW_SIZE && !Objects.equals(player.getInventory(),e.getClickedInventory())) {
-                    ShopItem shopItem = ShopGui.getConfirmItem(e.getInventory(), e.getSlot(), player);
-                    if(Objects.nonNull(shopItem)) {
-                        player.closeInventory();
-                        ShopGui.unRegisterShopGui(player);
-                        ShopConfirmGui.getShopConfirmGui(player, shopItem, 1);
+                AdminMarketConfirmGui adminMarketConfirmGui = AdminMarketConfirmGui.getMyAdminMarketConfirmGui(player);
+
+                if(Objects.nonNull(adminMarketConfirmGui)) {
+                    MarketItem marketItem = adminMarketConfirmGui.getMarketItem();
+
+                    if (Objects.nonNull(e.getCurrentItem()) && Objects.nonNull(e.getCurrentItem().getItemMeta())) {
+                        AdminMarketConfirmGui.makeDecision(player, marketItem,
+                                e.getSlot(), e.getCurrentItem().getItemMeta().getDisplayName());
+
                     }
-                }
-                else{
-                    ShopGui.turnPage(e.getInventory(), e.getSlot(), player);
                 }
                 e.setCancelled(true);
             }

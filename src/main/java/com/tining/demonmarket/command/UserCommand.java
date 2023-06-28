@@ -1,6 +1,7 @@
 package com.tining.demonmarket.command;
 
 import com.google.common.base.Strings;
+import com.tining.demonmarket.command.dispatcher.MarketCommand;
 import com.tining.demonmarket.command.dispatcher.ShopCommand;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.BukkitUtil;
@@ -201,6 +202,11 @@ public class UserCommand implements CommandExecutor {
             }
             case "shop": {
                 new ShopCommand().deal(commandPack);
+                return true;
+            }
+            case "mt":
+            case "market": {
+                new MarketCommand().deal(commandPack);
                 return true;
             }
             default: {

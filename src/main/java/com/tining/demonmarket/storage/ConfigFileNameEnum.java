@@ -21,7 +21,11 @@ public enum ConfigFileNameEnum {
     /**
      * 商店价值配置文件
      */
-    SHOP_PRICE_NAME("shop.yml","shop");
+    SHOP_PRICE_NAME("shop.yml","shop"),
+    /**
+     * 市场存储
+     */
+    MARKET_DB_NAME("market.yml","market");
 
     /**
      * 路径名称
