@@ -10,12 +10,15 @@
 
 ## 使用方法
 #### 使用用户命令/demonmarket 命令简写为/mt
++ /mt 打开魔鬼商店的菜单
 + /mt gui 打开一个收购箱
 + /mt sell 卖掉手里的东西
 + /mt sell all 卖掉背包里和手中同样的所有东西
 + /mt price 预估手中物品的出售收益
 + /mt help 查看帮助
 + /mt shop 打开商店进行购买
++ /mt market 打开市场
++ /mt market sell [金额] 上架手中物品到市场
 
 可用别名：dm,dmt,demonmarket
 
@@ -28,6 +31,7 @@
 + /mtadmin shopset [price] - 将手中的物品添加到商店
 + /mtadmin shopnbtset [price] - 将手中的nbt物品添加到商店
 + /mtadmin shop - 打开商店管理面板
++ /mtadmin market - 打开市场管理面板
 可用别名：dmadmin,dmtadmin,demonmarketadmin
 
 ## 使用效果

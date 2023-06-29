@@ -13,6 +13,7 @@ By using a convergence function based on the player's assets, items sold by the 
 
 ## Usage
 #### Players could use /demonmarket or /mt
++ /mt - Open the demon menu
 + /mt gui - Open the acquire box
 + /mt list - Show the acquire list
 + /mt sell - Sell items in your hand
@@ -21,6 +22,8 @@ By using a convergence function based on the player's assets, items sold by the 
 + /mt price - Check the price
 + /mt help - Check helps
 + /mt shop - Buy stuff from shop
++ /mt market - Open the market
++ /mt market sell [price] - Sell the item in hand to market
 
 Also ：dm, dmt, demonmarket
 
@@ -33,6 +36,7 @@ Also ：dm, dmt, demonmarket
 + /mtadmin shopset [price] - Set price for the item in the shop
 + /mtadmin shopnbtset [price] - Set price for the nbt item in the shop
 + /mtadmin shop - Shop management panel
++ /mtadmin market - Market management panel
 
 Also ：dmadmin, dmtadmin, demonmarketadmin
 
@@ -71,6 +75,10 @@ Set diamond block with $440.
 + auto-refresh: Enable to auto refresh the price in gui
 + auto-refresh-gap: Refresh interval (second per time)
 + disable-shop: Disable mt shop command.
++ market.disable-market: disable mt market command.
++ market.max-user-sell: Maximum number of user listings
++ market.sell-tax-rate: Handling fee for players selling items, percentage
++ market.diasble-demon-tax: disable demon tax in market profit
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
 

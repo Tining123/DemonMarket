@@ -153,7 +153,10 @@ public class AdminCommand implements CommandExecutor {
                 LangUtil.get("/mtadmin nbtset [价格] 为手里的nbt物品新增或修改价格") + "\n" +
                 LangUtil.get("/mtadmin nbt 查看手中物品nbt信息\n") +
                 LangUtil.get("/mtadmin name 查看手中物品名称\n") +
-                LangUtil.get("/mtadmin reload 重载插件配置");
+                LangUtil.get("/mtadmin shop 打开管理员商店列表")  + "\n" +
+                LangUtil.get("/mtadmin market 打开管理员市场列表")
+
+                ;
         return help;
     }
 }

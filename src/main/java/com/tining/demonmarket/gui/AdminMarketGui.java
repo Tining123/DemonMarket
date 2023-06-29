@@ -76,7 +76,7 @@ public class AdminMarketGui {
     /**
      * 收购列表名称
      */
-    public static final String GUI_NAME = "市场列表";
+    public static final String GUI_NAME = "管理员市场列表";
 
     /**
      * 持有者

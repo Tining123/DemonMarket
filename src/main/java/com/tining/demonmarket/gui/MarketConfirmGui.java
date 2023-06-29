@@ -197,7 +197,7 @@ public class MarketConfirmGui {
 
             // 发送物品
             BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
-            player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + totalPrice);
+            player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice));
 
             MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
 

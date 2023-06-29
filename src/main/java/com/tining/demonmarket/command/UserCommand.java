@@ -2,6 +2,7 @@ package com.tining.demonmarket.command;
 
 import com.google.common.base.Strings;
 import com.tining.demonmarket.command.dispatcher.MarketCommand;
+import com.tining.demonmarket.command.dispatcher.PanelCommand;
 import com.tining.demonmarket.command.dispatcher.ShopCommand;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.BukkitUtil;
@@ -42,10 +43,6 @@ public class UserCommand implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        if (args.length == 0) {
-            // 参数数量太少，拒绝处理
-            return false;
-        }
 
         // 构造参数包
         CommandPack commandPack = new CommandPack();
@@ -53,6 +50,12 @@ public class UserCommand implements CommandExecutor {
         commandPack.command = command;
         commandPack.label = label;
         commandPack.args = args;
+
+        // 打开默认面板
+        if (args.length == 0) {
+            new PanelCommand().deal(commandPack);
+            return true;
+        }
 
         Player player = (Player) sender;
         ItemStack itemStack = player.getInventory().getItemInMainHand();
@@ -261,8 +264,11 @@ public class UserCommand implements CommandExecutor {
                 LangUtil.get("/mt pay [玩家] [金额]") + "\n" +
                 LangUtil.get("/mt sell 出售手里的物品\n") +
                 LangUtil.get("/mt sell all 出售背包里当前所有与手中相同的物品\n") +
-                LangUtil.get("/mt price 查询物品当前价格\n") +
-                LangUtil.get("/mt shop 打开物品商店");
+                LangUtil.get("/mt price 查询物品当前价格") + "\n" +
+                LangUtil.get("/mt shop 打开物品商店") + "\n" +
+                LangUtil.get("/mt market 打开交易市场") + "\n" +
+                LangUtil.get("/mt market sell [金额] 售卖手中物品至市场");
+                ;
         return help;
     }
 }

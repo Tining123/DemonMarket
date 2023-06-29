@@ -59,7 +59,7 @@ auto-refresh-gap: 1
 # disable mt shop command.
 disable-shop: false
 
-# disable mt market command.
+# c
 market.disable-market: false
 # Maximum number of user listings
 market.max-user-sell: 30

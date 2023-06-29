@@ -101,7 +101,7 @@ public class AdminMarketConfirmGui {
     /**
      * 收购列表名称
      */
-    public static final String GUI_NAME = "市场确认购买页面";
+    public static final String GUI_NAME = "管理员市场确认购买页面";
 
     /**
      * 持有者
@@ -153,7 +153,8 @@ public class AdminMarketConfirmGui {
             AdminMarketConfirmGui.unRegisterAdminMarketConfirmGui(player);
             AdminMarketGui.getAdminMarketGui(player);
         }else if(slot == CONFIRM_SIGN_INDEX){
-            double totalPrice = marketItem.getPrice();
+            // 管理员不用花钱
+            double totalPrice = 0;
             if(player.getName().equals(marketItem.getOwnerName())){
                 totalPrice = 0;
             }
@@ -168,7 +169,7 @@ public class AdminMarketConfirmGui {
             Vault.subtractCurrency(player.getUniqueId(), marketItem.getPrice());
             // 发送物品
             BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
-            player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + totalPrice);
+            player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice));
 
             MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
 
