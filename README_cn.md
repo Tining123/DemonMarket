@@ -62,6 +62,10 @@
 + auto-refresh: 是否开启自动刷新结算价格
 + auto-refresh-gap: 自动刷间隔（秒）
 + disable-shop: 禁用商店
++ market.disable-market: 禁用市场
++ market.max-user-sell: 玩家最大上架数量
++ market.sell-tax-rate: 上架手续费
++ market.diasble-demon-tax: 是否禁用市场中卖家收益的恶魔税率
 ## 理论支持
 以下为计算价格的实际公式。 其中
 + price=物品设定价格
