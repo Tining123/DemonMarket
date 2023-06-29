@@ -212,6 +212,10 @@ public class UserCommand implements CommandExecutor {
                 new MarketCommand().deal(commandPack);
                 return true;
             }
+            case "panel":{
+                new PanelCommand().deal(commandPack);
+                return true;
+            }
             default: {
                 sender.sendMessage(getHelp());
                 return true;
