@@ -4,7 +4,7 @@
 #### 一个系统商店插件，玩家可以出售物品。采用调优后的幂指函数与反函数混合收敛物价。用于解决工业类服务器某些物品产能过高导致服务器经济失衡的问题。
 通过基于玩家资产的收敛函数，玩家出售物品会逐渐缓步的贬值。在达到指定基线后物品迅速贬值，并且逐步趋减趋近于0但不会到达0。使用这种手段，在玩家初期进入就能开始适应物价收敛，并且可以有效遏制服务器寡头玩家的资产进一步膨胀。
 
-![GUI操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/gui_thumb2.gif)
+![GUI操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/show-min.gif)
 ![Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/adminshop-min.gif)
 ![管理员Shop操作](https://raw.githubusercontent.com/Tining123/DemonMarket/master/src/main/img/shop-min.gif)
 
