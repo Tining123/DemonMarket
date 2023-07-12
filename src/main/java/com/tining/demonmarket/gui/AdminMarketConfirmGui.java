@@ -158,15 +158,9 @@ public class AdminMarketConfirmGui {
             if(player.getName().equals(marketItem.getOwnerName())){
                 totalPrice = 0;
             }
-            // 检测余额
-            if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
-
-                player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice));
-                return;
-            }
 
             // 扣费
-            Vault.subtractCurrency(player.getUniqueId(), marketItem.getPrice());
+            Vault.subtractCurrency(player.getUniqueId(), totalPrice);
             // 发送物品
             BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
             player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice));

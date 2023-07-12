@@ -167,31 +167,35 @@ public class MarketConfirmGui {
             }
 
             // 扣费
-            Vault.subtractCurrency(player.getUniqueId(), marketItem.getPrice());
+            Vault.subtractCurrency(player.getUniqueId(), totalPrice);
             // 给卖家转账
             OfflinePlayer reciever = Bukkit.getOfflinePlayer(marketItem.getOwnerName());
-            double recieve = marketItem.getPrice();
+            double recieve = totalPrice;
+            double preTotalPrice = 0;
             if(!ConfigReader.getDisableMarketDemonMarket()){
                 double totalValue = recieve;
                 int time = (int)(totalValue / ConfigReader.getPayUnit());
                 double res = totalValue % ConfigReader.getPayUnit();
 
                 double price = MarketEconomy.getSellingPrice(ConfigReader.getPayUnit(), time, Vault.checkCurrency(reciever.getUniqueId()));
-                totalPrice += price;
+                preTotalPrice += price;
 
                 price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(reciever.getUniqueId()));
-                totalPrice += price;
+                preTotalPrice += price;
 
-                recieve = totalPrice;
+                recieve = preTotalPrice;
             }
             Vault.addVaultCurrency(reciever, recieve);
-            // 给收款人发消息
-            try{
-                Player onlineReceiver = Bukkit.getPlayer(marketItem.getOwnerName());
-                onlineReceiver.sendMessage(ChatColor.YELLOW +
-                        String.format(LangUtil.get("物品%s出售成功，从%s收到%s"),
-                                marketItem.getName(), player.getName(), MarketEconomy.formatMoney(recieve)));
-            }catch (Exception ignore){}
+            // 给收款人发消息，但是如果物归原主就不进行利益送达
+            if(!player.getName().equals(marketItem.getOwnerName())){
+                try{
+                    Player onlineReceiver = Bukkit.getPlayer(marketItem.getOwnerName());
+                    onlineReceiver.sendMessage(ChatColor.YELLOW +
+                            String.format(LangUtil.get("物品%s出售成功，从%s收到%s"),
+                                    marketItem.getName(), player.getName(), MarketEconomy.formatMoney(recieve)));
+                }catch (Exception ignore){}
+            }
+            
 
 
 
