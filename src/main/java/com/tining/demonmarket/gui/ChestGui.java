@@ -74,7 +74,10 @@ public class ChestGui {
         ItemMeta itemMeta = priceToken.getItemMeta();
         itemMeta.setDisplayName(LangUtil.get("合计："));
         priceToken.setItemMeta(itemMeta);
-        PluginUtil.addLore(priceToken, Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + 0));
+        List<String> lores = new ArrayList<>();
+        lores.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("总价：$") + 0));
+        lores.add(LangUtil.preColor(ChatColor.BLUE , LangUtil.get("关闭以结算")));
+        PluginUtil.addLore(priceToken, lores);
         chestGui.inventory.setItem(PRICE_INDEX, priceToken);
 
         return chestGui;
@@ -223,7 +226,7 @@ public class ChestGui {
         if (count != 0) {
             MarketTrade.trade(player, count);
         } else {
-            player.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+            player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
         }
 
         return "";
@@ -267,7 +270,11 @@ public class ChestGui {
         String countStr = MarketEconomy.formatMoney(count);
         ItemMeta itemMeta = priceToken.getItemMeta();
         itemMeta.setDisplayName(LangUtil.get("合计："));
-        itemMeta.setLore(Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + countStr));
+        //itemMeta.setLore(Collections.singletonList(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("总价：$") + countStr)));
+        List<String> lores = new ArrayList<>();
+        lores.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("总价：$") + countStr));
+        lores.add(LangUtil.preColor(ChatColor.BLUE , LangUtil.get("关闭以结算")));
+        itemMeta.setLore(lores);
         priceToken.setItemMeta(itemMeta);
 
     }

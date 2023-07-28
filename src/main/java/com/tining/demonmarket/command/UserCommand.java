@@ -14,6 +14,7 @@ import com.tining.demonmarket.common.util.InventoryUtil;
 import com.tining.demonmarket.gui.AcquireListGui;
 import com.tining.demonmarket.gui.ChestGui;
 import com.tining.demonmarket.storage.ConfigReader;
+import com.tining.demonmarket.storage.LogWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -69,7 +70,7 @@ public class UserCommand implements CommandExecutor {
 
                 double value = WorthUtil.getItemWorth(itemStack);
                 if (value == 0) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                     return true;
                 }
                 int sellAmount = 0;
@@ -103,7 +104,7 @@ public class UserCommand implements CommandExecutor {
                 }
                 double value = WorthUtil.getItemWorth(itemStack);
                 if (value == 0) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                     return true;
                 }
                 int amountInInventory = InventoryUtil.calcInventory(player, itemStack);
@@ -111,15 +112,15 @@ public class UserCommand implements CommandExecutor {
                 sellAmount = player.getInventory().getItemInMainHand().getAmount();
                 double hand = MarketTrade.preTrade(player, itemStack, value, sellAmount);
                 double all = MarketTrade.preTrade(player, itemStack, value, amountInInventory);
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]物品单价：") + MarketEconomy.formatMoney(value) + LangUtil.get("，你手里的物品总价：")
-                        + MarketEconomy.formatMoney(hand) + LangUtil.get("，如果出售背包中所有物品可得：") + MarketEconomy.formatMoney(all));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]物品单价：") + MarketEconomy.formatMoney(value) + LangUtil.get("，你手里的物品总价：")
+                        + MarketEconomy.formatMoney(hand) + LangUtil.get("，如果出售背包中所有物品可得：") + MarketEconomy.formatMoney(all)));
                 return true;
 
             }
             case "pay": {
                 //合法性校验
                 if (args.length < 3) {
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("/mt pay [玩家] [金额]")));
                     return true;
                 }
                 String valueString = args[2];
@@ -127,25 +128,25 @@ public class UserCommand implements CommandExecutor {
                 try {
                     value = Double.parseDouble(valueString);
                 } catch (Exception e) {
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("/mt pay [玩家] [金额]")));
                     return true;
                 }
                 if(value < 0){
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("/mt pay [玩家] [金额]"));
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("/mt pay [玩家] [金额]")));
                     return true;
                 }
                 if (Vault.checkCurrency(player.getUniqueId()) < value) {
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额"));
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额")));
                     return true;
                 }
                 //转账上线校验
                 double maxPay = ConfigReader.getMaxPay();
                 if (maxPay != -1) {
                     if (maxPay == 0) {
-                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("转账功能已关闭"));
+                        player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("转账功能已关闭")));
                         return true;
                     } else if (maxPay < value) {
-                        player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账金额超过上限，当前上限%s"), maxPay));
+                        player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , String.format(LangUtil.get("转账金额超过上限，当前上限%s"), maxPay)));
                         return true;
                     }
                 }
@@ -176,7 +177,7 @@ public class UserCommand implements CommandExecutor {
 
                     // 重新判断是否余额充足
                     if (Vault.checkCurrency(player.getUniqueId()) < totalValue) {
-                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + totalValue);
+                        player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额") + totalValue));
                         return true;
                     }
                 }
@@ -186,11 +187,12 @@ public class UserCommand implements CommandExecutor {
                 // 给收款人发消息
                 try{
                     Player onlineReceiver = Bukkit.getPlayer(args[1]);
-                    onlineReceiver.sendMessage(ChatColor.YELLOW +
-                            String.format(LangUtil.get("收款成功，从%s收到%s"), player.getName(), MarketEconomy.formatMoney(totalPrice)));
+                    onlineReceiver.sendMessage(LangUtil.preColor(ChatColor.YELLOW , String.format(LangUtil.get("收款成功，从%s收到%s"), player.getName(), MarketEconomy.formatMoney(totalPrice))));
                 }catch (Exception ignore){}
 
-                player.sendMessage(ChatColor.YELLOW + String.format(LangUtil.get("转账成功，花费%S，转账%s"),
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , String.format(LangUtil.get("转账成功，花费%S，转账%s"),
+                        totalValue, MarketEconomy.formatMoney(totalPrice))));
+                LogWriter.appendToLog(player.getName() + "->" + reciever.getName() + ":" + String.format(LangUtil.get("转账成功，花费%S，转账%s"),
                         totalValue, MarketEconomy.formatMoney(totalPrice)));
                 return true;
 
@@ -239,18 +241,18 @@ public class UserCommand implements CommandExecutor {
             //测试
             String name = is.getItemMeta().getDisplayName();
             if (!Strings.isNullOrEmpty(name)) {
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                 return false;
             }
         }
 
         if (Objects.isNull(itemStack) || itemStack.getType().name().equals("AIR")) {
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
             return false;
         }
         //检测此种物品是否可交易
         if (!WorthUtil.isWorthContain(itemStack)) {
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
             return false;
         }
 

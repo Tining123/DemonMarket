@@ -28,7 +28,7 @@ public class AdminShopNbtSetCommand extends AbstractCommander{
         Material itemToSell = player.getInventory().getItemInMainHand().getType();
         //校验物品是否合法
         if (Objects.isNull(itemToSell) || itemToSell.name().equals("AIR")) {
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
             return true;
         }
         double price = 0.0;
@@ -36,16 +36,16 @@ public class AdminShopNbtSetCommand extends AbstractCommander{
         try {
             price = Double.parseDouble(args[1]);
             if (price <= 0) {
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                 return true;
             }
         } catch (Exception e) {
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
             return true;
         }
 
         ShopUtil.addToNBTPrice(itemStack,price);
-        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
+        sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]设置成功")));
 
         return true;
     }

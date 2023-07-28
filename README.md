@@ -79,6 +79,7 @@ Set diamond block with $440.
 + market.max-user-sell: Maximum number of user listings
 + market.sell-tax-rate: Handling fee for players selling items, percentage
 + market.diasble-demon-tax: disable demon tax in market profit
++ log: enable transaction log
 ## Mathematical Theory
 + TAX=（1 - TaxRate）
 

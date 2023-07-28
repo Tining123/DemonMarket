@@ -239,8 +239,8 @@ public class AcquireListGui {
         if(CollectionUtils.isEmpty(lore)){
             lore = new ArrayList<>();
         }
-        lore.add(ChatColor.YELLOW + LangUtil.get("原价：") + price);
-        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + MarketEconomy.formatMoney(value));
+        lore.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("原价：") + price));
+        lore.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("现价：") + MarketEconomy.formatMoney(value)));
 
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setLore(lore);
@@ -263,8 +263,8 @@ public class AcquireListGui {
         if(CollectionUtils.isEmpty(lore)){
             lore = new ArrayList<>();
         }
-        lore.add(ChatColor.YELLOW + LangUtil.get("原价：") + price);
-        lore.add(ChatColor.YELLOW + LangUtil.get("现价：") + String.format("%.2f", value));
+        lore.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("原价：") + price));
+        lore.add(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("现价：") + String.format("%.2f", value)));
 
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setLore(lore);

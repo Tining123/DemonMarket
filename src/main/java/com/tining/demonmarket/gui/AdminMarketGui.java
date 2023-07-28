@@ -121,9 +121,9 @@ public class AdminMarketGui {
             }
             ItemStack itemStack = marketItem.getItemStack().clone();
             List<String> lores = new ArrayList<>();
-            lores.add(ChatColor.YELLOW + LangUtil.get("售价：") + marketItem.getPrice());
-            lores.add(ChatColor.WHITE + LangUtil.get("卖家：") + marketItem.getOwnerName());
-            lores.add(ChatColor.WHITE + LangUtil.get("上架时间：") + DateUtil.formatDateToViewString(marketItem.getPublicDate()));
+            lores.add(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("售价：") + marketItem.getPrice()));
+            lores.add((LangUtil.preColor(ChatColor.WHITE, LangUtil.get("卖家：") + marketItem.getOwnerName())));
+            lores.add((LangUtil.preColor(ChatColor.WHITE, LangUtil.get("上架时间：") + DateUtil.formatDateToViewString(marketItem.getPublicDate()))));
             PluginUtil.addLore(itemStack, lores);
             list.add(itemStack);
         }

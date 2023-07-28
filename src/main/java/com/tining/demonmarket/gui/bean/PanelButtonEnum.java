@@ -16,7 +16,7 @@ public enum PanelButtonEnum {
     /**
      * 商店
      */
-    SHOP(13,"商店列表", "mt shop", Material.OAK_LOG),
+    SHOP(13,"商店列表", "mt shop", Material.APPLE),
 
     /**
      * 市场

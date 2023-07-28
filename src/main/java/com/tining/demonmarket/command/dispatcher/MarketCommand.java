@@ -40,7 +40,7 @@ public class MarketCommand extends AbstractCommander{
         }else if(args.length == 3 && args[1].toLowerCase().equals("sell")){
             ItemStack copy = itemStack.clone();
             if (Objects.isNull(copy) || copy.getType().name().equals("AIR")) {
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                 return false;
             }
             double price = 0.0;
@@ -48,17 +48,17 @@ public class MarketCommand extends AbstractCommander{
             try {
                 price = Double.parseDouble(args[2]);
                 if (price < 0) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                     return true;
                 }
             } catch (Exception e) {
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                 return true;
             }
             // 检查售卖上线
             int playerSellCount = MarketUtil.userSellCount(player);
             if(playerSellCount >= ConfigReader.getMaxUserSell()){
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]已达到最大限制"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]已达到最大限制")));
                 return false;
             }
 
@@ -71,13 +71,13 @@ public class MarketCommand extends AbstractCommander{
             int heldSlot = inventory.getHeldItemSlot();
             inventory.setItem(heldSlot, null);
             MarketUtil.addToMarket(player, copy, price);
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]上架成功"));
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]上架成功")));
             // 如果设置了税费，进行收税
             double sellTax = (ConfigReader.getSellTaxRate() / 100) * price;
             if(sellTax != 0){
                 Vault.subtractCurrency(player.getUniqueId(), sellTax);
             }
-            sender.sendMessage(ChatColor.YELLOW + LangUtil.get("税费：") + sellTax);
+            sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("税费：") + sellTax));
 
             return true;
         }

@@ -76,7 +76,7 @@ public class PluginUtil {
         }
 
         for(Lore tempLore: loreList){
-            lore.add(tempLore.getChatColor() + tempLore.getLore());
+            lore.add(tempLore.getLore());
         }
 
         ItemMeta itemMeta = is.getItemMeta();

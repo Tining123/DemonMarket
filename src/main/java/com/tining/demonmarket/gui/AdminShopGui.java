@@ -140,12 +140,10 @@ public class AdminShopGui {
             }
             ItemStack itemStack = shopItem.getItemStack().clone();
             Lore lore = Lore.builder()
-                    .lore(LangUtil.get("售价：") + shopItem.getPrice())
-                    .chatColor(ChatColor.YELLOW)
+                    .lore(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("售价：") + shopItem.getPrice()))
                     .build();
             Lore constLore = Lore.builder()
-                    .lore(LangUtil.get("点击以编辑顺序"))
-                    .chatColor(ChatColor.WHITE)
+                    .lore((LangUtil.preColor(ChatColor.WHITE , LangUtil.get("点击以编辑顺序"))))
                     .build();
             PluginUtil.addColorLore(itemStack, Collections.singletonList(lore));
             PluginUtil.addColorLore(itemStack, Collections.singletonList(constLore));
@@ -196,8 +194,7 @@ public class AdminShopGui {
                 editingItem.setItemMeta(midItemMeta);
 
                 Lore lore = Lore.builder()
-                        .lore(LangUtil.get("单击以删除该物品"))
-                        .chatColor(ChatColor.RED)
+                        .lore((LangUtil.preColor(ChatColor.RED , LangUtil.get("单击以删除该物品"))))
                         .build();
                 PluginUtil.addColorLore(editingItem, Collections.singletonList(lore));
 

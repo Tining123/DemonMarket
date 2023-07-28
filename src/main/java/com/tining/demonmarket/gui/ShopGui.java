@@ -138,8 +138,7 @@ public class ShopGui {
             }
             ItemStack itemStack = shopItem.getItemStack().clone();
             Lore lore = Lore.builder()
-                    .lore(LangUtil.get("售价：") + shopItem.getPrice())
-                    .chatColor(ChatColor.YELLOW)
+                    .lore(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("售价：") + shopItem.getPrice()))
                     .build();
             PluginUtil.addColorLore(itemStack, Collections.singletonList(lore));
             list.add(itemStack);

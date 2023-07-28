@@ -3,6 +3,7 @@ package com.tining.demonmarket.economy;
 import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.storage.ConfigReader;
+import com.tining.demonmarket.storage.LogWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -95,7 +96,14 @@ public class MarketTrade {
     //交易提示信息
     public static void message(Player player, ItemStack itemStack, int amount, double price, double tax) {
 
-        player.sendMessage(ChatColor.GREEN + String.format(LangUtil.get("[DemonMarket]你成功出售了%s个%s，所得$%s，其中贸易税为$%s"),
+        player.sendMessage((LangUtil.preColor(ChatColor.GREEN , String.format(LangUtil.get("[DemonMarket]你成功出售了%s个%s，所得$%s，其中贸易税为$%s"),
+                amount,
+                itemStack.getType().name(),
+                MarketEconomy.formatMoney(price - tax),
+                MarketEconomy.formatMoney(tax)
+        ))));
+
+        LogWriter.appendToLog(player.getName() + ":" +  String.format(LangUtil.get("[DemonMarket]你成功出售了%s个%s，所得$%s，其中贸易税为$%s"),
                 amount,
                 itemStack.getType().name(),
                 MarketEconomy.formatMoney(price - tax),
@@ -106,7 +114,12 @@ public class MarketTrade {
     //交易提示信息
     public static void message(Player player, double price, double tax) {
 
-        player.sendMessage(ChatColor.GREEN + String.format(LangUtil.get("[DemonMarket]你成功出售了收购箱中的物品，所得$%s，其中贸易税为$%s"),
+        player.sendMessage((LangUtil.preColor(ChatColor.GREEN , String.format(LangUtil.get("[DemonMarket]你成功出售了收购箱中的物品，所得$%s，其中贸易税为$%s"),
+                MarketEconomy.formatMoney(price - tax),
+                MarketEconomy.formatMoney(tax)
+        ))));
+
+        LogWriter.appendToLog(player.getName() + ":" +   String.format(LangUtil.get("[DemonMarket]你成功出售了收购箱中的物品，所得$%s，其中贸易税为$%s"),
                 MarketEconomy.formatMoney(price - tax),
                 MarketEconomy.formatMoney(tax)
         ));

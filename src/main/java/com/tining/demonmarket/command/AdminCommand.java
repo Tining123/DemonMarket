@@ -46,7 +46,7 @@ public class AdminCommand implements CommandExecutor {
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
                 //校验物品是否合法
                 if (Objects.isNull(itemToSell) || itemToSell.name().equals("AIR")) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                     return true;
                 }
                 double price = 0.0;
@@ -54,11 +54,11 @@ public class AdminCommand implements CommandExecutor {
                 try {
                     price = Double.parseDouble(args[1]);
                     if (price < 0) {
-                        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                        sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                         return true;
                     }
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                     return true;
                 }
                 //修改数值
@@ -66,7 +66,7 @@ public class AdminCommand implements CommandExecutor {
                 //修改配置文件
                 //保存
                 ConfigReader.reloadConfig();
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]设置成功")));
                 return true;
             }
             case "set": {
@@ -81,7 +81,7 @@ public class AdminCommand implements CommandExecutor {
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
                 //校验物品是否合法
                 if (Objects.isNull(itemToSell) || itemToSell.name().equals("AIR")) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手里的物品无法交易"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手里的物品无法交易")));
                     return true;
                 }
                 double price = 0.0;
@@ -89,11 +89,11 @@ public class AdminCommand implements CommandExecutor {
                 try {
                     price = Double.parseDouble(args[1]);
                     if (price < 0) {
-                        sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                        sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                         return true;
                     }
                 } catch (Exception e) {
-                    sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你输入的价格不合法"));
+                    sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                     return true;
                 }
                 //修改数值
@@ -101,26 +101,26 @@ public class AdminCommand implements CommandExecutor {
                 //修改配置文件
                 //保存
                 ConfigReader.reloadConfig();
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]设置成功"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]设置成功")));
                 return true;
             }
             case "name": {
                 Player player = (Player) sender;
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name());
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name()));
                 return true;
             }
             case "nbt": {
                 Player player = (Player) sender;
                 Material itemToSell = player.getInventory().getItemInMainHand().getType();
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name());
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]NBT为：") + itemStackSerialize(player.getInventory().getItemInMainHand()));
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]在商店配置中的NBT对应码为：") + PluginUtil.getKeyName(player.getInventory().getItemInMainHand()));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你手中拿的是：") + itemToSell.name()));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]NBT为：") + itemStackSerialize(player.getInventory().getItemInMainHand())));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]在商店配置中的NBT对应码为：") + PluginUtil.getKeyName(player.getInventory().getItemInMainHand())));
                 return true;
             }
             case "reload": {
                 ConfigReader.reloadConfig();
-                sender.sendMessage(ChatColor.YELLOW + LangUtil.get("[DemonMarket]重载成功"));
+                sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]重载成功")));
                 return true;
             }
             case "shopset": {
@@ -154,7 +154,9 @@ public class AdminCommand implements CommandExecutor {
                 LangUtil.get("/mtadmin nbt 查看手中物品nbt信息\n") +
                 LangUtil.get("/mtadmin name 查看手中物品名称\n") +
                 LangUtil.get("/mtadmin shop 打开管理员商店列表")  + "\n" +
-                LangUtil.get("/mtadmin market 打开管理员市场列表")
+                LangUtil.get("/mtadmin market 打开管理员市场列表") + "\n" +
+                LangUtil.get("/mtadmin shopset [价格] 将手中的物品添加到商店") + "\n" +
+                LangUtil.get("/mtadmin shopnbtset [价格] 将手中的nbt物品添加到商店");
 
                 ;
         return help;

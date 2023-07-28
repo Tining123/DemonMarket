@@ -72,3 +72,6 @@ lang:
   "/mt market sell [金额] 售卖手中物品至市场": "/mt market sell [price] - Sell the items in hand to the market"
   "/mtadmin shop 打开管理员商店列表": "/mtadmin shop - Open Administrator shop list"
   "/mtadmin market 打开管理员市场列表": "/mtadmin market - Open administrator market list"
+  "/mtadmin shopset [价格] 将手中的物品添加到商店": "/mtadmin shopset [price] - Add items in hand to shop"
+  "/mtadmin shopnbtset [价格] 将手中的nbt物品添加到商店": "/mtadmin shopnbtset [price] - Add NBT items in hand to shop"
+  "关闭以结算": "Close to checkout"

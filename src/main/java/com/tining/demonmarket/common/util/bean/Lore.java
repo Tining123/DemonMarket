@@ -15,6 +15,7 @@ public class Lore {
     /**
      * 默认白色
      */
+    @Deprecated
     ChatColor chatColor = ChatColor.WHITE;
 
     /**

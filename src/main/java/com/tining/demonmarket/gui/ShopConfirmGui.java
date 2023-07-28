@@ -4,6 +4,7 @@ import com.tining.demonmarket.common.ref.Vault;
 import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
+import com.tining.demonmarket.storage.LogWriter;
 import com.tining.demonmarket.storage.bean.ShopItem;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -83,22 +84,67 @@ public class ShopConfirmGui {
     /**
      * 增加数量图标
      */
-    private static final Material PLUS_SIGN = Material.WHITE_WOOL;
+    private static Material PLUS_SIGN;
+    static {
+        try {
+            PLUS_SIGN = Material.getMaterial("WHITE_WOOL");
+            if(Objects.isNull(PLUS_SIGN)){
+                PLUS_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            PLUS_SIGN = Material.getMaterial("WOOL");
+        }
+    }
 
     /**
-     * 减少熟料图标
+     * 减少数量图标
      */
-    private static final Material MINUS_SIGN = Material.BLACK_WOOL;
+    private static Material MINUS_SIGN;
+    static {
+        try {
+            MINUS_SIGN = Material.getMaterial("BLACK_WOOL");
+            if(Objects.isNull(MINUS_SIGN)){
+                MINUS_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            MINUS_SIGN = Material.getMaterial("WOOL");
+        }
+    }
 
     /**
      * 确认图标
      */
-    private static final Material CONFIRM_SIGN = Material.GREEN_WOOL;
+    private static Material CONFIRM_SIGN;
+    static {
+        try {
+            CONFIRM_SIGN = Material.getMaterial("GREEN_WOOL");
+            if(Objects.isNull(CONFIRM_SIGN)){
+                CONFIRM_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            CONFIRM_SIGN = Material.getMaterial("WOOL");
+        }
+    }
 
     /**
      * 取消图标
      */
-    private static final Material CANCEL_SIGN = Material.RED_WOOL;
+    private static Material CANCEL_SIGN;
+    static {
+        try {
+            CANCEL_SIGN = Material.getMaterial("RED_WOOL");
+            if(Objects.isNull(CANCEL_SIGN)){
+                CANCEL_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            CANCEL_SIGN = Material.getMaterial("WOOL");
+        }
+    }
+
 
     /// 菜单字符常量 ///
     private static final String PLUS_1_TEXT = "+1";
@@ -190,13 +236,13 @@ public class ShopConfirmGui {
                 // 检测余额
                 if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
 
-                    player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice));
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice)));
                     return;
                 }
                 // 发货
                 for(int i = 0 ; i < amount;i++){
                     if (Vault.checkCurrency(player.getUniqueId()) < shopItem.getPrice()) {
-                        player.sendMessage(ChatColor.YELLOW + LangUtil.get("你没有足够的余额") + String.format("%.2f", shopItem.getPrice()));
+                        player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额") + String.format("%.2f", shopItem.getPrice())));
                         return;
                     }
                     // 扣费
@@ -204,7 +250,9 @@ public class ShopConfirmGui {
                     // 发送物品
                     BukkitUtil.returnItem(player, shopItem.getItemStack().clone());
                 }
-                player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + totalPrice);
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("交易成功，花费：") + totalPrice));
+
+                LogWriter.appendToLog(player.getName() + "[" + shopItem.getName() + "]:" + LangUtil.get("交易成功，花费：") + totalPrice);
             }
             return;
         }
@@ -227,6 +275,10 @@ public class ShopConfirmGui {
      * @return
      */
     private static boolean isDisplayNameValid(String displayName) {
+        if(Objects.isNull(displayName)){
+            return false;
+        }
+
         return displayName.equals(LangUtil.get(PLUS_1_TEXT)) ||
                 displayName.equals(LangUtil.get(MINUS_1_TEXT)) ||
                 displayName.equals(LangUtil.get(PLUS_8_TEXT)) ||
@@ -246,7 +298,7 @@ public class ShopConfirmGui {
         ShopItem shopItem = shopConfirmGui.getShopItem();
         ItemStack itemStack = shopItem.getItemStack().clone();
         itemStack.setAmount(amount);
-        PluginUtil.addLore(itemStack, Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + (shopItem.getPrice() * amount)));
+        PluginUtil.addLore(itemStack, Collections.singletonList(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("总价：$") + (shopItem.getPrice() * amount))));
         inventory.setItem(ITEM_SIGN_INDEX, itemStack);
 
         setSign(inventory, PLUS_SIGN, PLUS_1_INDEX, LangUtil.get(PLUS_1_TEXT));

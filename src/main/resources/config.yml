@@ -67,3 +67,6 @@ market.max-user-sell: 30
 market.sell-tax-rate: 0.0
 # disable demon tax in market profit
 market.diasble-demon-tax: false
+
+# turn on transaction log
+log: false

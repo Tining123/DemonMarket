@@ -305,4 +305,9 @@ public final class ConfigReader {
      */
     public static boolean getDisableMarketDemonMarket(){return ConfigReader.config.getBoolean("market.diasble-demon-tax");}
 
+    /**
+     * 获取是否启用日志
+     * @return
+     */
+    public static boolean getEnableTransactionLog(){return ConfigReader.config.getBoolean("log");}
 }

@@ -5,6 +5,7 @@ import com.tining.demonmarket.common.util.BukkitUtil;
 import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.MarketUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
+import com.tining.demonmarket.storage.LogWriter;
 import com.tining.demonmarket.storage.bean.MarketItem;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -66,12 +68,34 @@ public class AdminMarketConfirmGui {
     /**
      * 确认图标
      */
-    private static final Material CONFIRM_SIGN = Material.GREEN_WOOL;
+    private static Material CONFIRM_SIGN;
+    static {
+        try {
+            CONFIRM_SIGN = Material.getMaterial("GREEN_WOOL");
+            if(Objects.isNull(CONFIRM_SIGN)){
+                CONFIRM_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            CONFIRM_SIGN = Material.getMaterial("WOOL");
+        }
+    }
 
     /**
      * 取消图标
      */
-    private static final Material CANCEL_SIGN = Material.RED_WOOL;
+    private static Material CANCEL_SIGN;
+    static {
+        try {
+            CANCEL_SIGN = Material.getMaterial("RED_WOOL");
+            if(Objects.isNull(CANCEL_SIGN)){
+                CANCEL_SIGN = Material.getMaterial("WOOL");
+            }
+        } catch (Exception e) {
+            // 如果出现异常，将 CONFIRM_SIGN 赋值为 Material.WOOL
+            CANCEL_SIGN = Material.getMaterial("WOOL");
+        }
+    }
 
     /**
      * 确认购买文本
@@ -163,7 +187,7 @@ public class AdminMarketConfirmGui {
             Vault.subtractCurrency(player.getUniqueId(), totalPrice);
             // 发送物品
             BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
-            player.sendMessage(ChatColor.YELLOW + LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice));
+            player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice)));
 
             MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
 
@@ -180,6 +204,10 @@ public class AdminMarketConfirmGui {
      * @return
      */
     private static boolean isDisplayNameValid(String displayName) {
+        if(Objects.isNull(displayName)){
+            return false;
+        }
+
         return displayName.equals(LangUtil.get(CONFIRM_TEXT)) ||
                 displayName.equals(LangUtil.get(CANCEL_TEXT));
     }
@@ -199,9 +227,9 @@ public class AdminMarketConfirmGui {
         if(player.getName().equals(marketItem.getOwnerName())) {
             price = 0;
         }
-        PluginUtil.addLore(itemStack, Collections.singletonList(ChatColor.YELLOW + LangUtil.get("总价：$") + (price * amount)));
+        PluginUtil.addLore(itemStack, Collections.singletonList(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("总价：$") + (price * amount))));
         if(player.getName().equals(marketItem.getOwnerName())) {
-            PluginUtil.addLore(itemStack, Collections.singletonList(ChatColor.YELLOW +  LangUtil.get("你是物品拥有者，可以免费取回")));
+            PluginUtil.addLore(itemStack, Collections.singletonList(LangUtil.preColor(ChatColor.YELLOW ,  LangUtil.get("你是物品拥有者，可以免费取回"))));
         }
         inventory.setItem(ITEM_SIGN_INDEX, itemStack);
 

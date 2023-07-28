@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -116,6 +117,9 @@ public class PanelGui {
      * @return
      */
     private static boolean isDisplayNameValid(String displayName) {
+        if(Objects.isNull(displayName)){
+            return false;
+        }
         return displayName.equals(LangUtil.get(PanelButtonEnum.GUI.getText())) ||
                 displayName.equals(LangUtil.get(PanelButtonEnum.SHOP.getText()))||
                 displayName.equals(LangUtil.get(PanelButtonEnum.MARKET.getText()))||
