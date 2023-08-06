@@ -108,6 +108,8 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new AdminMarketGuiEvent(), Main.getInstance());
         pm.registerEvents(new AdminMarketConfirmGuiEvent(), Main.getInstance());
         pm.registerEvents(new PanelGuiEvent(), Main.getInstance());
+        pm.registerEvents(new AdminGroupListGuiEvent(), Main.getInstance());
+        pm.registerEvents(new AdminGroupSignSetGuiEvent(), Main.getInstance());
     }
 
     public static void setExecutor() {

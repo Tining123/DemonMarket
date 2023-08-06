@@ -25,7 +25,17 @@ public enum ConfigFileNameEnum {
     /**
      * 市场存储
      */
-    MARKET_DB_NAME("market.yml","market");
+    MARKET_DB_NAME("market.yml","market"),
+    /**
+     * 物品分类
+     */
+    CLASSIFY_DB_NAME("classify.yml","classify"),
+    /**
+     * 分类后的物品
+     */
+    GROUP_DB_NAME("group.yml","group"),
+
+        ;
 
     /**
      * 路径名称

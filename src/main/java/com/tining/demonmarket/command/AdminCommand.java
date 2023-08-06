@@ -137,6 +137,9 @@ public class AdminCommand implements CommandExecutor {
                 new AdminMarketCommand().deal(commandPack);
                 return true;
             }
+            case "group":{
+                new AdminGroupListCommand().deal(commandPack);
+            }
             default: {
                 sender.sendMessage(getHelp());
                 return true;

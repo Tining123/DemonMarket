@@ -41,6 +41,22 @@ public class PluginUtil {
     public static String cipherKey = "DemonMarket";
 
     /**
+     * 为物品快速加上名称
+     * @param itemStack
+     * @return
+     */
+    public static ItemStack setName(ItemStack itemStack, String name){
+        if(Objects.isNull(itemStack)){
+            return itemStack;
+        }
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+
+    /**
      * 为物品快速加上lore，不复制
      * @param itemStack
      * @param addOnLore

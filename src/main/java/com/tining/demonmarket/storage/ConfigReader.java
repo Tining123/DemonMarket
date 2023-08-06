@@ -70,6 +70,8 @@ public final class ConfigReader {
         ShopUtil.reloadShop();
         // 重载市场
         MarketUtil.reloadMarket();
+        // 重载分组
+        ClassifyReader.getInstance().reload();
     }
 
     /**
