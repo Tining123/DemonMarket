@@ -23,9 +23,9 @@ public abstract class AbstractListGUIV1<T extends DataV1> extends AbstractGUIV1{
 
     protected Integer nextIndex = 47;
 
-    List<T> dataList;
+    protected List<T> dataList;
 
-    T selectItem;
+    protected T selectItem;
 
     public AbstractListGUIV1(Player player,String guiName,List<T> dataList) {
         super(player,guiName);
@@ -60,7 +60,8 @@ public abstract class AbstractListGUIV1<T extends DataV1> extends AbstractGUIV1{
 
         try {
             me.decideSelectItem(inventory,slot,player);
-        } catch (Exception e) {
+            return;
+        } catch (Exception ignore) {
         }
         me.selectItem = null;
     }
@@ -173,7 +174,26 @@ public abstract class AbstractListGUIV1<T extends DataV1> extends AbstractGUIV1{
      * @param slot
      * @param player
      */
-    public abstract void decideSelectItem(Inventory inventory, int slot, Player player);
+    protected void decideSelectItem(Inventory inventory, int slot, Player player){
+        if (slot >= viewSize) {
+            selectItem = null;
+        }
+
+        try {
+            ItemStack itemStack = inventory.getItem(pageIndex);
+            String name = itemStack.getItemMeta().getDisplayName();
+            int page = Integer.parseInt(name.replace("<", "").replace(">", "").trim());
+
+            int index = (page - 1) * viewSize + slot;
+            selectItem = dataList.get(index);
+            String selectName = selectItem.getName();
+            drawPage(inventory, page - 1, player);
+            return;
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
+        selectItem = null;
+    }
 
     protected abstract void beforeDraw(Inventory inventory, int pageNum, Player player);
 

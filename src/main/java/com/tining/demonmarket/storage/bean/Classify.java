@@ -1,9 +1,10 @@
 package com.tining.demonmarket.storage.bean;
 
+import com.tining.demonmarket.gui.v1.DataV1;
 import lombok.Data;
 
 @Data
-public class Classify {
+public class Classify extends DataV1 {
     /**
      * 出售物品类型的名称
      */

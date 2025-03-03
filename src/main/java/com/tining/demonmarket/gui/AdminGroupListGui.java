@@ -6,34 +6,23 @@ import com.tining.demonmarket.gui.bean.SignMaterialEnum;
 import com.tining.demonmarket.gui.v1.AbstractGUIV1;
 import com.tining.demonmarket.gui.v1.AbstractListGUIV1;
 import com.tining.demonmarket.gui.v1.SignEnumInterfaceV1;
+import com.tining.demonmarket.storage.ClassifyReader;
+import com.tining.demonmarket.storage.bean.Classify;
 import com.tining.demonmarket.storage.bean.Group;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class AdminGroupListGui extends AbstractListGUIV1<Group> {
 
 
     public AdminGroupListGui(Player player, List<Group> dataList) {
         super(player, LangUtil.get("商店分组列表"), dataList);
-    }
-
-    /**
-     * 决定选中的你内容
-     *
-     * @param inventory
-     * @param slot
-     * @param player
-     */
-    @Override
-    public void decideSelectItem(Inventory inventory, int slot, Player player) {
-
     }
 
     @Override
@@ -79,6 +68,17 @@ public class AdminGroupListGui extends AbstractListGUIV1<Group> {
             @Override
             public void deal(Inventory inventory, Player player) {
                 AdminGroupListGui me = (AdminGroupListGui) AbstractGUIV1.getMe(player);
+                Group select = me.selectItem;
+                if(Objects.isNull(select)){
+                    return;
+                }
+                me.quit(player,inventory);
+                // 查询出对应分类list
+                List<Classify> list = ClassifyReader.getInstance().getClassifyList(select);
+                if(Objects.isNull(list)){
+                    list = new ArrayList<>();
+                }
+                new AdminClassifyListGui(player,list,select);
 
             }
         },
@@ -86,7 +86,7 @@ public class AdminGroupListGui extends AbstractListGUIV1<Group> {
             @Override
             public void deal(Inventory inventory, Player player) {
                 AdminGroupListGui me = (AdminGroupListGui) AbstractGUIV1.getMe(player);
-
+                new AdminGroupDeleteGui(player,me.selectItem);
             }
         },
         ;

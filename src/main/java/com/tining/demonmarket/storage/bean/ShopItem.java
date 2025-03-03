@@ -1,5 +1,6 @@
 package com.tining.demonmarket.storage.bean;
 
+import com.tining.demonmarket.gui.v1.DataV1;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.inventory.ItemStack;
@@ -8,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
  * @author tinga
  */
 @Data
-@EqualsAndHashCode(of = {"type", "info", "name"})
-public class ShopItem {
+@EqualsAndHashCode(of = {"type", "info", "name"}, callSuper = false)
+public class ShopItem extends DataV1 {
 
     /**
      * 出售物品类型，不进行序列化

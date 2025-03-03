@@ -21,7 +21,7 @@ public class ClassifyReader extends IListReader<Classify>{
 
     private final static List<Group> GROUP_LIST = new CopyOnWriteArrayList<>();
 
-    private final static Map<Group, List<Classify>> GROUP_LIST_MAP = new TreeMap<>();
+    private final static Map<Group, List<Classify>> GROUP_LIST_MAP = new HashMap<>();
 
 
     @Override
@@ -42,6 +42,37 @@ public class ClassifyReader extends IListReader<Classify>{
         }
         GROUP_LIST.add(group);
         saveAndReload();
+    }
+
+    /**
+     * 获取group旗下内容
+     * @param group
+     * @return
+     */
+    public List<Classify> getClassifyList(Group group){
+        return GROUP_LIST_MAP.get(group);
+    }
+
+    /**
+     * 删除组
+     * @param group
+     * @return
+     */
+    public boolean removeGroup(Group group){
+        for (int i = 0; i < GROUP_LIST.size(); i++) {
+            Group old = GROUP_LIST.get(i);
+            if (StringUtils.equals(old.getInfo(), group.getInfo())
+                    && StringUtils.equals(old.getName(), group.getName())) {
+                old.setInfo(group.getInfo());
+                old.setName(group.getName());
+                synchronized (GROUP_LIST) {
+                    GROUP_LIST.remove(i);
+                    saveAndReload();
+                }
+                break;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -137,6 +168,12 @@ public class ClassifyReader extends IListReader<Classify>{
                         Group group = tempGroupMap.get(groupName);
                         if (group != null) {
                             GROUP_LIST_MAP.computeIfAbsent(group, k -> new ArrayList<>()).add(classify);
+                        }
+                    }
+
+                    for(Map.Entry<Group, List<Classify>> entry : GROUP_LIST_MAP.entrySet()){
+                        if(Objects.isNull(entry.getValue())){
+                            entry.setValue(new ArrayList<>());
                         }
                     }
                 }

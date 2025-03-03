@@ -138,7 +138,7 @@ public class AdminCommand implements CommandExecutor {
                 return true;
             }
             case "group":{
-                new AdminGroupListCommand().deal(commandPack);
+                return new AdminGroupListCommand().deal(commandPack);
             }
             default: {
                 sender.sendMessage(getHelp());
