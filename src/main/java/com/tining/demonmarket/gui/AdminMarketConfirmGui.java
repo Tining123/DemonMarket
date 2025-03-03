@@ -189,7 +189,7 @@ public class AdminMarketConfirmGui {
             BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
             player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice)));
 
-            MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
+            MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice());
 
             player.closeInventory();
             AdminMarketConfirmGui.unRegisterAdminMarketConfirmGui(player);

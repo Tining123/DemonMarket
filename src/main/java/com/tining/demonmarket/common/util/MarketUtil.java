@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
@@ -32,38 +33,6 @@ public class MarketUtil {
     private final static Table<String, String, MarketItem> MARKET_TABLE = HashBasedTable.create();
 
     public final static List<MarketItem> MARKET_LIST = new CopyOnWriteArrayList<>();
-
-    /**
-     * 获取物品价值，如果不存在，返回-1
-     *
-     * @param is 物品
-     * @return
-     */
-    public static double getItemPrice(Player player, ItemStack is) {
-        Material material = is.getType();
-
-        String name = player.getName();
-        String nbtName = PluginUtil.getKeyName(is);
-
-        if(MARKET_TABLE.contains(name, nbtName)){
-            return MARKET_TABLE.get(name, nbtName).getPrice();
-        }else {
-            return -1;
-        }
-    }
-
-    /**
-     * 判断是否存在列表当中
-     *
-     * @param is 物品类型
-     * @return
-     */
-    public static boolean isMarketContain(Player player, ItemStack is) {
-        String name = player.getName();
-        String nbtName = PluginUtil.getKeyName(is);
-
-        return MARKET_TABLE.contains(name, nbtName);
-    }
 
     /**
      * 获取当前玩家售卖数量
@@ -102,19 +71,25 @@ public class MarketUtil {
      * 从列表中删除
      * @param is
      */
-    public static boolean removeFromMarket(String playName, ItemStack is){
+    public static boolean removeFromMarket(String playName, ItemStack is, Double price){
         // 设置物品细节
         MarketItem item = setMarketItemProperties(playName,is);
+        item.setPrice(price);
 
         // 删除
         synchronized (MARKET_TABLE){
             synchronized (MARKET_LIST) {
                 if(MARKET_TABLE.contains(playName, item.getInfo())){
-                    MarketItem newItem = MARKET_TABLE.get(playName, item.getInfo());
+
                     // 如果已经存在，循环并找到，修改
                     for(int i = 0 ;i < MARKET_LIST.size();i++){
-                        MarketItem marketItem = MARKET_LIST.get(i);
-                        if(marketItem.equals(newItem)){
+                        MarketItem newItem = MARKET_LIST.get(i);
+                        // 使用 BigDecimal 比较价格
+                        BigDecimal oldPrice = BigDecimal.valueOf(item.getPrice());
+                        BigDecimal newPrice = BigDecimal.valueOf(newItem.getPrice());
+
+                        // 允许四位小数的误差
+                        if (item.equals(newItem) && oldPrice.subtract(newPrice).abs().compareTo(new BigDecimal("0.0001")) < 0) {
                             MARKET_LIST.remove(i);
                             MARKET_TABLE.remove(playName, item.getInfo());
                             saveAndReloadMarket();
@@ -127,6 +102,40 @@ public class MarketUtil {
             }
         }
         return true;
+    }
+
+    /**
+     * 检查列表中是否存在
+     * @param playName
+     * @param is
+     * @return 如果存在返回true，否则返回false
+     */
+    public static boolean checkFromMarket(String playName, ItemStack is, Double price) {
+        // 设置物品细节
+        MarketItem item = setMarketItemProperties(playName, is);
+        item.setPrice(price);
+
+        // 检查
+        synchronized (MARKET_TABLE) {
+            synchronized (MARKET_LIST) {
+                if (MARKET_TABLE.contains(playName, item.getInfo())) {
+                    // 如果已经存在，循环并找到，修改
+                    for(int i = 0 ;i < MARKET_LIST.size();i++){
+                        // 使用 BigDecimal 比较价格
+                        MarketItem newItem = MARKET_LIST.get(i);
+                        // 使用 BigDecimal 比较价格
+                        BigDecimal oldPrice = BigDecimal.valueOf(item.getPrice());
+                        BigDecimal newPrice = BigDecimal.valueOf(newItem.getPrice());
+
+                        // 允许四位小数的误差
+                        if (item.equals(newItem) && oldPrice.subtract(newPrice).abs().compareTo(new BigDecimal("0.0001")) < 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

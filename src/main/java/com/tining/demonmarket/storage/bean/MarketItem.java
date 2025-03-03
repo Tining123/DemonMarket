@@ -1,8 +1,10 @@
 package com.tining.demonmarket.storage.bean;
 
+import com.tining.demonmarket.common.util.PluginUtil;
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -51,4 +53,14 @@ public class MarketItem {
      * 发布日期字符串
      */
     private String dateString;
+    /**
+     * 返回物品信息字符串
+     */
+    public String toInfo() {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String formattedPrice = df.format(price);
+        String str = name + "-" + ownerName + "-" + amount + "-" + formattedPrice + "-" + dateString;
+        str += "-" + PluginUtil.getKeyName(itemStack);
+        return str;
+    }
 }

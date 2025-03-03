@@ -177,23 +177,37 @@ public class MarketConfirmGui {
             return;
         }
 
-        // 默认锁定3秒
-        int lockTime = 3;
+        // 1. 交易开始前第一次确认物品是否存在
+        if (!MarketUtil.checkFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice())) {
+            player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("该物品已不存在于市场中")));
+            player.closeInventory();
+            MarketConfirmGui.unRegisterMarketConfirmGui(player);
+            return;
+        }
 
-        // 使用 MarketItem 的主要信息构建唯一锁 key，比如用 name + ownerName + info
-        String lockKey = marketItem.getName() + "_" + marketItem.getOwnerName() + "_" + marketItem.getInfo();
+        // 使用物品名称、NBT、数量、价格和发布日期构建唯一锁 key
+        String lockKey = marketItem.getName() + "_" +
+                marketItem.getInfo() + "_" +
+                marketItem.getAmount() + "_" +
+                marketItem.getPrice() + "_" +
+                marketItem.getDateString();
         ReentrantLock lock = LockManager.getLock(lockKey);
 
-        // 尝试获取第一层锁，超时1秒
         boolean firstLockAcquired = false;
         try {
-            firstLockAcquired = lock.tryLock(lockTime, TimeUnit.SECONDS);
+            // 尝试获取第一层锁，超时1秒
+            firstLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
             if (!firstLockAcquired) {
-                player.sendMessage("交易繁忙，请稍后再试。");
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, "交易繁忙，请稍后再试。"));
                 return;
             }
 
-            // 此处为扣费逻辑
+            // 2. 第一层锁内，再次确认物品存在（第二次确认）
+            if (!MarketUtil.checkFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice())) {
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("该物品已不存在于市场中")));
+                return;
+            }
+
             double totalPrice = marketItem.getPrice();
             if (player.getName().equals(marketItem.getOwnerName())) {
                 totalPrice = 0;
@@ -204,42 +218,52 @@ public class MarketConfirmGui {
                 return;
             }
 
-            // 获取第二层锁（同样锁定1秒）
             boolean secondLockAcquired = false;
             try {
-                secondLockAcquired = lock.tryLock(lockTime, TimeUnit.SECONDS);
+                // 尝试获取第二层锁，超时1秒
+                secondLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
                 if (!secondLockAcquired) {
-                    player.sendMessage("交易繁忙，请稍后再试。");
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, "交易繁忙，请稍后再试。"));
                     return;
                 }
 
-                // 开始原子操作
-                // 1. 扣费
+                // 3. 第二层锁内，再次确认物品存在（第三次确认）
+                if (!MarketUtil.checkFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice())) {
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("该物品已不存在于市场中")));
+                    return;
+                }
+
+                // 4. 开始原子操作前，再确认一次（第四次确认）
+                if (!MarketUtil.checkFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice())) {
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("该物品已不存在于市场中")));
+                    return;
+                }
+
+                // 原子操作步骤：
+                // 4.1 扣费
                 Vault.subtractCurrency(player.getUniqueId(), totalPrice);
 
-                // 2. 给予物品
+                // 4.2 给予物品（克隆后发放，避免原对象修改）
                 BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
 
-                // 3. 物品下架处理
-                MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
+                // 4.3 物品下架处理
+                MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice());
 
-                // 4. 给卖家转账（如果不是原主）
+                // 4.4 给卖家转账（如果不是原主）
                 if (!player.getName().equals(marketItem.getOwnerName())) {
                     OfflinePlayer receiver = Bukkit.getOfflinePlayer(marketItem.getOwnerName());
-                    double recieve = totalPrice;
-                    // 此处进行可能的分账计算…
-                    Vault.addVaultCurrency(receiver, recieve);
+                    double receive = totalPrice;
+                    Vault.addVaultCurrency(receiver, receive);
                     try {
                         Player onlineReceiver = Bukkit.getPlayer(marketItem.getOwnerName());
                         if (onlineReceiver != null) {
                             onlineReceiver.sendMessage(LangUtil.preColor(ChatColor.YELLOW,
                                     String.format(LangUtil.get("物品%s出售成功，从%s收到%s"),
-                                            marketItem.getName(), player.getName(), MarketEconomy.formatMoney(recieve))));
+                                            marketItem.getName(), player.getName(), MarketEconomy.formatMoney(receive))));
                         }
                     } catch (Exception ignore) { }
                 }
 
-                // 记录日志及提示信息
                 player.sendMessage(LangUtil.preColor(ChatColor.YELLOW,
                         LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice)));
                 LogWriter.appendToLog(player.getName() + "->" + marketItem.getOwnerName() + "[" +
@@ -260,7 +284,7 @@ public class MarketConfirmGui {
             }
         }
 
-        // 关闭交易界面
+        // 关闭交易界面和注销GUI
         player.closeInventory();
         MarketConfirmGui.unRegisterMarketConfirmGui(player);
     }
