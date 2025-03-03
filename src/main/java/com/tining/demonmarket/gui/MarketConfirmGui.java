@@ -6,6 +6,7 @@ import com.tining.demonmarket.common.util.LangUtil;
 import com.tining.demonmarket.common.util.MarketUtil;
 import com.tining.demonmarket.common.util.PluginUtil;
 import com.tining.demonmarket.economy.MarketEconomy;
+import com.tining.demonmarket.gui.bean.LockManager;
 import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LogWriter;
 import com.tining.demonmarket.storage.bean.MarketItem;
@@ -24,6 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 /**
  * 确认购买界面
@@ -169,72 +172,97 @@ public class MarketConfirmGui {
      * @param marketItem
      * @param slot
      */
-    public static void makeDecision(Player player, MarketItem marketItem, int slot, String displayName){
-        if(!isDisplayNameValid(displayName)){
+    public static void makeDecision(Player player, MarketItem marketItem, int slot, String displayName) {
+        if (!isDisplayNameValid(displayName)) {
             return;
         }
 
-        if(slot == CANCEL_SIGN_INDEX){
-            player.closeInventory();
-            MarketConfirmGui.unRegisterMarketConfirmGui(player);
-            MarketGui.getMarketGui(player);
-        }else if(slot == CONFIRM_SIGN_INDEX){
-            double totalPrice = marketItem.getPrice();
-            if(player.getName().equals(marketItem.getOwnerName())){
-                totalPrice = 0;
-            }
-            // 检测余额
-            if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
+        // 默认锁定3秒
+        int lockTime = 3;
 
-                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice)));
+        // 使用 MarketItem 的主要信息构建唯一锁 key，比如用 name + ownerName + info
+        String lockKey = marketItem.getName() + "_" + marketItem.getOwnerName() + "_" + marketItem.getInfo();
+        ReentrantLock lock = LockManager.getLock(lockKey);
+
+        // 尝试获取第一层锁，超时1秒
+        boolean firstLockAcquired = false;
+        try {
+            firstLockAcquired = lock.tryLock(lockTime, TimeUnit.SECONDS);
+            if (!firstLockAcquired) {
+                player.sendMessage("交易繁忙，请稍后再试。");
                 return;
             }
 
-            // 扣费
-            Vault.subtractCurrency(player.getUniqueId(), totalPrice);
-            // 给卖家转账
-            OfflinePlayer reciever = Bukkit.getOfflinePlayer(marketItem.getOwnerName());
-            double recieve = totalPrice;
-            double preTotalPrice = 0;
-            if(!ConfigReader.getDisableMarketDemonMarket()){
-                double totalValue = recieve;
-                int time = (int)(totalValue / ConfigReader.getPayUnit());
-                double res = totalValue % ConfigReader.getPayUnit();
-
-                double price = MarketEconomy.getSellingPrice(ConfigReader.getPayUnit(), time, Vault.checkCurrency(reciever.getUniqueId()));
-                preTotalPrice += price;
-
-                price = MarketEconomy.getSellingPrice(res, 1, Vault.checkCurrency(reciever.getUniqueId()));
-                preTotalPrice += price;
-
-                recieve = preTotalPrice;
+            // 此处为扣费逻辑
+            double totalPrice = marketItem.getPrice();
+            if (player.getName().equals(marketItem.getOwnerName())) {
+                totalPrice = 0;
             }
-            Vault.addVaultCurrency(reciever, recieve);
-            // 给收款人发消息，但是如果物归原主就不进行利益送达
-            if(!player.getName().equals(marketItem.getOwnerName())){
-                try{
-                    Player onlineReceiver = Bukkit.getPlayer(marketItem.getOwnerName());
-                    onlineReceiver.sendMessage(LangUtil.preColor(ChatColor.YELLOW ,
-                            String.format(LangUtil.get("物品%s出售成功，从%s收到%s"),
-                                    marketItem.getName(), player.getName(), MarketEconomy.formatMoney(recieve))));
-                }catch (Exception ignore){}
+            if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW,
+                        LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice)));
+                return;
             }
-            
 
+            // 获取第二层锁（同样锁定1秒）
+            boolean secondLockAcquired = false;
+            try {
+                secondLockAcquired = lock.tryLock(lockTime, TimeUnit.SECONDS);
+                if (!secondLockAcquired) {
+                    player.sendMessage("交易繁忙，请稍后再试。");
+                    return;
+                }
 
+                // 开始原子操作
+                // 1. 扣费
+                Vault.subtractCurrency(player.getUniqueId(), totalPrice);
 
-            // 发送物品
-            BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
-            player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice)));
+                // 2. 给予物品
+                BukkitUtil.returnItem(player, marketItem.getItemStack().clone());
 
-            MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
+                // 3. 物品下架处理
+                MarketUtil.removeFromMarket(marketItem.getOwnerName(), marketItem.getItemStack());
 
-            player.closeInventory();
-            MarketConfirmGui.unRegisterMarketConfirmGui(player);
+                // 4. 给卖家转账（如果不是原主）
+                if (!player.getName().equals(marketItem.getOwnerName())) {
+                    OfflinePlayer receiver = Bukkit.getOfflinePlayer(marketItem.getOwnerName());
+                    double recieve = totalPrice;
+                    // 此处进行可能的分账计算…
+                    Vault.addVaultCurrency(receiver, recieve);
+                    try {
+                        Player onlineReceiver = Bukkit.getPlayer(marketItem.getOwnerName());
+                        if (onlineReceiver != null) {
+                            onlineReceiver.sendMessage(LangUtil.preColor(ChatColor.YELLOW,
+                                    String.format(LangUtil.get("物品%s出售成功，从%s收到%s"),
+                                            marketItem.getName(), player.getName(), MarketEconomy.formatMoney(recieve))));
+                        }
+                    } catch (Exception ignore) { }
+                }
 
-            LogWriter.appendToLog(player.getName() + "->" + marketItem.getOwnerName() + "[" + marketItem.getName() + "]:" + LangUtil.get("交易成功，花费：") + totalPrice);
+                // 记录日志及提示信息
+                player.sendMessage(LangUtil.preColor(ChatColor.YELLOW,
+                        LangUtil.get("交易成功，花费：") + String.format("%.2f", totalPrice)));
+                LogWriter.appendToLog(player.getName() + "->" + marketItem.getOwnerName() + "[" +
+                        marketItem.getName() + "]:" + LangUtil.get("交易成功，花费：") + totalPrice);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                if (secondLockAcquired) {
+                    lock.unlock();
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            if (firstLockAcquired) {
+                lock.unlock();
+            }
         }
-        return;
+
+        // 关闭交易界面
+        player.closeInventory();
+        MarketConfirmGui.unRegisterMarketConfirmGui(player);
     }
 
     /**

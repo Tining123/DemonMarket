@@ -47,7 +47,7 @@ public class MarketCommand extends AbstractCommander{
             //校验价值是否合法
             try {
                 price = Double.parseDouble(args[2]);
-                if (price < 0) {
+                if (price <= 0) {
                     sender.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("[DemonMarket]你输入的价格不合法")));
                     return true;
                 }
