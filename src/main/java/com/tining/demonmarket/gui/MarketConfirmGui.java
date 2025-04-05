@@ -11,6 +11,7 @@ import com.tining.demonmarket.storage.ConfigReader;
 import com.tining.demonmarket.storage.LogWriter;
 import com.tining.demonmarket.storage.bean.MarketItem;
 import lombok.Data;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -176,7 +177,13 @@ public class MarketConfirmGui {
         if (!isDisplayNameValid(displayName)) {
             return;
         }
-
+        // 检查是否取消位置
+        if(CANCEL_SIGN_INDEX == slot){
+            // 关闭交易界面和注销GUI
+            player.closeInventory();
+            unRegisterMarketConfirmGui(player);
+            return;
+        }
         // 1. 交易开始前第一次确认物品是否存在
         if (!MarketUtil.checkFromMarket(marketItem.getOwnerName(), marketItem.getItemStack(), marketItem.getPrice())) {
             player.sendMessage(LangUtil.preColor(ChatColor.YELLOW, LangUtil.get("该物品已不存在于市场中")));

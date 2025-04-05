@@ -1,7 +1,9 @@
 package com.tining.demonmarket.storage.bean;
 
+import com.tining.demonmarket.Main;
 import com.tining.demonmarket.common.util.PluginUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
@@ -22,6 +24,7 @@ public class MarketItem {
     /**
      * 发布日期
      */
+    @EqualsAndHashCode.Exclude
     private transient Date publicDate;
 
     /**
@@ -52,6 +55,7 @@ public class MarketItem {
     /**
      * 发布日期字符串
      */
+    @EqualsAndHashCode.Exclude
     private String dateString;
     /**
      * 返回物品信息字符串
@@ -63,4 +67,5 @@ public class MarketItem {
         str += "-" + PluginUtil.getKeyName(itemStack);
         return str;
     }
+
 }

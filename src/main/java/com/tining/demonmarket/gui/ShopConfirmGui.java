@@ -72,7 +72,7 @@ public class ShopConfirmGui {
 
 
     /**
-     * 确认按钮坐标
+     * 取消按钮坐标
      */
     private static final Integer CANCEL_SIGN_INDEX = 39;
 
@@ -237,6 +237,11 @@ public class ShopConfirmGui {
                 if (Vault.checkCurrency(player.getUniqueId()) < totalPrice) {
 
                     player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你没有足够的余额") + String.format("%.2f", totalPrice)));
+                    return;
+                }
+                // 如果没有空位则取消交易
+                if(player.getInventory().firstEmpty() == -1) {
+                    player.sendMessage(LangUtil.preColor(ChatColor.YELLOW , LangUtil.get("你的背包没有空位，交易取消")));
                     return;
                 }
                 // 发货

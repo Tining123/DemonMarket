@@ -128,7 +128,7 @@ public class MarketUtil {
                         BigDecimal newPrice = BigDecimal.valueOf(newItem.getPrice());
 
                         // 允许四位小数的误差
-                        if (item.equals(newItem) && oldPrice.subtract(newPrice).abs().compareTo(new BigDecimal("0.0001")) < 0) {
+                        if (item.equals(newItem) && oldPrice.subtract(newPrice).abs().compareTo(new BigDecimal("0.00000001")) < 0) {
                             return true;
                         }
                     }
