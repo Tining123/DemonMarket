@@ -107,4 +107,4 @@ Set diamond block with $440.
 + If you have any suggestion, complain or recommend function, don't be hesitated and contact me via GitHub or spigot.
 ## Contact
 - Github: https://github.com/Tining123/DemonMarket
-- Email: tingave201@outlook.com
+- QQ: 1340212468
