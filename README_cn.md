@@ -96,6 +96,7 @@
 ## 感谢
 代码指导 EnderTheCoder
 
+QQ: 1340212468
 技术指导 LiteSignIn 插件
 
 
