@@ -5,8 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.Tining</groupId>
     <artifactId>DemonMarket</artifactId>
-    <version>1.6.2</version>
+    <version>1.7</version>
     <build>
+        <!-- 👇 加在这里 -->
+        <finalName>DemonMarket-${project.version}-folia</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
