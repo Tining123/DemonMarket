@@ -86,12 +86,7 @@ public class ChestGuiEvent implements Listener {
         if (e.getWhoClicked() instanceof Player && e.getClickedInventory() != null) {
             Player player = (Player) e.getWhoClicked();
             if (ChestGui.isChestGui(player)) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        ChestGui.drawPage(player);
-                    }
-                }.runTask(Main.getInstance());
+                Bukkit.getRegionScheduler().run(Main.getInstance(), player.getLocation(), scheduledTask -> ChestGui.drawPage(player));
             }
         }
     }

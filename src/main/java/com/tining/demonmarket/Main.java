@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.getScheduler().cancelTasks(this);
+        Bukkit.getGlobalRegionScheduler().cancelTasks(this);
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
     }
 
@@ -83,7 +83,8 @@ public class Main extends JavaPlugin {
             if(interval < 20){
                 interval = 20L;
             }
-            Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, interval);
+            Bukkit.getGlobalRegionScheduler().runAtFixedRate(this,new ChestDrawTask()
+                    ,1, interval);
         }
         // Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ChestDrawTask(), 0L, 1L);
 
