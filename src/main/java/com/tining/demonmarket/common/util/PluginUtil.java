@@ -33,6 +33,8 @@ import java.util.zip.GZIPOutputStream;
 
 public class PluginUtil {
 
+    private static final Map<String, String> NON_ITEM_MATERIAL_ALIASES = createNonItemMaterialAliases();
+
     /**
      * nms版本
      */
@@ -250,14 +252,67 @@ public class PluginUtil {
      * @return
      */
     public static ItemStack getItem(String name) {
-        if (Objects.isNull(name)) {
+        String materialName = normalizeMaterialName(name);
+        if (Objects.isNull(materialName)) {
             return null;
         }
-        Material material = Material.getMaterial(name);
-        if(Objects.isNull(material)){
+        Material material = resolveItemMaterial(materialName);
+        if (Objects.isNull(material) && !Objects.equals(materialName, name)) {
+            material = resolveItemMaterial(name);
+        }
+        if (Objects.isNull(material)) {
             return null;
         }
         return new ItemStack(material);
+    }
+
+    static String normalizeMaterialName(String name) {
+        if (Objects.isNull(name)) {
+            return null;
+        }
+
+        String normalized = name.trim();
+        if (normalized.isEmpty()) {
+            return null;
+        }
+
+        normalized = normalized.toUpperCase(Locale.ROOT);
+        return NON_ITEM_MATERIAL_ALIASES.getOrDefault(normalized, normalized);
+    }
+
+    private static Material resolveItemMaterial(String name) {
+        Material material = Material.matchMaterial(name);
+        if (isItem(material)) {
+            return material;
+        }
+
+        try {
+            material = Material.matchMaterial(name, true);
+        } catch (Throwable ignored) {
+            return null;
+        }
+
+        if (isItem(material)) {
+            return material;
+        }
+        return null;
+    }
+
+    private static boolean isItem(Material material) {
+        return !Objects.isNull(material) && material.isItem();
+    }
+
+    private static Map<String, String> createNonItemMaterialAliases() {
+        Map<String, String> aliases = new HashMap<>();
+        aliases.put("GRASS", "GRASS_BLOCK");
+        aliases.put("LAVA", "LAVA_BUCKET");
+        aliases.put("REDSTONEWIRE", "REDSTONE");
+        aliases.put("SOIL", "DIRT");
+        aliases.put("STATIONARYLAVA", "LAVA_BUCKET");
+        aliases.put("STATIONARYWATER", "WATER_BUCKET");
+        aliases.put("WALLSIGN", "OAK_SIGN");
+        aliases.put("WATER", "WATER_BUCKET");
+        return Collections.unmodifiableMap(aliases);
     }
 
     /**
